@@ -1,0 +1,68 @@
+	<div class="dialog" id="dodaj" data-title="Dodaj czas ogłoszenia">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="dodaj">
+			<label>Długość: <input type="number" name="dlugosc" placeholder="Długość" title="Tu wpisz długość wyświetlania ogłoszenia" min="1" required value="30"> dni</label>
+			<label>Cena: <input type="number" name="cena" placeholder="Cena" title="Tu wpisz opłatę za wystawienie ogłoszenia" min="0" required step="0.01" value="0"> {$ustawienia.waluta}</label>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+	<div class="center">
+		<h1>Ustawienia: czas ogłoszeń</h1>
+		<p>Tutaj możesz edytować długość ogłoszeń i opłaty za nich.</p>
+		<br>
+		<a href="#dodaj" class="submit open_dialog" title="Dodaj czas">Dodaj czas</a><br><br>
+		<br>
+		{if isset($czas_ogloszen)}
+		<table class="table">
+			<tr>
+				<td colspan="4">Czasy ogłoszeń</td>
+			</tr>
+			<tr>
+				<td class="right">Długość</td><td class="right">Cena</td><td class="center">Edytuj</td><td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$czas_ogloszen}
+				<tr>
+					<td class="right">{$item.dlugosc}</td>				 
+					<td class="right">{$item.cena|number_format:2:",":" "} {$ustawienia.waluta}</td>
+					<td class="center"><a href="#edytuj_{$item.id}" title="Edytuj" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a></td>			 	
+				</tr>
+
+	<div class="dialog" id="edytuj_{$item.id}" data-title="Edytuj czas ogłoszenia">
+		<form method="post" action="" class="form_edytuj_kategorie">
+			<input type="hidden" name="akcja" value="edytuj">
+			<input type="hidden" name="id" value="{$item.id}">
+			<label>Długość: <input type="number" name="dlugosc" placeholder="Długość" title="Tu wpisz długość wyświetlania ogłoszenia" min="1" required value="{$item.dlugosc}"> dni</label>
+			<label>Cena: <input type="number" name="cena" placeholder="Cena" title="Tu wpisz opłatę za wystawienie ogłoszenia" min="0" required step="0.01" value="{$item.cena}"> {$ustawienia.waluta}</label>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń czas ogłoszenia {$item.dlugosc}">
+		<p>Czy na pewno chcesz usunąć czas ogłoszenia {$item.dlugosc} dni - {$item.cena} {$ustawienia.waluta}?</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+			{/foreach}		
+		</table>
+		<br><br>
+		{/if}
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_czas">
+			<label><h2>Odświeżenie przedłuża ogłoszenie o <input type="number" name="odswiezanie_dni" placeholder="30" title="Tu wpisz o ile dni ogłoszenie ma zostać przedłużone po odświeżeniu" value="{$ustawienia.odswiezanie_dni}" min="1" required> dni</h2></label>
+			<label><h2>Odświeżenie jest dostępne <input type="number" name="odswiezanie_dni_przed" placeholder="5" title="Tu wpisz ile dni wcześniej ma być dostępne odświeżenie ogłoszenia" value="{$ustawienia.odswiezanie_dni_przed}" min="0" required> dni przed końcem ogłoszenia</h2></label>
+			<p>(poniższe ustawienie jest aktywne jedynie w przypadku gdy nie ustalono czasów ogłoszeń)</p>
+			<label><h2>Domyślny czas: <input type="number" name="domyslny_czas" placeholder="Domyślny czas" title="Tu wpisz domyślny czas wyświetlania ogłoszenia" value="{$ustawienia.domyslny_czas}" min="1" required> dni</h2></label>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>
+	

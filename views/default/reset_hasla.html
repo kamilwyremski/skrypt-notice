@@ -1,0 +1,36 @@
+{literal}
+<style>
+	body{
+		background-color: #a0ce4e;
+	}
+</style>
+{/literal}
+<div id="div_logowanie">
+	<div id="okno_logowania" class="center">
+		<h1>{$ustawienia.tytul}</h1>
+		{if isset($formularz_nowe_haslo)}
+			<h2>Wprowadź nowe hasło</h2>
+			{if isset($blad)}<p class="blad">{$blad}<p>{/if}
+			<form method="post" action="">
+				<input type="hidden" name="akcja" value="nowe_haslo">
+				<input type="email" name="email" disabled value="{$formularz_nowe_haslo.email}">
+				<input type="password" placeholder="****" {literal}pattern=".{4,}"{/literal} name="haslo" title="Wpisz tutaj nowe hasło - minimum 4 znaki" required {if isset($input.haslo)}value="{$input.haslo}"{/if} maxlength="32">
+				<input type="password" placeholder="****" {literal}pattern=".{4,}"{/literal} name="powtorz_haslo" title="Powtórz hasło" required maxlength="32">
+				<input type="submit" value="ZATWIERDŹ HASŁO">
+			</form>
+		{else}
+			<h2>Zresetuj hasło</h2>
+			{if isset($info)}<p class="ok">{$info}</p>{elseif isset($blad)}<p class="blad">{$blad}</p>{/if}
+			<form method="post" action="">
+				<input type="hidden" name="akcja" value="reset_hasla">
+				<input type="text" placeholder="john@example.com" name="login" title="Wpisz tutaj swój login albo adres email" required {if isset($smarty.post.login)}value="{$smarty.post.login}"{/if} maxlength="32">
+				<img src="php/captcha.php" alt="captcha" id="image_captcha">
+				<input type="text" placeholder="Captcha" title="Tu przepisz kod captcha" name="captcha" required maxlength="32">	
+				<input type="submit" value="RESETUJ HASŁO">
+			</form>
+		{/if}
+		<a href="logowanie" title="Zaloguj się">Zaloguj się</a><br>
+		<a href="rejestracja" title="Zarejestruj się">Zarejestruj się</a><br>
+		<a href="index.php" title="{$ustawienia.tytul}">Wróć do serwisu</a>
+	</div>
+</div>

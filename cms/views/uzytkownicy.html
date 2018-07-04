@@ -1,0 +1,106 @@
+
+
+	<div class="center">
+		<h1>Użytkownicy</h1>
+		<p>Tutaj możesz przeglądać zarejestrowanych użytkowników. Możesz ich aktywować oraz usuwać</p>
+		<p>Użytkownik będący adminem może podglądać wszystkie ogłoszenia - także te nieaktywne oraz będące w archiwum</p>
+		<br>
+		
+		<form action="" method="get" class="form_szukaj">
+			<input type="hidden" name="akcja" value="uzytkownicy">
+			<input type="hidden" name="wyszukaj">
+			<input type="text" name="login" placeholder="Login" title="Szukaj po loginie" {if isset($smarty.get.login)}value="{$smarty.get.login}"{/if}>
+			<input type="text" name="email" placeholder="Email" title="Szukaj po adresie email" {if isset($smarty.get.email)}value="{$smarty.get.email}"{/if}>
+			<input type="submit" value="Szukaj!">
+			<br><br>
+		</form>
+		
+		{if isset($uzytkownicy)}
+		<table class="table">
+			<tr>
+				<td colspan="11">Użytkownicy</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Login 
+					<a href="?{$url_strony.sortuj}&sortuj=login" title="Sortuj po loginie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=login&desc" title="Sortuj malejąco po loginie" class="ikona sortuj_dol"></a>
+					<br>Email 
+					<a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po adresie email" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po adresie email" class="ikona sortuj_dol"></a>
+				</td>
+				<td>Dane do faktury</td>
+				<td>Notatka</td>
+				<td class="center">Admin<br>
+					<a href="?{$url_strony.sortuj}&sortuj=admin" title="Sortuj po adminach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=admin&desc" title="Sortuj malejąco po adminach" class="ikona sortuj_dol"></a>
+				</td>
+				<td class="center">Aktywuj<br>
+					<a href="?{$url_strony.sortuj}&sortuj=aktywny" title="Sortuj po aktywnych użytkownikach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=aktywny&desc" title="Sortuj malejąco po aktywnych użytkownikach" class="ikona sortuj_dol"></a>
+				</td>
+				<td class="center">Ogł.<br>(akt.)</td>
+				<td class="center">Rejestracja<br>
+					<a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie rejestracji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie rejestracji" class="ikona sortuj_dol"></a>
+				</td>
+				<td class="center">Aktywacja<br>IP</td>
+				<td class="center">Ostatnio<br>Suma log.</td>
+				<td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$uzytkownicy name=uzytkownicy}
+				<tr>
+					<td>{$smarty.foreach.uzytkownicy.iteration+$iteration}</td>
+					<td>
+						{if $item.rejestracja_facebook==1}<img src="images/fb-icon.gif" alt="Rejestracja przez Facebook" class="facebook_icon_mini">{/if}
+						{if $item.login!=''}<a href="../profil,{$item.login}" title="Profil użytkownika: {$item.login}" target="_blank">{$item.login}</a>{else}{$item.login}{/if}
+						<br><a href="mailto:{$item.email}" title="Napisz do użytkownika: {$item.email}">{$item.email}</a>
+					</td>
+					<td>{$item.dane_faktura}</td>
+					<td>
+						{$item.notatka}
+						<br><a href="#edytuj_{$item.id}" title="Edytuj notatki" class="ikona ikona_edytuj open_dialog"></a>
+					</td>
+					<td class="center">{if $item.admin}<a href="#" title="Usuń prawa admina" class="ajax" data-akcja="dezaktywuj_admina" data-id="{$item.id}">Tak</a>{else}<a href="#" title="Nadaj prawa admina" class="ajax" data-akcja="aktywuj_admina" data-id="{$item.id}" style="color: grey">Nie</a>{/if}</td>
+					<td class="center">{if $item.aktywny!=1 && $item.login!=''}<a href="#" title="Aktywuj użytkownika" class="ajax ikona ikona_dodaj" data-akcja="aktywuj_uzytkownika" data-id="{$item.id}"></a>{/if}</td>
+					<td class="center">{$item.ile}<br><b>{$item.ile_aktywnych}</b></td>
+					<td class="center" style="min-width:65px">{$item.data|date_format:"%d-%m-%Y"}</td>
+					<td class="center" style="min-width:65px">{$item.data_aktywacji|date_format:"%d-%m-%Y"}<br><b>{$item.ip_aktywacji}<b></td>
+					<td class="center" style="min-width:65px">{if isset($item.ostatnie_logowanie)}{$item.ostatnie_logowanie|date_format:"%d-%m-%Y"}<br>{/if}<b>{$item.ilosc_logowan}<b></td>
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a></td>			 				
+				</tr>
+				
+	<div class="dialog" id="edytuj_{$item.id}" data-title="Notatka do użytkownika {$item.login}">
+		<p>Tutaj możesz dopisać swoją notatkę do użytkownika {$item.login}</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="notatka_uzytkownika">
+			<input type="hidden" name="id" value="{$item.id}">
+			<textarea name="notatka" placeholder="Twoja notatka o użytkowniku" title="Tutaj możesz wpisać swoją notatkę o użytkowniku (niewidoczna dla niego)" maxlength="1024">{$item.notatka}</textarea>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń użytkownika {$item.login}">
+		<p>Czy na pewno chcesz usunąć użytkownika {$item.login}?</p>
+		<p>Zostaną usuniętę wszystkie powiązane z nim dane, także wszystkie jego ogłoszenia (ilość: {$item.ile})</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun_uzytkownika">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

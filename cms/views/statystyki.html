@@ -1,0 +1,97 @@
+<link rel="stylesheet" type="text/css" href="js/jqplot/jquery.jqplot.css" />
+<script type="text/javascript" src="js/jqplot/jquery.jqplot.min.js"></script>
+<script type="text/javascript" src="js/jqplot/jqplot.highlighter.min.js"></script>
+<script type="text/javascript" src="js/jqplot/jqplot.dateAxisRenderer.min.js"></script>
+<script type="text/javascript" src="js/jqplot.engine.js"></script>
+
+	<div class="center">
+		<h1>Statystyki serwisu</h1>
+		<br><br>
+		<table class="table" id="table_statystyki">
+			<tr>
+				<td colspan="4">Ogólne statystyki</td>
+			</tr>
+			<tr>
+				<td><b>Użytkowników:</b></td>
+				<td><b>{$statystyki.uzytkownikow}</b></td>
+				<td><b>Wysłanych maili:</b></td>
+				<td><b>{$statystyki.maile}</b></td>
+			</tr>
+			<tr>
+				<td>- przez Facebook-a:</td>
+				<td>{$statystyki.facebook}</td>
+				<td><b>Logowań do systemu:</b></td>
+				<td><b>{$statystyki.logowan}</b></td>
+			</tr>
+			<tr>
+				<td><b>Ogłoszeń:</b></td>
+				<td><b>{$statystyki.ogloszen}</b></td>
+				<td><b>Wyświetleń ogłoszeń:</b></td>
+				<td><b>{$statystyki.wyswietlenia}</b></td>
+			</tr>
+			<tr>
+				<td> - aktywnych:</td>
+				<td>{$statystyki.aktywnych}</td>
+				<td>Dodanych zdjęć:</td>
+				<td>{$statystyki.zdjec}</td>
+			</tr>
+			<tr>
+				<td>Archiwum ogłoszeń:</td>
+				<td>{$statystyki.archiwum}</td>
+				<td><b>Newsletter:</b></td>
+				<td><b>{$statystyki.newsletter}</b></td>
+			</tr>
+		</table>	
+		<div id="statystyki" class="center">
+			<select id="statystyki_select_1" title="Wybierz co ma przedstawiać niebieska linia">
+				<option value=""> -- </option>
+				<option value="logowania">logowania</option>
+				<option value="unikalne_logowania" selected>unikalne logowania</option>
+				<option value="rejestracje">rejestracje użytkowników</option>
+				<option value="aktywacje">aktywacje kont</option>
+				<option value="dodanie">dodanie ogłoszeń</option>
+				<option value="start">aktywacje ogłoszeń</option>
+				<option value="wyswietlenia">wyświetlenia ogłoszeń</option>
+			</select>
+			<select id="statystyki_select_2" title="Wybierz co ma przedstawiać pomarańczowa linia">
+				<option value=""> -- </option>
+				<option value="logowania">logowania</option>
+				<option value="unikalne_logowania">unikalne logowania</option>
+				<option value="rejestracje">rejestracje użytkowników</option>
+				<option value="aktywacje">aktywacje kont</option>
+				<option value="dodanie" selected>dodanie ogłoszeń</option>
+				<option value="start">aktywacje ogłoszeń</option>
+				<option value="wyswietlenia">wyświetlenia ogłoszeń</option>
+			</select>
+			<input id="statystyki_data_od" title="Wybierz początkową datę dla analizy" type="date" value="{($smarty.now-2592000)|date_format:'%Y-%m-%d'}" min="{($smarty.now-946080000)|date_format:'%Y-%m-%d'}" max="{$smarty.now|date_format:'%Y-%m-%d'}">
+			<input id="statystyki_data_do" title="Wybierz końcową datę dla analizy" type="date" value="{$smarty.now|date_format:'%Y-%m-%d'}" min="{($smarty.now-946080000)|date_format:'%Y-%m-%d'}" max="{$smarty.now|date_format:'%Y-%m-%d'}">
+			<input id="wykres_generuj" type="submit" value="GENERUJ!">
+			<div id="jqplot" class="before">
+				<p id="jqplot_info">Kliknij przycisk "GENERUJ" aby wygenerować wykres na podstawie wybranych kryteriów</p>
+			</div>
+		</div>
+		<h2>Eksport adresów email</h2>
+		<p>Tutaj możesz wyeksportować adresy email z serwisu do formatu TXT</p>
+		<p><a href="php/eksport_emaili.php?grupa=wszystkie" title="Eksportuj wszystkie adresy email z serwisu">Wszystkie</a></p>
+		<p><a href="php/eksport_emaili.php?grupa=newsletter" title="Eksportuj adresy email z newslettera">Newsletter</a></p>
+		<p><a href="php/eksport_emaili.php?grupa=uzytkownicy" title="Eksportuj adresy email użytkowników serwisu">Użytkownicy serwisu</a></p>
+		<h2>Import adresów email</h2>
+		{if isset($import_komunikat)}<h3>Import adresów email zakończony powodzeniem!</h3><br>{/if}
+		<p>Importowane adresy email zostaną zapisane w tabeli "newsletter"</p>
+		<p>Należy importować plik *.txt w którym adresy email są wpisane po przecinku</p>
+		<form action="" enctype="multipart/form-data" method="post">
+			<input type="hidden" name="import_maili">
+			<input type="file" name="plik" required title="Wybierz plik importu" accept=".txt"><br>
+			<input type="submit" value="Import adresów email">
+		</form>
+		<br><br>
+		<h2>Baza danych</h2>
+		<a href="php/database.php?export" title="Eksportuj bazę danych" class="submit">Eksport bazy danych</a>
+		<br><br>
+		<form action="php/database.php" enctype="multipart/form-data" method="post">
+			<input type="hidden" name="import">
+			<p><span style="color: red">Uwaga!</span> Importując nową bazę danych nadpisujesz obecną zawartość tabel!</p>
+			<input type="file" name="plik" required title="Wybierz bazę danych do importu"><br>
+			<input type="submit" value="Import bazy danych">
+		</form>
+	</div>

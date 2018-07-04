@@ -1,0 +1,96 @@
+
+
+	<div class="center">
+		<h1>Użytkownicy programu partnerskiego</h1>
+		{if !$ustawienia.program_partnerski}<p style="color: red">Uwaga! Program partnerski jest wyłączony!</p>{/if}
+		<p>Tutaj możesz przeglądać użytkowników programu partnerskiego</p>
+		<br>
+		
+		<form action="" method="get" class="form_szukaj">
+			<input type="hidden" name="akcja" value="pp_uzytkownicy">
+			<input type="hidden" name="wyszukaj">
+			<input type="text" name="login" placeholder="Login" title="Szukaj po loginie" {if isset($smarty.get.login)}value="{$smarty.get.login}"{/if}>
+			<input type="text" name="email" placeholder="Email" title="Szukaj po adresie email" {if isset($smarty.get.email)}value="{$smarty.get.email}"{/if}>
+			{if isset($uzytkownicy)}
+				<label>Polecający:
+					<select name="pp_polecajacy">
+						<option value="">-- wszyscy --</option>
+						{foreach from=$uzytkownicy item=item key=key}
+							<option value="{$item.id}" {if isset($smarty.get.pp_polecajacy) and $smarty.get.pp_polecajacy==$item.id}selected{/if}>{$item.login}</option>
+						{/foreach}
+					</select>
+				</label>
+			{/if}
+			<input type="submit" value="Szukaj!">
+			<br><br>
+		</form>
+		
+		{if isset($pp_uzytkownicy)}
+		<table class="table">
+			<tr>
+				<td colspan="9">Użytkownicy programu partnerskiego</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Login 
+					<a href="?{$url_strony.sortuj}&sortuj=login" title="Sortuj po loginie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=login&desc" title="Sortuj malejąco po loginie" class="ikona sortuj_dol"></a>
+					<br>Email 
+					<a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po adresie email" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po adresie email" class="ikona sortuj_dol"></a>
+				</td>
+				<td colspan="2">Prowizja <a href="?{$url_strony.sortuj}&sortuj=pp_procent" title="Sortuj po wielkości prowizji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=pp_procent&desc" title="Sortuj malejąco po wielkości prowizji" class="ikona sortuj_dol"></a></td>
+				<td>Imię i nazwisko<br>/ nazwa firmy</td>
+				<td>Adres</td>
+				<td>Numer konta</td>
+				<td>Polecający</td>
+				<td>Poleceni</td>
+			</tr>
+			{foreach key=key item=item from=$pp_uzytkownicy name=pp_uzytkownicy}
+				<tr>
+					<td>{$smarty.foreach.pp_uzytkownicy.iteration+iteration}</td>
+					<td>
+						{if $item.rejestracja_facebook==1}<img src="images/fb-icon.gif" alt="Rejestracja przez Facebook" class="facebook_icon_mini">{/if}
+						{if $item.login!=''}<a href="../profil,{$item.login}" title="Profil użytkownika: {$item.login}" target="_blank">{$item.login}</a>{else}{$item.login}{/if}
+						<br><a href="mailto:{$item.email}" title="Napisz do użytkownika: {$item.email}">{$item.email}</a>
+					</td>
+					<td class="center">{if $item.pp_procent=='-1'}domyślna{else}<b>{$item.pp_procent}%</b>{/if}</td>
+					<td><a href="#pp_procent_{$item.id}" title="Edytuj procent" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td>{$item.pp_imie}</td>
+					<td>{$item.pp_adres|nl2br}</td>
+					<td>{$item.pp_numer_konta}</td>
+					<td>{if isset($item.polecajacy)}<a href="../profil,{$item.polecajacy}" title="Profil użytkownika {$item.polecajacy}" target="_blank">{$item.polecajacy}</a>{/if}</td>
+					<td>
+						{if isset($item.poleceni)}
+							{foreach from=$item.poleceni item=item2 key=key2}
+								<a href="../profil,{$item2}" title="Profil użytkownika {$item2}" target="_blank">{$item2}</a><br>
+							{/foreach}
+						{/if}
+					</td>			 				
+				</tr>
+				
+	<div class="dialog" id="pp_procent_{$item.id}" data-title="Prowizja użytkownika {$item.login}">
+		<p>Prowizja dla użytkownika {$item.login}</p>
+		<p>Wpisz wartość "-1" aby ustawić domyślną prowizję dla programu partnerskiego</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="pp_procent">
+			<input type="hidden" name="id" value="{$item.id}">
+			<label><input type="number" min="-1" max="100" placeholder="-1" title="Prowizja dla użytkownika programu partnerskiego (w %)" value="{$item.pp_procent}" name="pp_procent">%</label>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

@@ -1,0 +1,45 @@
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_konto.tpl"}
+	
+	<div id="strona">
+		{if isset($schowek)}
+			<form action="" method="get" class="floatright">
+				{foreach from=$gets_array item=item key=key}
+					<input type="hidden" name="{$key}" value="{$item}">
+				{/foreach}
+				<select name="sortuj" onchange="this.form.submit()">
+					<option value="najnowsze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najnowsze"}selected{/if}>Najnowsze</option>
+					<option value="najstarsze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najstarsze"}selected{/if}>Najstarsze</option>
+					<option value="najtansze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najtansze"}selected{/if}>Najtańsze</option>
+					<option value="najdrozsze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najdrozsze"}selected{/if}>Najdroższe</option>
+				</select>
+			</form>
+		{/if}
+		<h2>Schowek z ogłoszeniami</h2>
+		<div class="clear"></div>
+		<div id="moje_ogloszenia_box">
+		{if isset($ogloszenia)}
+		
+			{include file="ogloszenia.tpl"}
+			
+			{if $ile_stron>1}
+				<div id="wybor_stron">
+					<p>Strona {$ktora_strona} z {$ile_stron}</p>
+					<a href="{$ustawienia.base_url}/schowek{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria.url}{/if}{if $gets!=''}?{$gets}{/if}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+					<a href="{$ustawienia.base_url}/schowek{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria.url}{/if}{if $gets!=''}?{$gets}&{else}?{/if}strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+					<a href="{$ustawienia.base_url}/schowek{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria.url}{/if}{if $gets!=''}?{$gets}&{else}?{/if}strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+					<a href="{$ustawienia.base_url}/schowek{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria.url}{/if}{if $gets!=''}?{$gets}&{else}?{/if}strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+				 </div>
+			{/if}
+		{else}
+			<h4>Nie znaleziono żadnych ogłoszeń</h4>
+		{/if}
+		</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}

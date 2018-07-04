@@ -1,0 +1,25 @@
+
+	<div class="center">
+		<h1>Ustawienia: portale społecznościowe</h1>
+		<p>Tutaj możesz edytować ustawienia związane z integracją z portalami społecznościowymi:</p>
+		<br><br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_ustawienia_portale">
+			<h2>Adres URL strony na Facebook: <input type="text" name="facebook" placeholder="Adres URL strony na Facebook" title="Tu wklej adres www Twojej strony na Facebook" value="{$ustawienia.facebook}"></h2>
+			<h2>Adres URL strony na Google Plus: <input type="text" name="googleplus" placeholder="Adres URL strony na Google Plus" title="Tu wklej adres www Twojej strony na Google Plus" value="{$ustawienia.googleplus}"></h2>
+			<h2>Adres URL strony na Instagram: <input type="text" name="instagram" placeholder="Adres URL strony na Instagram" title="Tu wklej adres www Twojej strony na Instagram" value="{$ustawienia.instagram}"></h2>
+			<h2>Adres URL strony na Twitter: <input type="text" name="twitter" placeholder="Adres URL strony na Twitter" title="Tu wklej adres www Twojej strony na Twitter" value="{$ustawienia.twitter}"></h2>
+			<label><h2><input type="checkbox" name="facebook_like" title="Zaznacz jeśli chcesz pokazywać przyciski Lubię to i Udostępnij w Facebook" {if $ustawienia.facebook_like}checked{/if}> Pokazuj "Lubię to" i "Udostępnij" z Facebook-a</h2></label>
+			<label><h2><input type="checkbox" name="twitter_like" title="Zaznacz jeśli chcesz pokazywać przycisk Tweetnij z serwisu Twitter" {if $ustawienia.twitter_like}checked{/if}> Pokazuj "Tweetnij" z Twitter-a</h2></label>
+			<label><h2><input type="checkbox" name="google_plus_like" title="Zaznacz jeśli chcesz pokazywać przycisk +1 z serwisu Google Plus" {if $ustawienia.google_plus_like}checked{/if}> Pokazuj "+1" z Google Plus</h2></label>
+			<label><h2><input type="checkbox" name="wykop_like" title="Zaznacz jeśli chcesz pokazywać przycisk z serwisu wykop.pl" {if $ustawienia.wykop_like}checked{/if}> Pokazuj przycisk z Wykop.pl</h2></label>
+			<label><h2><input type="checkbox" name="nk_like" title="Zaznacz jeśli chcesz pokazywać przycisk z serwisu Nasza Klasa" {if $ustawienia.nk_like}checked{/if}> Pokazuj przycisk z NK</h2></label>
+			<label><h2><input type="checkbox" name="facebook_panel" title="Zaznacz jeśli chcesz pokazywać panel z Facebook" {if $ustawienia.facebook_panel}checked{/if}> Pokazuj panel boczny z Facebook-a</h2></label>
+			<label><h2><input type="checkbox" name="facebook_likebox" title="Zaznacz jeśli chcesz pokazywać likebox z Facebook" {if $ustawienia.facebook_likebox}checked{/if}> Pokazuj likebox z Facebook-a pod menu</h2></label>
+			<label><h2><input type="checkbox" name="logowanie_facebook" title="Zaznacz jeśli chcesz umożliwić logowanie przez FB (wymagane API i SECRET aplikacji)" {if $ustawienia.logowanie_facebook}checked{/if} class="platnosc_checkbox" data-typ="logowanie_facebook"> Zezwalaj na logowanie przez Facebook-a</h2></label>
+			<h2>Facebook API: <input type="text" name="facebook_api" placeholder="Facebook API" title="Tu wklej swój kod Facebook API" value="{$ustawienia.facebook_api}" {if $ustawienia.logowanie_facebook}required{/if} class="logowanie_facebook"></h2>
+			<h2>Facebook SECRET: <input type="text" name="facebook_secret" placeholder="Facebook SECRET" title="Tu wklej swój kod Facebook SECRET" value="{$ustawienia.facebook_secret}" {if $ustawienia.logowanie_facebook}required{/if} class="logowanie_facebook"></h2>
+			<br><br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>

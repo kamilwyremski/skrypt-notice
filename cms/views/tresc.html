@@ -1,0 +1,34 @@
+
+	<div class="center">
+		{if isset($tresc)}
+			<h1>{$tresc.nazwa}</h1>
+			<p>Tutaj możesz edytować treść strony {$tresc.nazwa}</p>
+			<br>
+			<form action="" method="post">
+				<input type="hidden" name="akcja" value="zapisz_tresc">
+				<input type="hidden" name="prosta_nazwa" value="{$tresc.prosta_nazwa}">
+				<textarea name="tresc" placeholder="Treść strony" title="Tu wpisz treść strony">{$tresc.tresc}</textarea>
+				<script type="text/javascript">
+					{literal}
+						var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+						$(function(){
+							CKEDITOR.replace( 'tresc',{height: '300px',
+								filebrowserBrowseUrl:roxyFileman,
+								filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+								removeDialogTabs: 'link:upload;image:upload'}); 
+						});
+					{/literal}
+				</script>
+				<h3>Słowa kluczowe (keywords) SEO:</h3>
+				<textarea name="keywords" title="Ustaw słowa kluczowe (keywords) dla danej strony" placeholder="Słowa kluczowe SEO" maxlength="1024">{$tresc.keywords}</textarea>
+				<h3>Opis (description) SEO:</h3>
+				<textarea name="description" title="Ustaw opis (description) dla danej strony" placeholder="Opis SEO strony" maxlength="1024">{$tresc.description}</textarea>
+				<br><br>
+				<input type="submit" value="Zapisz">
+				<br><br><br>
+				<p><a href="?akcja=tresci" title="Wróc do spisu stron">Wróć do spisu stron</a></p>
+			</form>
+		{else}
+			<h2>Nic nie znaleziono</h2>
+		{/if}
+	</div>

@@ -1,0 +1,44 @@
+
+
+	<div class="center">
+		<h1>{if isset($opcja_dodatkowa)}Edytuj opcje: {$opcja_dodatkowa.nazwa}{else}Dodaj opcje dodatkową{/if}</h1>
+		<p>Tutaj możesz dodać lub edytować opcje dodatkowe dla ogłoszeń.</p>
+		<br>
+		<p><a href="?akcja=opcje_dodatkowe" title="Spis opcji dodatkowych">Wróć do spisu opcji dodatkowych</a></p>
+		<br><br>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="{if isset($opcja_dodatkowa)}edytuj{else}dodaj{/if}">
+			{if isset($opcja_dodatkowa) && $opcja_dodatkowa.id==0}<input type="hidden" name="specjalne" value="1">{/if}
+			{if !isset($opcja_dodatkowa) || $opcja_dodatkowa.id!=0}
+				<h2>Nazwa: <input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required maxlength="32" value="{if isset($opcja_dodatkowa)}{$opcja_dodatkowa.nazwa}{/if}"></h2>
+				<h2><label><input type="checkbox" name="wymagane" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.wymagane}checked{/if} title="Zaznacz jeśli pole ma być wymagane">Pole wymagane</label></h2>
+				<h2><label>Rodzaj: 
+					<select name="rodzaj" required class="opcje_dodatkowe_select">
+						<option value="tekst" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.rodzaj=='tekst'}selected{/if}>Pole tekstowe</option>
+						<option value="liczba" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.rodzaj=='liczba'}selected{/if}>Pole liczbowe</option>
+						<option value="data" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.rodzaj=='data'}selected{/if}>Pole z datą</option>
+						<option value="select" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.rodzaj=='select'}selected{/if}>Pole wyboru (select)</option>
+					</select>
+				</label></h2>
+				<label class="opcje_dodatkowe_label {if !isset($opcja_dodatkowa) or $opcja_dodatkowa.rodzaj!='select'}ukryty{/if}">Wpisz po przecinku dostępne opcje wyboru:<br><textarea placeholder="Dostępne opcje wyboru" title="Wpisz po przecinku dostępne opcje wyboru" required {if !isset($opcja_dodatkowa) or $opcja_dodatkowa.rodzaj!='select'}disabled{/if} name="opcje_wyboru">{if isset($opcja_dodatkowa) && $opcja_dodatkowa.rodzaj=='select'}{$opcja_dodatkowa.opcje_wyboru}{/if}</textarea></label>
+				<br>
+			{/if}
+			{if isset($kategorie)}
+				<h3>Kategorie w których ma być umieszczony:</h3>
+				<label><input type="checkbox" name="wszystkie" title="Zaznacz jeśli pole ma się wyświetlać we wszystkich kategoriach" class="opcje_dodatkowe_wszystkie" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.wszystkie}checked{/if}>Wszystkie kategorie</label>
+				<div class="parent_zaznacz_checkboxy opcje_box_kategorii" {if isset($opcja_dodatkowa) && $opcja_dodatkowa.wszystkie}style="display: none"{/if}>
+					<label><input type="checkbox" class="zaznacz_checkboxy" title="Kliknij aby zaznaczyć lub odznaczyć wszystkie pozycje"><b>Zaznacz / odznacz wszystkie</b></label>
+					{foreach key=key item=item from=$kategorie}
+						<label style="margin-left: {($item.glebokosc-1)*20}px" class="zaznacz_opcje opcja_{$item.glebokosc} pokaz_opcje {if $item.kategoria!=0}ukryta_opcja ukryta_opcja_{$item.kategoria}{/if}" data-opcja="{$item.glebokosc}"><input type="checkbox" name="kategorie[]" value="{$item.id}" {if isset($opcja_dodatkowa) && strpos($opcja_dodatkowa.kategorie, $item.id_myslniki)!== false}checked{/if}>{$item.nazwa} {if $item.podkategorie!=''}<a href="#" class="link_do_ukrytych_opcji" data-id="{$item.id}"> <span class="active">&dArr;</span><span class="inactive" style="display: none">&uArr;</span></a>{/if}</label>	
+					{/foreach}
+				</div>
+			{else}
+				<input type="hidden" name="wszystkie" value="1">
+			{/if}
+			<br><br>
+			<input type="submit" value="ZAPISZ">
+		</form>
+		<br><br>
+		<p><a href="?akcja=opcje_dodatkowe" title="Spis opcji dodatkowych">Wróć do spisu opcji dodatkowych</a></p>
+	</div>
+	

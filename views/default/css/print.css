@@ -1,0 +1,3 @@
+.hidden_print, #social_menu, #wyszukiwarka, #panel, #menu, #slider_dol_box, #top_menu, .przycisk_spolecznosciowy, #ogloszenie_formularz{
+	display: none !important;
+}

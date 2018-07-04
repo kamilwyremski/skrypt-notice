@@ -1,0 +1,83 @@
+<script type="text/javascript">
+	var id_profilu = {$profil.id}
+</script>
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel.tpl"}
+	
+	<div id="strona">
+		<div id="profil_box">
+			<h2>Profil użytkownika: {$profil.login} {if $ustawienia.rss}<a href="{$ustawienia.base_url}/php/rss.php?profil={$profil.login}" title="Mój kanał RSS" target="_blank" id="ikona_rss"><img src="{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/rss.png" alt="RSS"></a>{/if}</h2>
+			{if $ustawienia.ocenianie_profilu}
+				<div id="gwiazdki">
+					<div class="gwiazdka {if $profil.oceny.srednia>=0.5}gwiazdka_stala gwiazdka_stala_temp{/if}" data-ocena='1' data-id="{$profil.id}"></div>
+					<div class="gwiazdka {if $profil.oceny.srednia>=1.5}gwiazdka_stala gwiazdka_stala_temp{/if}" data-ocena='2' data-id="{$profil.id}"></div>
+					<div class="gwiazdka {if $profil.oceny.srednia>=2.5}gwiazdka_stala gwiazdka_stala_temp{/if}" data-ocena='3' data-id="{$profil.id}"></div>
+					<div class="gwiazdka {if $profil.oceny.srednia>=3.5}gwiazdka_stala gwiazdka_stala_temp{/if}" data-ocena='4' data-id="{$profil.id}"></div>
+					<div class="gwiazdka {if $profil.oceny.srednia>=4.5}gwiazdka_stala gwiazdka_stala_temp{/if}" data-ocena='5' data-id="{$profil.id}"></div>
+				</div>
+				<div class="clear"></div>
+				<p id="gwiazdki_opis">Średnia ocen: <strong id="srednia_ocen">{$profil.oceny.srednia}</strong>&nbsp;&nbsp;&nbsp;Ilość ocen: <strong id="ilosc_ocen">{$profil.oceny.ilosc}</strong></p>
+			{/if}
+			{if $profil.awatar!=''}
+				<img src="{$ustawienia.upload}/{$profil.awatar}" onerror="this.src='{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png'" alt="Awatar" class="awatar"><br>
+			{/if}
+			<h4>Data rejestracji: {$profil.data|date_format:"%d-%m-%Y"}</h4>
+			{if $profil.ostatnie_logowanie!=''}<h4>Ostatnie logowanie: {$profil.ostatnie_logowanie|date_format:"%d-%m-%Y"}</h4>{/if}
+			<h4>Aktywnych ogłoszeń: {$profil.ile}</h4>
+			{if $profil.o_mnie!=''}
+				<br>
+				<h3>O użytkowniku:</h3>
+				<div class="padding5">{$profil.o_mnie}</div>
+			{/if}
+			{if $ustawienia.komentowanie_profilu}
+				<br><br>
+				<div class="fb-comments" data-href="{$ustawienia.base_url}/profil,{$profil.login}" data-numposts="15"></div>
+				<br><br>
+			{/if}
+			<br>
+			{if isset($ogloszenia)}
+			<h3>Dodane ogłoszenia:</h3>
+				
+				{include file="ogloszenia.tpl"}
+				
+				{if $ile_stron>1}
+					<div id="wybor_stron">
+						<p>Strona {$ktora_strona} z {$ile_stron}</p>
+						<a href="profil,{$profil.login}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+						<a href="profil,{$profil.login}?strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}" rel="prev"></a>	
+						<a href="profil,{$profil.login}?strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}" rel="next"></a>
+						<a href="profil,{$profil.login}?strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+					 </div>
+				{/if}
+
+			{/if}
+			
+			{if $ustawienia.pokaz_formularz_kontaktowy_profil}
+				<div id="ogloszenie_formularz">
+					<h3 class="center">Formularz kontaktowy</h3>
+					<div id="formularz_kontaktowy">
+						<p class="red blad" id="info_imie"></p>
+						<input type="text" id="imie" maxlength="32" placeholder="Imię i nazwisko" title="Tu wpisz swoje imię i nazwisko">
+						<p class="red blad" id="info_email"></p>
+						<input type="text" id="email" maxlength="32" placeholder="Adres email" title="Tu wpisz swój adres email" {if isset($uzytkownik)}value="{$uzytkownik.email}"{/if}>
+						<p class="red blad" id="info_wiadomosc"></p>
+						<textarea id="wiadomosc" placeholder="Twoja wiadomość" title="Tu wpisz swoją wiadomość"></textarea>
+						{if $ustawienia.maile_zalaczniki}
+							<input type="file" name="zalacznik" title="Tutaj możesz dodać załacznik do wiadomości" id="zalacznik">
+						{/if}
+						<div class="right">
+							<input type="submit" value="Wyślij!" id="wyslij_mail">
+						</div>
+						<p id="info_ok"></p>
+					</div>
+				</div>
+			{/if}
+		</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}

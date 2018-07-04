@@ -1,0 +1,30 @@
+
+	<div class="center">
+		<h1>Slider</h1>
+		<p>Tutaj możesz edytować slider wyświetlany na stronie głównej</p>
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_slider">
+			{if isset($slider)}
+				{foreach from=$slider item=item key=key}
+					<h2>Slide {$item.id}</h2>
+					<label><p><input type="checkbox" name="aktywne[{$item.id}]" title="Zaznacz jeśli slide ma się wyświetlać" {if $item.aktywne}checked{/if}>Aktywny</p></label>
+					<textarea name="tresc[{$item.id}]" placeholder="Treść maila" title="Tu wpisz treść maila">{$item.tresc}</textarea>
+					<script type="text/javascript">
+						{literal}
+							var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+							$(function(){
+								CKEDITOR.replace( '{/literal}tresc[{$item.id}]{literal}',{height: '200px',
+									filebrowserBrowseUrl:roxyFileman,
+									filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+									removeDialogTabs: 'link:upload;image:upload'}); 
+							});
+						{/literal}
+					</script>
+					<br>
+				{/foreach}
+			{/if}
+			<br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>

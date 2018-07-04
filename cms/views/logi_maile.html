@@ -1,0 +1,43 @@
+
+
+	<div class="center">
+		<h1>Logi emaili</h1>
+		<p>Tutaj możesz przeglądać logi emaili</p>
+		<br>
+		
+		{if isset($logi_maile)}
+		<table class="table">
+			<tr>
+				<td colspan="5">Logi emaili</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Adresat <a href="?{$url_strony.sortuj}&sortuj=adresat" title="Sortuj po adresacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=adresat&desc" title="Sortuj malejąco po adresacie" class="ikona sortuj_dol"></a></td>
+				<td>Akcja <a href="?{$url_strony.sortuj}&sortuj=akcja" title="Sortuj po akcjach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=akcja&desc" title="Sortuj malejąco po akcjach" class="ikona sortuj_dol"></a></td>
+				<td>IP <a href="?{$url_strony.sortuj}&sortuj=ip" title="Sortuj po adresie IP" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=ip&desc" title="Sortuj malejąco po adresie IP" class="ikona sortuj_dol"></a></td>
+				<td class="center">Data <a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$logi_maile name=logi_maile}
+				<tr>
+					<td>{$smarty.foreach.logi_maile.iteration+$iteration}</td>
+					<td><a href="mailto:{$item.adresat}" title="Napisz email do: {$item.adresat}">{$item.adresat}</a></td>
+					<td>{$item.akcja}</td>
+					<td>{$item.ip}</td>
+					<td class="center">{$item.data|date_format:"%H:%M"} / <b>{$item.data|date_format:"%d-%m-%Y"}</b></td>
+				</tr>
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

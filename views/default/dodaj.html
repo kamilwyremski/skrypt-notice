@@ -1,0 +1,271 @@
+<script src="views/{$ustawienia.szablon}/js/dodaj.js"></script>
+<script src="js/ckeditor/ckeditor.js"></script>
+<script>
+	{literal}
+		$(function(){
+			CKEDITOR.replace( 'opis',{height: '200px'}); 
+		});
+	{/literal}
+	var limit_zdjec = {if $ustawienia.limit_zdjec>=-1}{$ustawienia.limit_zdjec}{else}0{/if};
+</script>
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+	{if isset($ogloszenie) and $ogloszenie.akcja=='edycja'}
+		<h2>Edytuj ogłoszenie</h2>
+	{else}
+		<h2>Dodaj ogłoszenie</h2>
+	{/if}
+	<form action="" method="post" id="form_dodaj_ogloszenie">
+		{if isset($ogloszenie) and $ogloszenie.akcja=='edycja'}
+			<input type="hidden" name="akcja" value="edytuj_ogloszenie">
+		{else}
+			<input type="hidden" name="akcja" value="dodaj_ogloszenie">
+		{/if}
+		<input type="hidden" name="kod_sesji_dodawania" value="{$kod_sesji_dodawania}">
+		<h3>Dane przedmiotu</h3>
+		{if isset($kategorie)}
+			<fieldset>
+				<div class="pierwsza_kolumna inline_block">
+					<label>Kategoria: <span class="red">*</span></label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<select name="kategoria" class="select_kategoria" required title="Wybierz odpowiednią kategorie">
+						<option value="">-- wybierz --</option>
+						{foreach from=$kategorie item=item key=key}
+							<option value="{$item.id}" {if isset($ogloszenie.nadkategorie) && $item.id|in_array:$ogloszenie.nadkategorie}selected{/if}>{$item.nazwa}</option>
+						{/foreach}
+					</select>
+					{if isset($podkategorie)}
+						{foreach from=$podkategorie item=item key=key}
+							<select id="podkategoria_{$item.id}" name="kategoria" {if isset($ogloszenie.nadkategorie) && $item.id|in_array:$ogloszenie.nadkategorie}class="select_kategoria select_podkategorie"{else}class="select_kategoria select_podkategorie ukryty" disabled{/if} title="Wybierz odpowiednią kategorie" {if $ustawienia.podkategorie_obowiazkowe}required{/if}>
+								<option value="">-- wybierz --</option>
+								{foreach from=$item.podkategorie item=item2 key=key2}
+									<option value="{$item2.id}" {if isset($ogloszenie.nadkategorie) && $item2.id|in_array:$ogloszenie.nadkategorie}selected{/if}>{$item2.nazwa}</option>
+								{/foreach}
+							</select>
+						{/foreach}
+					{/if}
+				</div>
+			</fieldset>
+		{/if}
+		{if isset($typy_ogloszen)}
+			<fieldset>
+				<div class="pierwsza_kolumna inline_block">
+				<label>Typ: <span class="red">*</span></label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<select name="typ" required title="Wybierz typ ogłoszenia">
+						<option value="">-- wybierz --</option>
+						{foreach from=$typy_ogloszen item=item key=key}
+							<option value="{$item.id}" {if isset($ogloszenie) and $ogloszenie.typ==$item.id}selected{/if}>{$item.nazwa}</option>
+						{/foreach}
+					</select>
+				</div>
+			</fieldset>
+		{/if}
+		<fieldset>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Tytuł: <span class="red">*</span></label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<input type="text" name="tytul" maxlength="128" required placeholder="Sprzedam..." title="Tu wpisz tytuł swojego ogłoszenia - maksymalnie 128 znaków" {if isset($ogloszenie)}value="{$ogloszenie.tytul}"{/if} class="policz_znaki">
+				<p class="licznik_znakow">Znaki: <span>0</span> / 128</p>
+			</div>
+		</fieldset>
+		<fieldset>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Opis:</label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<div class="infobox zielona">
+					<p>Opis powinien zawierać jak najwięcej szczegółów aby zachęcić potencjalnych klientów. Ogłoszenia zawierające wulgaryzmy zostaną usunięte.</p>
+				</div>
+				<textarea name="opis"> {if isset($ogloszenie)}{$ogloszenie.opis}{/if}</textarea>
+			</div>
+		</fieldset>
+		{if $ustawienia.zezwalaj_zdjecia}
+			<fieldset>
+				<div class="pierwsza_kolumna inline_block">
+					<label>Zdjęcia:</label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<div class="infobox zielona" style="margin-bottom:0">
+						<p>Możesz bezpłatnie dodać do {$ustawienia.zdjec_bezplatnie} zdjęć - każde kolejne to koszt {$ustawienia.koszt_zdjecia|number_format:2:",":" "} {$ustawienia.waluta}. Maksymalny rozmiar jednego zdjęcia to {$ustawienia.rozmiar_zdjec} kB.{if $ustawienia.limit_zdjec!=-1} Limit zdjęć dla ogłoszenia wynosi {$ustawienia.limit_zdjec}.{/if}</p>
+					</div>
+					<div id="zdjecia_info" class="infobox czerwona"></div>
+					<div id="podglad_zdjec">
+						<div id="podglad_zdjec_inside" class="inline_block">
+							{if isset($zdjecia)}
+								{foreach from=$zdjecia item=item key=key}
+									<div class="zdjecie_box"><img src="{$ustawienia.upload}/{$item.miniaturka}" alt="{$item.url}" class="zdjecie"><a href="#" title="Usuń zdjęcie" class="usun_zdjecie"></a><input type="hidden" name="zdjecia_edytuj[]" value="{$item.id}"></div>
+								{/foreach}
+							{/if}
+						</div>
+						<img src="views/{$ustawienia.szablon}/images/loading.gif" alt="Ładuje" id="podglad_laduje" class="inline_block ukryty">
+					</div>
+					<input type="button" value="Wybierz zdjęcia" id="button_wybierz_zdjecia" title="Tutaj możesz dodać zdjęcia do ogłoszenia">	
+					<input id="input_wybierz_zdjecia" type="file" name="zdjecie" title="Tutaj możesz dodać zdjęcia do ogłoszenia" multiple class="ukryty" accept="image/*"><br>
+				</div>
+			</fieldset>
+		{/if}
+		<fieldset class="fieldset_opcja_dodatkowa {foreach from=$cena.kategorie_explode item=item key=key}fieldset_opcja_dodatkowa_{$item} {/foreach} {if $cena.wszystkie}fieldset_opcja_dodatkowa_wszystkie{/if}" {if !($cena.wszystkie || (isset($ogloszenie) && $ogloszenie.kategoria|in_array:$cena.kategorie_explode))}style="display: none"{/if}>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Cena:</label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<p  {if isset($ogloszenie) and $ogloszenie.za_darmo}style="display:none"{/if} class="ukryj_za_darmo"><input type="number" name="cena" min="0" max="999999999.99" step="0.01" title="Tu wpisz cenę produktu" {if isset($ogloszenie)}value="{$ogloszenie.cena}"{/if} class="right"> {$ustawienia.waluta}</p>
+				<p {if isset($ogloszenie) and $ogloszenie.za_darmo}style="display:none"{/if} class="ukryj_za_darmo"><label><input type="checkbox" name="cena_do_negocjacji" title="Zaznacz jeśli cena ma być do negocjacji" {if isset($ogloszenie) and $ogloszenie.cena_do_negocjacji}checked{/if}>Do negocjacji</label></p>
+				<p style="margin-top:3px"><label><input type="checkbox" name="za_darmo" title="Zaznacz jeżeli chcesz oddać przedmiot za darmo" {if isset($ogloszenie) and $ogloszenie.za_darmo}checked{/if} class="checkbox_ukryj" data-cel="za_darmo">Za darmo</label></p>
+			</div>
+		</fieldset>
+		{if $ustawienia.pole_nowe_uzywane}
+		<fieldset>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Stan:</label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<select name="stan" title="Wybierz stan produktu">
+					<option value="0">-- wybierz --</option>
+					<option value="1" {if isset($ogloszenie) and $ogloszenie.stan=="1"}selected{/if}>nowe</option>
+					<option value="2" {if isset($ogloszenie) and $ogloszenie.stan=="2"}selected{/if}>używane</option>
+				</select>
+			</div>
+		</fieldset>
+		{/if}
+		{if isset($opcje_dodatkowe)}
+			<h3>Opcje dodatkowe</h3>
+			{foreach from=$opcje_dodatkowe item=item key=key}
+				<fieldset class="fieldset_opcja_dodatkowa {foreach from=$item.kategorie_explode item=item2 key=key2}fieldset_opcja_dodatkowa_{$item2} {/foreach} {if $item.wszystkie}fieldset_opcja_dodatkowa_wszystkie{/if}" {if !($item.wszystkie || (isset($ogloszenie) && $ogloszenie.kategoria|in_array:$item.kategorie_explode))}style="display: none"{/if}>
+					<div class="pierwsza_kolumna inline_block">
+						<label>{$item.nazwa}:{if $item.wymagane} <span class="red">*</span>{/if}</label>
+					</div>
+					<div class="druga_kolumna inline_block">
+						{if $item.rodzaj=='tekst'}
+							<input type="text" name="opcje_dodatkowe[{$item.id}]" {if !($item.wszystkie || (isset($ogloszenie) && $ogloszenie.kategoria|in_array:$item.kategorie_explode))}disabled{/if} {if $item.wymagane}required{/if} {if isset($ogloszenie.opcje_dodatkowe[$item.id])}value="{$ogloszenie.opcje_dodatkowe[$item.id]}"{/if} maxlength="256">
+						{elseif $item.rodzaj=='liczba'}
+							<input type="number" name="opcje_dodatkowe[{$item.id}]" {if !($item.wszystkie || (isset($ogloszenie) && $ogloszenie.kategoria|in_array:$item.kategorie_explode))}disabled{/if} {if $item.wymagane}required{/if} {if isset($ogloszenie.opcje_dodatkowe[$item.id])}value="{$ogloszenie.opcje_dodatkowe[$item.id]}"{/if}>
+						{elseif $item.rodzaj=='data'}
+							<input type="date" name="opcje_dodatkowe[{$item.id}]" data-changemonth = "true" data-changeyear="true" {if !($item.wszystkie || (isset($ogloszenie) && $ogloszenie.kategoria|in_array:$item.kategorie_explode))}disabled{/if} {if $item.wymagane}required{/if} {if isset($ogloszenie.opcje_dodatkowe[$item.id])}value="{$ogloszenie.opcje_dodatkowe[$item.id]}"{/if}>
+						{elseif $item.rodzaj=='select'}
+							<select name="opcje_dodatkowe[{$item.id}]" {if !($item.wszystkie || (isset($ogloszenie) && $ogloszenie.kategoria|in_array:$item.kategorie_explode))}disabled{/if} {if $item.wymagane}required{/if}>
+								<option value="">-- wybierz --</option>
+								{foreach from=$item.opcje_wyboru_explode item=item2 key=key2}
+									<option value="{$item2}" {if isset($ogloszenie.opcje_dodatkowe[$item.id]) && $ogloszenie.opcje_dodatkowe[$item.id]==$item2}selected{/if}>{$item2}</option>
+								{/foreach}
+							</select>
+						{/if}
+					</div>
+				</fieldset>
+			{/foreach}
+		{/if}
+		<h3>Kontakt</h3>
+		<fieldset>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Lokalizacja:</label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<input type="text" name="lokalizacja" placeholder="00-123 Warszawa, ul. Kubusia Puchatka 2" title="Tu wpisz dane teleadresowe które ułatwią lokalizacje" maxlength="256" value="{if isset($ogloszenie)}{$ogloszenie.lokalizacja}{elseif isset($uzytkownik)}{$uzytkownik.lokalizacja|regex_replace:'/[\r\t\n]/':' '}{/if}">
+			</div>
+			{if $ustawienia.pokaz_gmaps}
+				<div class="pierwsza_kolumna inline_block">
+					<label></label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<label><input type="checkbox" name="mapa_google" title="Zaznacz jeśli chcesz wyświetlać lokalizację na mapie Google" {if !isset($ogloszenie) || $ogloszenie.mapa_google==1}checked{/if}>Pokaż lokalizację na mapie Google</label>
+				</div>
+			{/if}
+			{if isset($regiony)}
+				<div class="pierwsza_kolumna inline_block">
+					<label>{$ustawienia.regiony_nazwa}:</label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<select name="region" title="Wybierz {$ustawienia.regiony_nazwa}" class="select_region">
+						<option>-- wybierz --</option>
+						{foreach from=$regiony item=item key=key}
+							<option value="{$item.id}" {if (isset($ogloszenie) and $ogloszenie.region==$item.id) or (isset($uzytkownik) and $uzytkownik.region==$item.id)}selected{/if}>{$item.nazwa}</option>
+						{/foreach}
+					</select>
+				</div>
+				{if isset($regiony2)}
+					{foreach from=$regiony2 item=item key=key}
+						<div id="region2_{$key}" class="box_region2 {if !((isset($ogloszenie.region) && $ogloszenie.region == $key) or (isset($uzytkownik) and $uzytkownik.region==$key))} ukryty{/if}">
+							<div class="pierwsza_kolumna inline_block">
+								<label>{$ustawienia.regiony2_nazwa}:</label>
+							</div>
+							<div class="druga_kolumna inline_block">
+								<select name="region2" {if !((isset($ogloszenie.region) && $ogloszenie.region == $key) or (isset($uzytkownik) and $uzytkownik.region==$key))}disabled{/if}>
+									<option value="">-- wybierz --</option>
+									{foreach from=$item item=item2 key=key2}
+										<option value="{$item2.id}" {if (isset($ogloszenie.region2) and $ogloszenie.region2==$item2.id) or (isset($uzytkownik) and $uzytkownik.region2==$item2.id)}selected{/if}>{$item2.nazwa}</option>
+									{/foreach}
+								</select>
+							</div>
+						</div>
+					{/foreach}
+				{/if}
+			{/if}
+			<div class="pierwsza_kolumna inline_block">
+				<label>Email: <span class="red">*</span></label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<input type="email" name="email" placeholder="john@example.com" title="Tu wpisz swój adres email" maxlength="64" required value="{if isset($ogloszenie)}{$ogloszenie.email}{elseif isset($uzytkownik)}{$uzytkownik.email}{/if}">
+			</div>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Telefon:</label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<input type="tel" name="telefon" placeholder="+48 123 456 789" title="Tu wpisz swój numer telefonu" maxlength="16" value="{if isset($ogloszenie)}{$ogloszenie.telefon}{elseif isset($uzytkownik)}{$uzytkownik.telefon}{/if}">
+			</div>
+			{if $ustawienia.pokaz_formularz_kontaktowy}
+				<div class="pierwsza_kolumna inline_block">
+					<label></label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<label><input type="checkbox" name="formularz_kontaktowy" title="Zaznacz jeśli chcesz wyświetlać formularz kontaktowy na stronie z ogłoszeniem" {if !isset($ogloszenie) || $ogloszenie.formularz_kontaktowy==1}checked{/if}>Pokaż formularz kontaktowy</label>
+				</div>
+			{/if}
+			<h3>Opcje wyświetlania</h3>
+			<div class="pierwsza_kolumna inline_block">
+				<label>Czas trwania: <span class="red">*</span></label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<select name="czas_ogloszenia" required title="Wybierz jak długo ma się wyświetlać ogłoszenie">
+					{if isset($czas_ogloszen)}
+						{foreach from=$czas_ogloszen item=item key=key}
+							<option value="{$item.id}" {if isset($ogloszenie) and $ogloszenie.czas_ogloszenia==$item.id}selected{/if}>{$item.dlugosc} dni - {$item.cena} {$ustawienia.waluta}</option>
+						{/foreach}
+					{else}
+						<option value="0">{$ustawienia.domyslny_czas} dni</option>
+					{/if}
+				</select>
+			</div>
+			{if $ustawienia.slider_dol}
+				<div class="pierwsza_kolumna inline_block">
+					<label></label>
+				</div>
+				<div class="druga_kolumna inline_block">
+					<label><input type="checkbox" name="slider" title="Zaznacz jeśli chcesz żeby ogłoszenie było wyświetlane w sliderze na stronie głównej" {if isset($ogloszenie) and $ogloszenie.slider}checked{/if}>Wyświetlaj ogłoszenie w sliderze u dołu strony (wymagane załączenie minimum jednego zdjęcia, koszt {$ustawienia.koszt_slider|number_format:2:",":" "} {$ustawienia.waluta})</label>
+				</div>
+			{/if}
+			<div class="pierwsza_kolumna inline_block">
+				<label></label>
+			</div>
+			<div class="druga_kolumna inline_block">
+				<label><input type="checkbox" name="promowana" title="Zaznacz jeśli chcesz żeby ogłoszenie było promowane" {if isset($ogloszenie) and $ogloszenie.promowana}checked{/if}>Promuj ogłoszenie (będzie wyświetlane w pomarańczowej ramce na początku wyników wyszukiwania, koszt {$ustawienia.koszt_promowana|number_format:2:",":" "} {$ustawienia.waluta})</label>
+			</div>
+		</fieldset>
+		<fieldset class="right">
+			{if isset($ogloszenie) and $ogloszenie.akcja=='edycja'}
+				<input type="submit" value="Zapisz ogłoszenie">
+			{else}
+				<input type="submit" value="Dodaj ogłoszenie!">
+			{/if}
+		</fieldset>
+		<p><span class="red">*</span> - Pole obowiązkowe</p>
+		<br><br>
+	</form>
+</div>
+
+{include file="footer.tpl"}

@@ -1,0 +1,106 @@
+<div id="roxyCustomPanel" style="display: none;">
+	<iframe src="js/ckeditor/fileman/index.html?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
+</div>
+
+	<div class="center">
+		<h1>Ustawienia: wygląd</h1>
+		<p>Tutaj możesz edytować wygląd serwisu.</p>
+		<br><br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_ustawienia_wyglad">
+			<h2>Aktywny szablon: 
+				<select name="szablon" style="width: auto">
+					{foreach key=key item=item from=$szablony}
+					<option value="{$item}" {if $ustawienia.szablon==$item}selected{/if}>{$item}</option>
+					{/foreach}
+				</select>
+			</h2>
+			<h2>Tytuł serwisu: <input type="text" name="tytul" placeholder="Tytuł serwisu" title="Tu wpisz tytuł serwisu" value="{$ustawienia.tytul}" maxlength="64"></h2>
+			<h2>Logo:</h2>
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="logo" src="{if {$ustawienia.logo!=''}}{$ustawienia.logo}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Logo strony" style="max-height: 100px">
+			</a>
+			<br>
+			<input type="text" name="logo" value="{$ustawienia.logo}" placeholder="Adres URL logo" title="Wklej adres URL logo">
+			<h2>Logo w stopce:</h2>			
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="logo_stopka" src="{if {$ustawienia.logo_stopka!=''}}{$ustawienia.logo_stopka}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Logo strony w stopce" style="max-height: 100px">
+			</a>
+			<br>
+			<input type="text" name="logo_stopka" value="{$ustawienia.logo_stopka}" placeholder="Adres URL logo w stopce" title="Wklej adres URL logo w stopce">
+			<h2>Logo Facebook:</h2>
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="logo_facebook" src="{if {$ustawienia.logo_facebook!=''}}{$ustawienia.logo_facebook}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Logo strony dla portalu Facebook" style="max-height: 100px">
+			</a>
+			<br>
+			<input type="text" name="logo_facebook" value="{$ustawienia.logo_facebook}" placeholder="Adres URL logo Facebook" title="Wklej adres URL logo Facebook">
+			<h2>Favicon:</h2>
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="favicon" src="{if {$ustawienia.favicon!=''}}{$ustawienia.favicon}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Ikona favicon" style="max-height: 100px">
+			</a>
+			<br>
+			<input type="text" name="favicon" value="{$ustawienia.favicon}" placeholder="Adres URL do favicon" title="Wklej adres URL do favicon">
+			<h2>Znak wodny:</h2>
+			<label><h3><input type="checkbox" name="znak_wodny_wlacz" title="Zaznacz jeśli chcesz dodawać do zdjęć znak wodny" {if $ustawienia.znak_wodny_wlacz}checked{/if}> Dodawaj znak wodny do zdjęć w ogłoszeniach</h3></label>
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="znak_wodny_url" src="{if {$ustawienia.znak_wodny_url!=''}}{$ustawienia.znak_wodny_url}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Znak wodny" style="max-height: 100px">
+			</a>
+			<br>
+			<input type="text" name="znak_wodny_url" value="{$ustawienia.znak_wodny_url}" placeholder="Adres URL znaku wodnego" title="Wklej adres URL znaku wodnego">
+			<br><br><br>
+			<h2>Nagłówek (na stronie głównej): <input type="text" name="naglowek" placeholder="Nagłówek serwisu" title="Tu wpisz nagłówek serwisu wyświetlany obok logo na stronie głównej" value="{$ustawienia.naglowek}"></h2>
+			<h2>Ilość ogłoszeń na pojedynczej stronie: <input type="number" name="ile_na_strone" placeholder="Ilość ogłoszeń na jednej stronie" title="Tu wpisz ilość ogłoszeń na pojedyńczej stronie (domyślnie 10)" value="{$ustawienia.ile_na_strone}" required min="1"></h2>
+			<label><h2><input type="checkbox" name="pokaz_gmaps" title="Zaznacz jeśli chcesz pokazywać mapę Google z lokalizacją przy ogłoszeniach" {if $ustawienia.pokaz_gmaps}checked{/if}> Pokazuj mapę Google z lokalizacją ogłoszeń</h2></label>
+			<label><h2><input type="checkbox" name="slider_dol" title="Zaznacz jeśli chcesz pokazywać slider z ogłoszeniami u dołu strony" {if $ustawienia.slider_dol}checked{/if}> Pokazuj slider z ogłoszeniami u dołu strony</h2></label>
+			<label><h2><input type="checkbox" name="pole_nowe_uzywane" title="Zaznacz jeśli chcesz aby przy dodawaniu ogłoszenia pokazywało się pole nowe / używane" {if $ustawienia.pole_nowe_uzywane}checked{/if}> Pokazuj pole nowe / używane przy dodawaniu ogłoszenia</h2></label>
+			<label><h2><input type="checkbox" name="podkategorie_obowiazkowe" title="Zaznacz jeśli chcesz aby wybór podkategorii był obowiązkowy" {if $ustawienia.podkategorie_obowiazkowe}checked{/if}> Wybór podkategorii obowiązkowy</h2></label>
+			<label><h2><input type="checkbox" name="ukryj_liczbe_wyswietlen" title="Zaznacz jeśli chcesz ukryć liczbę wyświetleń ogłoszeń" {if $ustawienia.ukryj_liczbe_wyswietlen}checked{/if}> Ukrywaj liczbę wyświetleń ogłoszeń</h2></label>
+			<h2>Strona główna - opis:</h2>
+			<textarea name="glowna_opis" placeholder="Opis na stronie głównej" title="Tu wpisz opis wyświetlany na stronie głównej (na pierwszej stronie paginacji)">{$ustawienia.glowna_opis}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'glowna_opis',{height: '100px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<h2>Stopka - opis:</h2>
+			<textarea name="stopka_opis" placeholder="Opis w stopce" title="Tu wpisz opis wyświetlany w stopce serwisu">{$ustawienia.stopka_opis}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'stopka_opis',{height: '100px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<h2>Stopka:</h2>
+			<textarea name="stopka_dol" placeholder="Stopka serwisu" title="Tu wpisz tekst wyświetlany w stopce serwisu">{$ustawienia.stopka_dol}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'stopka_dol',{height: '100px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<h2>Dodatkowy kod CSS:</h2>
+			<textarea name="kod_css" placeholder="Kod CSS" title="Tu możesz dodać swój własny kod CSS który będzie wykorzystany we wszystkich motywach" class="textarea_duza">{$ustawienia.kod_css}</textarea>
+			<h2>Dodatkowy kod w sekcji HEAD:</h2>
+			<textarea name="kod_head" placeholder="Kod HEAD" title="Tu możesz dodać swój własny kod (np zewnętrzne skrypty, style CSS) który będzie dołączany na końcu sekcji HEAD dokumentu" class="textarea_duza">{$ustawienia.kod_head}</textarea>
+			<h2>Dodatkowy kod w sekcji BODY:</h2>
+			<textarea name="kod_body" placeholder="Kod BODY" title="Tu możesz dodać swój własny kod (np zewnętrzne skrypty, style CSS) który będzie dołączany na końcu sekcji BODY dokumentu" class="textarea_duza">{$ustawienia.kod_body}</textarea>
+			<br><br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>

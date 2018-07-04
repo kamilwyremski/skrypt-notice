@@ -1,0 +1,68 @@
+RewriteEngine on
+
+RewriteRule ^logowanie/?$ index.php?akcja=logowanie [NC,QSA,L]
+RewriteRule ^rejestracja/?$ index.php?akcja=rejestracja [NC,QSA,L]
+RewriteRule ^reset_hasla/?$ index.php?akcja=reset_hasla [NC,QSA,L]
+RewriteRule ^kategoria,([0-9]+),(.*)/?$ index.php?akcja=kategoria&id=$1 [NC,QSA,L]
+RewriteRule ^([0-9]+),(.*)/?$ index.php?akcja=ogloszenie&id=$1&prosty_tytul=$2 [NC,QSA,L]
+RewriteRule ^dodaj/?$ index.php?akcja=dodaj [NC,QSA,L]
+RewriteRule ^dodaj,([0-9]+)/?$ index.php?akcja=dodaj&id=$1 [NC,QSA,L]
+RewriteRule ^edytuj,([0-9]+),(.*)/?$ index.php?akcja=edytuj&id=$1&prosty_tytul=$2 [NC,QSA,L]
+RewriteRule ^moje_ogloszenia/?$ index.php?akcja=moje_ogloszenia [NC,QSA,L]
+RewriteRule ^schowek/?$ index.php?akcja=schowek [NC,QSA,L]
+RewriteRule ^o_mnie/?$ index.php?akcja=o_mnie [NC,QSA,L]
+RewriteRule ^ustawienia/?$ index.php?akcja=ustawienia [NC,QSA,L]
+RewriteRule ^regulamin/?$ index.php?akcja=info&id=regulamin [NC,QSA,L]
+RewriteRule ^polityka_prywatnosci/?$ index.php?akcja=info&id=polityka_prywatnosci [NC,QSA,L]
+RewriteRule ^pomoc/?$ index.php?akcja=info&id=pomoc [NC,QSA,L]
+RewriteRule ^onas/?$ index.php?akcja=info&id=onas [NC,QSA,L]
+RewriteRule ^platnosci/?$ index.php?akcja=info&id=platnosci [NC,QSA,L]
+RewriteRule ^program_partnerski/?$ index.php?akcja=info&id=program_partnerski [NC,QSA,L]
+RewriteRule ^kontakt/?$ index.php?akcja=kontakt [NC,QSA,L]
+RewriteRule ^profil,(.*)/?$ index.php?akcja=profil&login=$1 [NC,QSA,L]
+RewriteRule ^aktualnosci/?$ index.php?akcja=aktualnosci [NC,QSA,L]
+RewriteRule ^aktualnosc,([0-9]+),(.*)/?$ index.php?akcja=aktualnosc&id=$1&prosty_tytul=$2 [NC,QSA,L]
+RewriteRule ^moj_program_partnerski/?$ index.php?akcja=moj_program_partnerski [NC,QSA,L]
+RewriteRule ^404/?$ index.php?akcja=404 [NC,QSA,L]
+
+RewriteCond %{THE_REQUEST} ^GET.*index\.php [NC]
+RewriteRule (.*?)index\.php/*(.*) /$1$2 [R=301,NE,L]
+
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,NC,L]
+
+ErrorDocument 404 /index.php?akcja=404
+
+<IfModule mod_expires.c>
+# Enable expirations
+ExpiresActive On
+# HTML
+ExpiresByType text/html "access plus 2 days"
+</IfModule>
+<IfModule mod_expires.c>
+# Enable expirations
+ExpiresActive On
+# Javascript
+ExpiresByType application/javascript "access plus 1 month"
+</IfModule>
+<IfModule mod_expires.c>
+# Enable expirations
+ExpiresActive On
+# CSS
+ExpiresByType text/css "access plus 1 month"
+</IfModule>
+<IfModule mod_expires.c>
+# Enable expirations
+ExpiresActive On
+# My favicon
+ExpiresByType image/x-icon "access plus 1 year"
+# Images
+ExpiresByType image/gif "access plus 1 month"
+ExpiresByType image/png "access plus 1 month"
+ExpiresByType image/jpg "access plus 1 month"
+ExpiresByType image/jpeg "access plus 1 month"
+</IfModule>
+<IfModule mod_headers.c>
+# Set XSS Protection header
+Header set X-XSS-Protection "1; mode=block"
+</IfModule>

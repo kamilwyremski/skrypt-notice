@@ -1,0 +1,25 @@
+{literal}
+<style>
+	body{
+		background-color: #a0ce4e;
+	}
+</style>
+{/literal}
+<div id="div_logowanie">
+	<div id="okno_logowania" class="center">
+		<h1>{$ustawienia.tytul}</h1>
+		<h2>Zaloguj się</h2>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="logowanie">
+			<input type="hidden" name="kod_sesji" value="{$kod_sesji}">
+			{if isset($info)}<p class="ok">{$info}</p>{elseif isset($blad)}<p class="blad">{$blad}</p>{/if}
+			<input type="text" placeholder="john@example.com" name="login" title="Wpisz tutaj swój login albo adres email" required {if isset($login)}value="{$login}"{/if} maxlength="32">
+			<input type="password" placeholder="****" {literal}pattern=".{3,}"{/literal} name="haslo" title="Wpisz tutaj hasło - minimum 4 znaki" required maxlength="32">
+			<input type="submit" value="ZALOGUJ SIĘ">
+			{if $ustawienia.logowanie_facebook==1 && isset($url_facebook)}<a href="{$url_facebook}" title="Zaloguj przez Facebooka!" id="logowanie_facebook" class="submit"><img src="{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/ikona_facebook.png" alt="Facebook">ZALOGUJ SIĘ PRZEZ FB!</a>{/if}
+		</form>
+		<a href="reset_hasla" title="Resetuj hasło">Reset hasła</a><br>
+		<a href="rejestracja" title="Zarejestruj się">Rejestracja</a><br>
+		<a href="{$ustawienia.base_url}" title="{$ustawienia.tytul}">Wróć do serwisu</a>
+	</div>
+</div>

@@ -1,0 +1,56 @@
+﻿
+	<div class="center">
+		<h1>Ustawienia CMS</h1>
+		<h2>Zmień dane dostępowe</h2><br>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="cms_zmien_ustawienia">
+			<table id="ustawienia_cms">
+				<tr>
+					<td class="right"><b>Login:</b></td>
+					<td><input type="text" name="nowy_login" value="{$cms_login}" title="Tutaj wpisz nowy login - minimum 3 znaki, możesz użyć cyfr, liter (tylko angielski alfabet) oraz znaków - _" pattern="[A-Za-z0-9-_]{literal}{3,32}{/literal}" autofocus required></td>
+				</tr>
+				<tr>
+					<td class="right"><b>Hasło:</b></td>
+					<td><input type="password" name="nowe_haslo" title="Tutaj wpisz nowe hasło - minimum 3 znaki, możesz użyć cyfr, liter (tylko angielski alfabet) oraz znaków - _" pattern="[A-Za-z0-9-_]{literal}{3,32}{/literal}" required></td>
+				</tr>	
+				<tr>
+					<td class="right"><b>Powtórz hasło:</b></td>
+					<td><input type="password" name="powtorz_nowe_haslo" title="Tutaj wpisz jeszcze raz nowe hasło" pattern="[A-Za-z0-9-_]{literal}{3,32}{/literal}" required></td>
+				</tr>					
+			</table>
+			<div class="center">
+				<input type="submit" value="ZAPISZ"/>
+			</div>
+		</form>
+		{if isset($komunikat)}<h3>{$komunikat}</h3>{/if}
+		
+	{if isset($cms_logi)}
+		<br>
+		<h2>Logi logowania</h2>
+		<br>
+		<table class="table">
+			<tr>
+				<td colspan="5">Logi logowania</td>
+			</tr>
+			<tr>
+				<td></td><td>Login</td><td class="center">Zalogowal</td><td class="center">Data</td><td>IP</td>
+			</tr>
+			{foreach key=key item=item from=$cms_logi name=cms_logi}
+				<tr>
+					<td>{$smarty.foreach.cms_logi.iteration}</td>
+					<td>{$item.login}</td>
+					<td class="center">{if $item.zalogowal==1}<b>Tak</b>{else}<span style="color:red">Nie</span>{/if}</td>
+					<td class="center">{$item.data|date_format:"%H:%M"} / <b>{$item.data|date_format:"%d-%m-%Y"}</b></td>
+					<td>{$item.ip}</td>
+				</tr>
+			{/foreach}
+		</table>
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="cms_usun_logi">
+			<input type="submit" value="USUŃ LOGI">
+		</form>
+	</div>
+	{/if}
+	
+

@@ -1,0 +1,38 @@
+	<div class="center">
+		<h1>Ustawienia</h1>
+		<p>Tutaj możesz edytować ustawienia serwisu</p>
+		<p>Uwaga! Zmiana niektórych ustawień może spowodować problemy z witryną lub uniemożliwić działanie strony!</p>
+		<br><br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_ustawienia">
+			<h2>Base URL: <input type="text" name="base_url" placeholder="Base URL" title="Tu wpisz adres bazowy witryny" required value="{$ustawienia.base_url}"></h2>
+			<h2>Email administratora: <input type="email" name="email" placeholder="Email administratora" title="Tu wpisz adres email administratora witryny" required value="{$ustawienia.email}"></h2>
+			<h2>Tytuł (title): <input type="text" name="title" placeholder="Title" title="Tu wpisz tytuł witryny" required value="{$ustawienia.title}"></h2>
+			<h2>Słowa kluczowe (keywords): <input type="text" name="keywords" placeholder="Keywords" title="Tu wpisz słowa kluczowe witryny" value="{$ustawienia.keywords}"></h2>
+			<h2>Opis (description):</h2>
+			<textarea name="description" placeholder="Description" title="Tu wpisz opis witryny">{$ustawienia.description}</textarea>
+			<h2>Kod Google Analytics:</h2>
+			<textarea name="analytics" placeholder="Google Analytics" title="Tu wklej kod Google Analytics">{$ustawienia.analytics}</textarea>
+			<label><h2><input type="checkbox" name="ogloszenia_bez_rejestracji" title="Zaznacz jeśli chcesz zezwalać na dodawanie ogłoszeń przez niezalogowanych użytkowników" {if $ustawienia.ogloszenia_bez_rejestracji}checked{/if}> Zezwól na dodawanie ogłoszeń niezalogowanym użytkownikom</h2></label>
+			<label><h2><input type="checkbox" name="powiadomienia_z_ogloszen" title="Zaznacz jeśli chcesz dać użytkownikom serwisu możliwość powiadamiania znajomych o ogłoszeniu" {if $ustawienia.powiadomienia_z_ogloszen}checked{/if}> Włącz funkcję "powiadom znajomego" w ogłoszeniach</h2></label>
+			<label><h2><input type="checkbox" name="zezwalaj_zdjecia" title="Zaznacz jeśli chcesz zezwalać na dodawanie zdjęć do ogłoszeń" {if $ustawienia.zezwalaj_zdjecia}checked{/if}> Zezwól na dodawanie zdjęć do ogłoszeń</h2></label>
+			<h2>Maksymalna ilość zdjęć: <input type="number" name="limit_zdjec" placeholder="Ilość zdjęć" title="Tu wpisz maksymalną ilość zdjęć którą można dodać do ogłoszenia" value="{$ustawienia.limit_zdjec}" required min="-1"></h2>
+			<p>Wpisz wartość -1 jeśli chcesz wyłączyć limit zdjęć</p>
+			<h2>Maksymalny rozmiar zdjęć: <input type="number" name="rozmiar_zdjec" placeholder="Rozmiar zdjęć" title="Tu wpisz maksymalny rozmiar zdjęć" value="{$ustawienia.rozmiar_zdjec}" required min="1"> kB</h2>
+			<h2>Katalog do uploadu zdjęć: <input type="text" name="upload" placeholder="Upload" title="Tu wpisz katalog do uploadu zdjęć (domyślnie upload)" value="{$ustawienia.upload}" required></h2>
+			<p>Katalog musi mieć prawa dostępu 0777</p>
+			<h2>Skrót waluty: <input type="text" name="waluta" placeholder="Waluta" title="Tu wpisz skrót waluty (domyślnie zł)" value="{$ustawienia.waluta}"></h2>
+			<label><h2><input type="checkbox" name="ukrywaj_email" title="Ukrywaj adres email w ogłoszeniach" {if $ustawienia.ukrywaj_email}checked{/if}> Ukrywaj adres email w ogłoszeniach</h2></label>
+			<label><h2><input type="checkbox" name="ukrywaj_telefon" title="Ukrywaj numer telefonu w ogłoszeniach" {if $ustawienia.ukrywaj_telefon}checked{/if}> Ukrywaj numer telefonu w ogłoszeniach</h2></label>
+			<label><h2><input type="checkbox" name="ocenianie_profilu" title="Zezwól na ocenianie profilu użytkownika" {if $ustawienia.ocenianie_profilu}checked{/if}> Zezwól na ocenianie profilu użytkownika</h2></label>
+			<label><h2><input type="checkbox" name="komentowanie_profilu" title="Pokaż okno komentarzy na stronie profilu użytkownika" {if $ustawienia.komentowanie_profilu}checked{/if}> Zezwól na komentowanie profilu (przez konto Facebook)</h2></label>
+			<h2>Ilość dni po których nieaktywne ogłoszenie jest archiwizowane: <input type="number" name="dni_do_archiwum" placeholder="Dni do archiwum" title="Tu wpisz ilość dni po któych ogłoszenie będzie archiwizowane (domyślnie 30)" value="{$ustawienia.dni_do_archiwum}" min="0" required> dni</h2>
+			<label><h2><input type="checkbox" name="newsletter" title="Zaznacz jeśli chcesz pokazywać okno z newsletterem" {if $ustawienia.newsletter}checked{/if}> Pokazuj okno z możliwością zapisania do newslettera</h2></label>
+			<label><h2><input type="checkbox" name="newsletter_panel" title="Zaznacz jeśli chcesz pokazywać panel boczny z newsletterem" {if $ustawienia.newsletter_panel}checked{/if}> Pokazuj panel boczny z możliwością zapisania do newslettera</h2></label>
+			<label><h2><input type="checkbox" name="rss" title="Zaznacz jeśli chcesz włączyć kanał RSS" {if $ustawienia.rss}checked{/if}> Włącz kanał RSS</h2></label>
+			<br><br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>
+	
+	

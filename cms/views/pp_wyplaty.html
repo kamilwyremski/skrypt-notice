@@ -1,0 +1,69 @@
+
+
+	<div class="center">
+		<h1>Wypłaty z programu partnerskiego</h1>
+		{if !$ustawienia.program_partnerski}<p style="color: red">Uwaga! Program partnerski jest wyłączony!</p>{/if}
+		<p>Tutaj znajduje się podgląd wypłat z programu partnerskiego</p>
+		<br><br>
+
+		{if isset($pp_wyplaty)}
+		<table class="table">
+			<tr>
+				<td colspan="9">Wypłaty z programu partnerskiego</td>
+			</tr>
+			<tr>
+				<td class="center">ID</td>
+				<td>Użytkownik</td>
+				<td class="center">Status <a href="?akcja=pp_wyplaty&sortuj=status" title="Sortuj po statusie wypłat" class="ikona sortuj_gora"></a><a href="?akcja=pp_wyplaty&sortuj=status&desc" title="Sortuj malejąco po statusie wypłat" class="ikona sortuj_dol"></a></td>
+				<td class="center">Kwota <a href="?akcja=pp_wyplaty&sortuj=kwota" title="Sortuj po kwocie wypłat" class="ikona sortuj_gora"></a><a href="?akcja=pp_wyplaty&sortuj=kwota&desc" title="Sortuj malejąco po kwocie wypłat" class="ikona sortuj_dol"></a></td>
+				<td class="center">Data <a href="?akcja=pp_wyplaty&sortuj=data" title="Sortuj po dacie dodatnia" class="ikona sortuj_gora"></a><a href="?akcja=pp_wyplaty&sortuj=data&desc" title="Sortuj malejąco po dacie dodania" class="ikona sortuj_dol"></a></td>
+				<td class="center">Realizacja<a href="?akcja=pp_wyplaty&sortuj=data_realizacji" title="Sortuj po dacie realizacji" class="ikona sortuj_gora"></a><a href="?akcja=pp_wyplaty&sortuj=data_realizacji&desc" title="Sortuj malejąco po dacie realizacji" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$pp_wyplaty name=pp_wyplaty}
+				<tr>
+					<td class="center">{$item.id}</td>
+					<td>{if $item.login!=''}<a href="?akcja=pp_uzytkownicy&wyszukaj=&login={$item.login}" title="Dane użytkownika {$item.login}" target="_blank">{$item.login}</a>{else}{$item.id_uzytkownika}{/if}</td>
+					<td class="center">{if $item.status=='oczekujacy'}<b>Oczekujący</b>{elseif $item.status=='zrealizowany'}Zrealizowany{elseif $item.status=='odmowa'}Odmowa{/if}</td>
+					<td class="right"><b>{$item.kwota|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</b></td>
+					<td class="center">{$item.data|date_format:"%d-%m-%Y"}<br>{$item.data|date_format:"%H:%M"}</td>
+					<td class="center">
+						{if $item.status=='oczekujacy'}<a href="#realizacja_{$item.id}" title="Edytuj" class="ikona ikona_edytuj open_dialog">
+						{else}{$item.data_realizacji|date_format:"%d-%m-%Y"}<br>{$item.data_realizacji|date_format:"%H:%M"}{/if}
+					</td>
+				</tr>
+
+	<div class="dialog" id="realizacja_{$item.id}" data-title="Realizacja płatności">
+		<p>Realizacja płatności: {$item.id}</p>
+		<p>Użytkownik: {if $item.login!=''}{$item.login}{else}{$item.id_uzytkownika}{/if}</p>
+		<p>Kwota: <b>{$item.kwota|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</b></p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="pp_realizacja">
+			<input type="hidden" name="id" value="{$item.id}">
+			<label>Status:</label>
+			<select name="status" class="select_pp_status_realizacji">
+				<option value="oczekujacy">Oczekujący</option>
+				<option value="zrealizowany">Zrealizowany</option>
+				<option value="odmowa">Odmowa</option>
+			</select>
+			<label class="right pp_realizacja_kwota ukryty">Kwota: <input type="number" name="kwota" placeholder="{$item.kwota}" min="0" step="0.01" value="{$item.kwota}" title="Tu wpisz kwotę transakcji" required disabled> &nbsp;{$ustawienia.waluta}</label>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="{$url_strony}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="{$url_strony}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="{$url_strony}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="{$url_strony}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

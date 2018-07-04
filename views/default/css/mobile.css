@@ -1,0 +1,161 @@
+@media(max-width: 1000px) {
+	#panel, #strona{
+		display: block; width: auto;
+	}
+	#strona{
+		padding: 0;
+	}
+	.panel.reklama, .panel_facebook, .panel_newsletter, #panel_aktualnosci, #menu form, #kategorie ul{
+		display: none;
+	}
+	#pokaz_menu_kategorie{
+		display: inline;
+	}
+	.panel{
+		margin-bottom: 20px;
+	}
+	#ogloszenie_zdjecia{
+		width: 48%; 
+	}
+	#ogloszenie_cechy{
+		width: 50%;  
+	}
+	#logo{
+		max-width: 90%;
+	}
+	#ogloszenie_tytul.inline_block, #przyciski_spolecznosciowe.inline_block.floatright{
+		display: block; text-align: center; float: none;
+	}
+}
+@media(max-width: 850px) {
+	#ogloszenie_zdjecia.inline_block, #ogloszenie_cechy.inline_block{
+		display: block; width: auto;
+	}
+	#ogloszenie_zdjecia.brak_zdjec{
+		display: none;
+	}
+	#ogloszenie_zdjecia, #ogloszenie_cechy{
+		text-align: center;
+	}
+	#ogloszenie_zdjecia .duze_zdjecie {
+		width: calc(100% - 12px); max-width: 400px;
+	}
+	#ogloszenie_cechy .boxy_kontakt {
+		margin: 5px;
+	}
+}
+@media(max-width: 750px) {
+	.reklama_duza, #ogloszenia_box_glowna .oferta_opis3{
+		display: none;
+	}
+	#ogloszenia_box_glowna .oferta_opis2{
+		width: 78%;
+	}
+	#wyszukiwarka fieldset {
+		width: 49%;
+	}
+}
+@media(max-width: 700px) {
+	#menu{
+		text-align: center;
+	}
+	#menu ul li{
+		float: none;
+	}
+	#menu ul li a{
+		font-size: 0.9em; padding: 8px;
+	}
+	.stopka {
+		max-width: calc(49% - 45px);
+	}
+}
+@media(max-width: 600px) {
+	#top_logo{
+		text-align: center;
+	}
+	#top_menu{
+		float: none; text-align: center; padding-bottom: 30px; display: block;
+	}
+	#form_dodaj_ogloszenie fieldset{
+		padding: 0 0 10px;
+	}
+	#form_dodaj_ogloszenie .pierwsza_kolumna.inline_block, #form_dodaj_ogloszenie .druga_kolumna.inline_block {
+		display: block; text-align: left; width: auto;
+	}
+	#ogloszenie{
+		padding: 0 0 50px;
+	}
+	#iframe_mapagoogle{
+		display: none;
+	}
+}
+@media(max-width: 550px) {
+	#slider_box, .oferta_opis, .link_banner, .oferta_opis3 hr, #link_przewin, #facebook2_2, #newsletter_panel{
+		display: none;
+	}
+	.padding30, .padding20, #nawigacja {
+		padding: 10px;
+	}
+	#menu, #top .strona{
+		padding:0 10px;
+	}
+	#top_logo.padding30{
+		padding-bottom: 25px;
+	}
+	.oferta_opis2{
+		width: auto; display: block; 
+	}
+	#moje_ogloszenia_box .oferta_opis3, #profil_box .oferta_opis3{
+		width: auto; display: block; padding-top: 10px; text-align: left;
+	}
+	.oferta_opis3 p{
+		display: inline-block; margin: 5px;
+	}
+	#wyszukiwarka fieldset {
+		width: auto; display: block;
+	}
+	#spis_aktualnosci .aktualnosc_lewo{
+		display: none;
+	}
+	#spis_aktualnosci .aktualnosc_prawo{
+		display: block; width: auto;
+	}
+	#wybor_stron{
+		text-align: center;
+	}
+	#wybor_stron p{
+		display: block; margin: 25px auto 0px;
+	}
+	footer{
+		text-align: center;
+	}
+	.stopka.inline_block{
+		max-width: 100%; display: block; margin: auto;
+	}
+}
+@media(max-width: 400px) {
+	#slider_dol_box{
+		display: none;
+	}
+	#ogloszenie {
+		border-bottom: none; padding-bottom: 0;
+	}
+	#ustawienia table{
+		width: 100%;
+	}
+	#ustawienia table tr td{
+		display: block; 
+	}
+	#ustawienia table tr td:first-child {
+		text-align: left;
+	}
+	#ustawienia table input[type=text], #ustawienia table input[type=password],  #ustawienia table input[type=file], #ustawienia table textarea{
+		width:85%;
+	}
+	#ustawienia table select{
+		width:90%;
+	}
+	#ogloszenie_cechy .cena span {
+		padding: 0; display: block;
+	}
+}

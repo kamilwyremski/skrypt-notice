@@ -1,0 +1,150 @@
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel.tpl"}
+	
+	<div id="strona">
+		{if isset($slider) and !isset($menu_kategoria) and !isset($smarty.get.szukaj)}
+			<div id="slider_box">
+				<div id="slider" class="center">
+					{foreach from=$slider item=item key=key}
+						<div class="slider inline_block">
+							{$item.tresc}
+						</div>
+					{/foreach}
+				</div>
+			</div>
+			<br>
+		{/if}
+		<h2 class="hidden_print">Wyszukiwarka</h2>
+		<div id="wyszukiwarka">
+			<form action="" method="get">
+				<fieldset>
+					<label>Tekst</label>
+					<input type="text" name="szukaj" placeholder="Szukam..." title="Tu wpisz poszukiwany tekst" {if isset($smarty.get.szukaj)}value="{$smarty.get.szukaj}"{/if}>
+				</fieldset>
+				{if isset($wyszukiwarka_pokaz_cene)}
+					<fieldset>
+						<label>Cena ({$ustawienia.waluta})</label>
+						<input type="number" name="cena_od" title="Tu wpisz minimalną cenę" {if isset($smarty.get.cena_od)}value="{$smarty.get.cena_od}"{/if} min="0" max="999999999.99" step="0.01">
+						<span> - </span>
+						<input type="number" name="cena_do" title="Tu wpisz maksymalną cenę" {if isset($smarty.get.cena_do)}value="{$smarty.get.cena_do}"{/if} min="0" max="999999999.99" step="0.01">
+					</fieldset>
+				{/if}
+				<fieldset>
+					<label>Lokalizacja</label>
+					<input type="text" name="lokalizacja" placeholder="Warszawa..." title="Tu wpisz kod pocztowy lub miejscowość" {if isset($smarty.get.lokalizacja)}value="{$smarty.get.lokalizacja}"{/if}>
+				</fieldset>
+				{if isset($typy_ogloszen)}
+					<fieldset>
+						<label>Typ ogłoszenia</label>
+						<select name="typ_ogloszenia" title="Wybierz typ ogłoszenia">
+							<option value="">-- wybierz --</option>
+							{foreach from=$typy_ogloszen item=item key=key}
+								<option value="{$item.prosta_nazwa}" {if isset($smarty.get.typ_ogloszenia) and $smarty.get.typ_ogloszenia==$item.prosta_nazwa}selected{/if}>{$item.nazwa}</option>
+							{/foreach}
+						</select>
+					</fieldset>
+				{/if}
+				{if isset($regiony)}
+					<fieldset>
+						<label>{$ustawienia.regiony_nazwa}</label>
+						<select name="region" title="Wybierz {$ustawienia.regiony_nazwa}" class="select_region">
+							<option value="">-- wybierz --</option>
+							{foreach from=$regiony item=item key=key}
+								<option value="{$item.prosta_nazwa}" {if isset($smarty.get.region) and $smarty.get.region==$item.prosta_nazwa}selected{/if}>{$item.nazwa}</option>
+							{/foreach}
+						</select>
+					</fieldset>
+					{if isset($regiony2)}
+						{foreach from=$regiony2 item=item key=key}
+							<fieldset id="region2_{$key}" class="box_region2 {if !(isset($smarty.get.region) && $smarty.get.region == $key)} ukryty{/if}">
+								<label>{$ustawienia.regiony2_nazwa}</label>
+								<select  name="region2" {if !(isset($smarty.get.region) && $smarty.get.region == $key)}disabled{/if}>
+									<option value="">-- wybierz --</option>
+									{foreach from=$item item=item2 key=key2}
+										<option value="{$item2.prosta_nazwa}" {if (isset($smarty.get.region2) and $smarty.get.region2==$item2.prosta_nazwa)}selected{/if}>{$item2.nazwa}</option>
+									{/foreach}
+								</select>
+							</fieldset>
+						{/foreach}
+					{/if}
+				{/if}
+				{if isset($opcje_dodatkowe)}
+					{foreach from=$opcje_dodatkowe item=item key=key}
+						<fieldset>
+							<label>{$item.nazwa}</label>
+							{if $item.rodzaj=='tekst'}
+								<input type="text" name="opcja[{$item.id}]" {if isset($smarty.get.opcja[$item.id])}value="{$smarty.get.opcja[$item.id]}"{/if}>
+							{elseif $item.rodzaj=='liczba'}
+								<input type="number" name="opcja[{$item.id}][od]" {if isset($smarty.get.opcja[$item.id].od)}value="{$smarty.get.opcja[$item.id].od}"{/if}>
+								<span> - </span>
+								<input type="number" name="opcja[{$item.id}][do]" {if isset($smarty.get.opcja[$item.id].do)}value="{$smarty.get.opcja[$item.id].do}"{/if}>
+							{elseif $item.rodzaj=='data'}
+								<input type="date" name="opcja[{$item.id}][od_data]" data-changemonth="true" data-changeyear="true" {if isset($smarty.get.opcja[$item.id].od_data)}value="{$smarty.get.opcja[$item.id].od_data}"{/if}>
+								<span> - </span>
+								<input type="date" name="opcja[{$item.id}][do_data]" data-changemonth="true" data-changeyear="true" {if isset($smarty.get.opcja[$item.id].do_data)}value="{$smarty.get.opcja[$item.id].do_data}"{/if}>
+							{elseif $item.rodzaj=='select'}
+								<select name="opcja[{$item.id}][select]">
+									<option value="">-- wybierz --</option>
+									{foreach from=$item.opcje_wyboru_explode item=item2 key=key2}
+										<option value="{$item2}" {if isset($smarty.get.opcja[$item.id].select) && $smarty.get.opcja[$item.id].select==$item2}selected{/if}>{$item2}</option>
+									{/foreach}
+								</select>
+							{/if}
+						</fieldset>
+					{/foreach}
+				{/if}
+				<fieldset class="center">
+					<input type="submit" value="Szukaj!">
+				</fieldset>
+			</form>
+		</div>
+		<br><br>
+		{if isset($ogloszenia)}
+			<form action="" method="get" class="floatright">
+				{foreach from=$gets_array item=item key=key}
+					<input type="hidden" name="{$key}" value="{$item}">
+				{/foreach}
+				<select name="sortuj" onchange="this.form.submit()" title="Wybierz metodę sortowania ogłoszeń">
+					<option value="najnowsze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najnowsze"}selected{/if}>Najnowsze</option>
+					<option value="najstarsze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najstarsze"}selected{/if}>Najstarsze</option>
+					<option value="najtansze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najtansze"}selected{/if}>Najtańsze</option>
+					<option value="najdrozsze" {if isset($smarty.get.sortuj) and $smarty.get.sortuj=="najdrozsze"}selected{/if}>Najdroższe</option>
+				</select>
+			</form>
+		{/if}
+		<h2>Ogłoszenia{if isset($smarty.get.szukaj)} - wyniki wyszukiwania{/if}{if $ustawienia.rss}<a href="{$ustawienia.base_url}/php/rss.php{if isset($rss_kategoria)}?kategoria={$rss_kategoria.id}&nazwa={$rss_kategoria.prosta_nazwa}{/if}" title="Nasz kanał RSS" target="_blank" id="ikona_rss"><img src="{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/rss.png" alt="RSS"></a>{/if}</h2>
+		
+		{if isset($glowna_opis) and (!isset($smarty.get.strona) or $smarty.get.strona==1) and !isset($smarty.get.szukaj)}
+			<div id="glowna_opis">
+				{$glowna_opis}
+			</div>
+		{/if}
+		
+		<div class="clear"></div>
+		<div id="ogloszenia_box_glowna">
+		{if isset($ogloszenia)}
+		
+			{include file="ogloszenia.tpl"}
+			
+			{if $ile_stron>1}
+				<div id="wybor_stron">
+					<p>Strona {$ktora_strona} z {$ile_stron}</p>
+					<a href="{$ustawienia.base_url}{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria}{/if}{if $gets!=''}?{$gets}{/if}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+					<a href="{$ustawienia.base_url}{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria}{/if}{if $gets!=''}?{$gets}&{else}?{/if}strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}" rel="prev"></a>	
+					<a href="{$ustawienia.base_url}{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria}{/if}{if $gets!=''}?{$gets}&{else}?{/if}strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}" rel="next"></a>
+					<a href="{$ustawienia.base_url}{if isset($spis_stron_kategoria)}/{$spis_stron_kategoria}{/if}{if $gets!=''}?{$gets}&{else}?{/if}strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+				 </div>
+			{/if}
+		{else}
+			<h4>Nie znaleziono żadnych ogłoszeń</h4>
+			<br><br><br><br>
+		{/if}
+		</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}

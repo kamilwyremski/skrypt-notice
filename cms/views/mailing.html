@@ -1,0 +1,42 @@
+	<script type="text/javascript" src="../js/ckeditor/ckeditor.js"></script>
+	
+	<div class="center">
+		<h1>Mailing</h1>
+		<p>Tutaj możesz wysłać wiadomość grupową do wszystkich aktywnych użytkowników serwisu lub/i do wszystkich osób które zapisały się do newslettera (w tym przypadku do treści maila zostanie automatycznie dodany link do rezygnacji z newslettera)</p><br>
+	{if isset($wyslano_mailing)}
+		<h2>Mailing został poprawnie wysłany!</h2>
+		<h3>Ilość wysłanych maili: {$wyslano_mailing.ilosc}</h3>
+		<h3>Grupa: {$wyslano_mailing.grupa}</h3>
+		<h3>Tytuł:</h3>
+		<h4>{$wyslano_mailing.tytul}</h4><br>
+		<h3>Treść:</h3>
+		<div style="text-align:left">{$wyslano_mailing.tresc}</div>
+		<br>
+		<a href="?akcja=mailing" title="Wróć" class="submit">Powrót</a>
+	{else}
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="wyslij_mailing">
+			<h2>Grupa odbiorców:</h2>
+			<label><input type="radio" name="grupa" value="wszyscy" required>Wszyscy ({$statystyki.wszyscy})</label>
+			<label><input type="radio" name="grupa" value="newsletter">Zapisani do newslettera ({$statystyki.newsletter})</label>
+			<label><input type="radio" name="grupa" value="uzytkownicy">Tylko użytkownicy serwisu ({$statystyki.uzytkownicy})</label>
+			<h2>Tytuł:</h2>
+			<input type="text" name="tytul" placeholder="Tytuł mail-a" title="Wpisz tytuł maila" required><br>
+			<h2>Treść:</h2>
+			<textarea name="tresc" placeholder="Treść" title="Tu wpisz treść" style="height: 450px" required></textarea>
+			<script type="text/javascript">
+			{literal}
+				var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+				$(function(){
+				    CKEDITOR.replace( 'tresc',{height: '300px',
+						filebrowserBrowseUrl:roxyFileman,
+						filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+						removeDialogTabs: 'link:upload;image:upload'}); 
+				});
+			{/literal}
+			</script>
+			<br><br>
+			<input type="submit" value="WYŚLIJ">
+		</form>
+	{/if}
+	</div>

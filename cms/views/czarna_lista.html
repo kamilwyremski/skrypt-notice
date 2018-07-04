@@ -1,0 +1,63 @@
+	<div class="dialog" id="dodaj" data-title="Dodaj adres email na czarną listę">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="dodaj_czarna_lista">
+			<input type="email" name="email" placeholder="Adres email" title="Wpisz adres email użytkownika do zablokowania" required maxlength="64"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+	<div class="center">
+		<h1>Czarna lista użytkowników</h1>
+		<p>Tutaj możesz dodać adresy IP z których ogłoszenia będą automatycznie odrzucane. Każdy adres IP wpisz w nowej linii</p>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_czarna_lista_ip">
+			<textarea name="czarna_lista_ip" placeholder="Adresy IP" title="Tu wpisz adresy IP z których ogłoszenia będą automatycznie odrzucane">{$ustawienia.czarna_lista_ip}</textarea>
+			<br><br>
+			<input type="submit" value="Zapisz">
+		</form>
+		<br><br>
+		
+		<p style="max-width:700px; margin: auto">Poniżej możesz dodać adresy email użytkowników którzy nie będą mogli się zarejestrować w serwisie, dodać tego adresu w ogłoszeniu (wykorzystując inne konto) ani wysłać wiadomości z formularza kontaktowego do administratora lub innych użytkowników</p>
+		<br>
+		<a href="#dodaj" class="submit open_dialog" title="Dodaj adres email">Dodaj adres email</a><br><br>
+		
+		{if isset($czarna_lista)}
+		<table class="table">
+			<tr>
+				<td colspan="4">Czarna Lista adresów email</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Email 
+					<a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po adresie email" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po adresie email" class="ikona sortuj_dol"></a>
+				</td>
+				<td class="center">Data<br>
+					<a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a>
+				</td>
+				<td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$czarna_lista name=czarna_lista}
+				<tr>
+					<td>{$smarty.foreach.czarna_lista.iteration+iteration}</td>			 
+					<td><a href="mailto:{$item.email}" title="Napisz do użytkownika: {$item.email}">{$item.email}</a></td>
+					<td class="center" style="min-width:65px">{$item.data|date_format:"%d-%m-%Y"}</td>
+					<td class="center"><a href="#" title="Usuń adres email" class="ikona ikona_usun ajax" data-akcja="usun_czarna_lista" data-email="{$item.email}"></a></td>			 				
+				</tr>
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

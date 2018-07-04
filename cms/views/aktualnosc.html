@@ -1,0 +1,43 @@
+<div id="roxyCustomPanel" style="display: none;">
+	<iframe src="js/ckeditor/fileman/index.html?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
+</div>
+
+	<div class="center">
+		<h1>{if isset($aktualnosc)}Edytuj aktualność: {$aktualnosc.tytul}{else}Nowa aktualność{/if}</h1>
+		<p>Tutaj możesz edytować aktualność zamieszczoną na stronie</p>
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_aktualnosc">
+			{if isset($aktualnosc)}<input type="hidden" name="id" value="{$aktualnosc.id}">{/if}
+			<input type="text" name="tytul" placeholder="Tytuł aktualności" title="Tu wpisz tytuł aktualności" maxlength="64" {if isset($aktualnosc)}value="{$aktualnosc.tytul}"{/if} required autofocus><br>
+			<h3>Miniaturka:</h3>			
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="miniaturka" src="{if isset($aktualnosc)}{$aktualnosc.miniaturka}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Miniaturka aktualności" style="max-height: 100px">
+			</a>
+			<br>
+			<input type="text" name="miniaturka" value="{if isset($aktualnosc)}{$aktualnosc.miniaturka}{/if}" placeholder="Miniaturka aktualności" title="Wklej adres URL miniaturki w aktualności">
+			<h3>Krótki opis:</h3>
+			<textarea name="krotki_opis" placeholder="Opis aktualności" title="Tu wpisz opis aktualności" maxlength="1024">{if isset($aktualnosc)}{$aktualnosc.krotki_opis}{/if}</textarea>
+			<h3>Treść:</h3>
+			<textarea name="tresc" placeholder="Treść aktualności" title="Tu wpisz treść aktualności">{if isset($aktualnosc)}{$aktualnosc.tresc}{/if}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'tresc',{height: '300px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<h3>Słowa kluczowe (keywords) SEO:</h3>
+			<textarea name="keywords" title="Ustaw słowa kluczowe (keywords) dla danej aktualności" placeholder="Słowa kluczowe SEO" maxlength="1024">{if isset($aktualnosc)}{$aktualnosc.keywords}{/if}</textarea>
+			<h3>Opis (description) SEO:</h3>
+			<textarea name="description" title="Ustaw opis (description) dla danej aktualności" placeholder="Opis SEO aktualności" maxlength="1024">{if isset($aktualnosc)}{$aktualnosc.description}{/if}</textarea>
+			<br><br>
+			<input type="submit" value="Zapisz">
+			<br><br><br>
+			<p><a href="?akcja=aktualnosci" title="Wróc do spisu aktualności">Wróć do spisu aktualności</a></p>
+		</form>
+	</div>

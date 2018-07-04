@@ -1,0 +1,67 @@
+	<div class="dialog" id="dodaj" data-title="Dodaj region">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="dodaj">
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required maxlength="32"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+	<div class="center">
+		<h1>Regiony</h1>
+		<p>Tutaj możesz edytować listę regionów dostępnych na stronie. Możesz także zmienić nazwę pod jaką są wyświetlane.</p>
+		
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zmien_nazwe">
+			<h3>Region: <input type="text" name="regiony_nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required value="{$ustawienia.regiony_nazwa}" maxlength="32"></h3>
+			<h3>Region 2: <input type="text" name="regiony2_nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required value="{$ustawienia.regiony2_nazwa}" maxlength="32"></h3><br>
+			<input type="submit" value="Zapisz"/>
+		</form>
+		<br><br><br>
+		<a href="#dodaj" class="submit open_dialog" title="Dodaj region">Dodaj region</a><br><br>
+		
+		{if isset($regiony)}
+		<table class="table">
+			<tr>
+				<td colspan="5">Regiony</td>
+			</tr>
+			<tr>
+				<td></td><td>Nazwa</td><td class="center">Edytuj nazwę</td><td class="center">Edytuj podregiony</td><td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$regiony name=regiony}
+				<tr>
+					<td>{$smarty.foreach.regiony.iteration}</td>
+					<td>{$item.nazwa}</td>				 
+					<td class="center"><a href="#edytuj_{$item.id}" title="Edytuj nazwę" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td class="center"><a href="?akcja=regiony2&region_id={$item.id}" title="Edytuj podregiony" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń region" class="ikona ikona_usun open_dialog"></a></td>			 	
+				</tr>
+
+	<div class="dialog" id="edytuj_{$item.id}" data-title="Edytuj region {$item.nazwa}">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="edytuj">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required value="{$item.nazwa}" maxlength="32"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń region {$item.nazwa}">
+		<p>Czy na pewno chcesz usunąć region {$item.nazwa}?</p>
+		<p>Wszystkie podregiony w nim zostaną także usunięte</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	

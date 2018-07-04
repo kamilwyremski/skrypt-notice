@@ -1,0 +1,23 @@
+	<div class="center">
+		<h1>Treści</h1>
+		<p>Tutaj możesz edytować treści znajdujące się na stronie.</p>
+		<br><br>
+		
+		{if isset($tresci)}
+		<table class="table">
+			<tr>
+				<td colspan="2">Treści</td>
+			</tr>
+			<tr>
+				<td>Nazwa</td><td class="center">Edytuj</td>
+			</tr>
+			{foreach key=key item=item from=$tresci}
+				<tr>
+					<td><a href="../{$item.prosta_nazwa}" title="Strona: {$item.nazwa}" target="_blank">{$item.nazwa}</a></td>				 
+					<td class="center"><a href="?akcja=tresc&nazwa={$item.prosta_nazwa}" title="Edytuj stronę" class="ikona ikona_edytuj"></a></td>			 	
+				</tr>
+			{/foreach}		
+		</table>
+		{/if}
+	</div>
+	

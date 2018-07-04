@@ -1,0 +1,127 @@
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_konto.tpl"}
+	
+	<div id="strona">
+		<h2>Ustawienia konta</h2>
+		<div id="ustawienia">
+			<h3>Dane użytkownika:</h3>
+			<table class="table">
+				<tr>
+					<td>Login</td>
+					<td>{$uzytkownik.login}</td>
+				</tr>
+				<tr>
+					<td>Email</td>
+					<td>{$uzytkownik.email}</td>
+				</tr>
+				<tr>
+					<td>Data rejestracji</td>
+					<td>{$uzytkownik.data|date_format:"%d-%m-%Y"}</tr>
+				</tr>
+				<tr>
+					<td>Ilość aktywnych ogłoszeń</td>
+					<td>{$uzytkownik.ile_ogloszen}</td>
+				</tr>
+				<tr>
+					<td>Ilość logowań</td>
+					<td>{$uzytkownik.ile_logowan}</td>
+				</tr>
+				{if $uzytkownik.ostatnie_logowanie!=''}
+					<tr>
+						<td>Ostatnie logowanie</td>
+						<td>{$uzytkownik.ostatnie_logowanie|date_format:"%d-%m-%Y"}</td>
+					</tr>
+				{/if}
+			</table>
+			<br><br>
+			<h3>Zmiana danych:</h3>
+			<form action="" method="post" enctype="multipart/form-data">
+				<input type="hidden" name="akcja" value="zmiana_kontaktu">
+				<table>
+					<tr>
+						<td><label>Awatar:</label></td>
+						<td>
+							<img src="{if $uzytkownik.awatar!=''}{$ustawienia.upload}/{$uzytkownik.awatar}{else}{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png{/if}" onerror="this.src='{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png'" alt="Awatar" class="awatar"><br>
+							{if $uzytkownik.awatar!=''}<p><a href="#" title="Usuń awatar" class="ajax_confirm" data-title="Na pewno chcesz usunąć swój awatar?" data-akcja="usun_awatar">Usuń awatar</a></p>{/if}
+							<input type="file" name="awatar" accept="image/*" title="Kliknij aby wybrać swój awatar">
+						</td>
+					</tr>
+					<tr>
+						<td><label>Lokalizacja:</label></td>
+						<td><textarea name="lokalizacja" placeholder="00-123 Warszawa, ul. Kubusia Puchatka 2" title="Tu wpisz swój adres - będzie on domyślnie wyświetalny w dodawanych ogłoszeniach" maxlength="256">{$uzytkownik.lokalizacja}</textarea></td>
+					</tr>
+					{if isset($regiony)}
+						<tr>
+							<td><label>{$ustawienia.regiony_nazwa}:</label></td>
+							<td>
+							<select name="region" title="Wybierz {$ustawienia.regiony_nazwa}">
+								<option>-- wybierz --</option>
+								{foreach from=$regiony item=item key=key}
+									<option value="{$item.id}" {if $uzytkownik.region==$item.id}selected{/if}>{$item.nazwa}</option>
+								{/foreach}
+							</select>
+							</td>
+						</tr>
+						{if isset($regiony2)}
+							{foreach from=$regiony2 item=item key=key}
+								<tr id="region2_{$key}" class="box_region2 {if $uzytkownik.region != $key} ukryty{/if}">
+									<td><label>{$ustawienia.regiony2_nazwa}:</label></td>
+									<td>
+										<select name="region2" {if $uzytkownik.region != $key}disabled{/if} title="Wybierz {$ustawienia.regiony2_nazwa}">
+											<option value="">-- wybierz --</option>
+											{foreach from=$item item=item2 key=key2}
+												<option value="{$item2.id}" {if ($uzytkownik.region2==$item2.id)}selected{/if}>{$item2.nazwa}</option>
+											{/foreach}
+										</select>
+									</td>
+								</tr>
+							{/foreach}
+						{/if}
+					{/if}
+					<tr>
+						<td><label>Telefon:</label></td>
+						<td><input type="text" name="telefon" placeholder="+48 692 413 725" title="Tu wpisz swój numer telefonu - będzie on domyślnie wyświetalny w dodawanych ogłoszeniach" maxlength="32" value="{$uzytkownik.telefon}"></td>
+					</tr>
+					<tr>
+						<td><label>Dane do faktury:</label><p style="font-size: 0.8em">(dla administratora serwisu)</p></td>
+						<td><textarea type="text" name="dane_faktura" placeholder="Twoje dane do faktury" title="Tu wpisz swoje dane do faktury - są one dostępne tylko dla administratora systemu" maxlength="1024">{$uzytkownik.dane_faktura}</textarea></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td class="right"><input type="submit" value="Zapisz"></td>
+					</tr>
+				</table>
+			</form>
+			<br>
+			<h3>Zmiana hasła:</h3>
+			<form action="" method="post">
+				<input type="hidden" name="akcja" value="zmiana_hasla">
+				<table>
+					<tr>
+						<td><label>Stare hasło:</label></td>
+						<td><input type="password" name="stare_haslo" placeholder="Stare hasło" title="Tu wpisz swoje poprzednie hasło" required {literal}pattern=".{3,}"{/literal} maxlength="32"></td>
+					</tr>
+					<tr>
+						<td><label>Nowe hasło:</label></td>
+						<td><input type="password" name="nowe_haslo" placeholder="Nowe hasło" title="Tu wpisz nowe hasło w przypadku gdy chcesz je zmienić" required {literal}pattern=".{3,}"{/literal} maxlength="32"></td>
+					</tr>
+					<tr>
+						<td><label>Powtórz nowe hasło:</label></td>
+						<td><input type="password" name="powtorz_nowe_haslo" placeholder="Powtórz nowe hasło" title="Tu powtórz nowe hasło w przypadku gdy chcesz je zmienić" required {literal}pattern=".{3,}"{/literal} maxlength="32"></td>
+					</tr>
+					<tr>
+						<td></td>
+						<td class="right"><input type="submit" value="Zapisz"></td>
+					</tr>
+				</table>
+			</form>
+			<br><br>
+		</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}

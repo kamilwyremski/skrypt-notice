@@ -1,0 +1,17 @@
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_info.tpl"}
+	
+	<div id="strona">
+		<h5 style="padding: 5px"><a href="aktualnosci" title="Spis aktualności">Wróć do spisu aktualności</a></h5>
+		<h2>{$aktualnosc.tytul}</h2>
+		<h5 style="padding: 5px"><i>{$aktualnosc.data|date_format:"%d-%m-%Y"}</i></h5>
+		<br>
+		<div id="info_tresc">{$aktualnosc.tresc}</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}

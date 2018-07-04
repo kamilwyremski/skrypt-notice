@@ -1,0 +1,45 @@
+	
+	<div class="center">
+		<h1>Logi resetu haseł</h1>
+		<p>Tutaj możesz zobaczyć listę logów resetu haseł</p><br><br>
+		
+		{if isset($logi_reset_hasla)}
+		<table class="table">
+			<tr>
+				<td colspan="7">Logi reset hasła</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td class="center">Wykorzystany<br><a href="?{$url_strony.sortuj}&sortuj=wykorzystany" title="Sortuj po wykorzystanych kodach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=wykorzystany&desc" title="Sortuj malejąco po wykorzystanych kodach" class="ikona sortuj_dol"></a></td>
+				<td class="center">Aktywny<br><a href="?{$url_strony.sortuj}&sortuj=aktywny" title="Sortuj po aktywnych kodach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=aktywny&desc" title="Sortuj malejąco po aktywnych kodach" class="ikona sortuj_dol"></a></td>
+				<td>Kod</td>
+				<td>Login <a href="?{$url_strony.sortuj}&sortuj=login" title="Sortuj po loginach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=login&desc" title="Sortuj malejąco po loginach" class="ikona sortuj_dol"></a></td>
+				<td>Email <a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po adresach email" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po adresach email" class="ikona sortuj_dol"></a></td>
+				<td class="center">Data <a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$logi_reset_hasla name=logi_reset_hasla}
+				<tr>
+					<td>{$smarty.foreach.logi_reset_hasla.iteration+$iteration}</td>
+					<td class="center">{if $item.wykorzystany}<b>Tak</b>{else}<span style="color: grey">Nie</span>{/if}</td>
+					<td class="center">{if $item.aktywny}<b>Tak</b>{else}<span style="color: grey">Nie</span>{/if}</td>
+					<td>{if $item.aktywny}<a href="../reset_hasla?nowe_haslo={$item.kod}" title="Kod do resetu hasła" target="_blank">{$item.kod}</a>{else}{$item.kod}{/if}</td>
+					<td>{if isset($item.login)}<a href="../profil,{$item.login}" title="Profil użytkownika {$item.login}" target="_blank">{$item.login}</a>{/if}</td>
+					<td>{if isset($item.email)}<a href="mailto:{$item.email}" title="Napisz do użytkownika {$item.email}">{$item.email}</a>{/if}</td>
+					<td class="center">{$item.data|date_format:"%H:%M"} / <b>{$item.data|date_format:"%d-%m-%Y"}</b></td>
+				</tr>
+			{/foreach}	
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

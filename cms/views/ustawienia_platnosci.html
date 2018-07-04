@@ -1,0 +1,55 @@
+
+	<div class="center">
+		<h1>Ustawienia płatności</h1>
+		<p>Tutaj możesz edytować ustawienia płatności w serwisie.</p>
+		<p>Opłaty za długość wyświetlania ogłoszeń możesz edytować w <a href="?akcja=ustawienia_czas" title="Ustawienia czasu ogłoszeń">ustawieniach czasu ogłoszeń</a></p>
+		<p>Opłaty za wystawianie ogłoszeń w danej kategorii możesz edytować w <a href="?akcja=kategorie" title="Ustawienia kategorii">ustawieniach kategorii</a></p>
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_ustawienia_platnosci">
+			<h2>Koszt wystawienia ogłoszenia: <input type="number" name="koszt_ogloszenia" placeholder="Koszt ogłoszenia" title="Tu wpisz ogólny koszt dodania ogłoszenia" value="{$ustawienia.koszt_ogloszenia}" min="0" required step="0.01"> {$ustawienia.waluta}</h2>
+			<h2>Koszt - ogłoszenie w sliderze: <input type="number" name="koszt_slider" placeholder="Koszt: slider" title="Tu wpisz koszt dodania ogłoszenia do slidera u dołu strony" value="{$ustawienia.koszt_slider}" min="0" required step="0.01"> {$ustawienia.waluta}</h2>
+			<h2>Koszt - ogłoszenie promowane: <input type="number" name="koszt_promowana" placeholder="Koszt: promowane" title="Tu wpisz koszt promowania ogłoszenia" value="{$ustawienia.koszt_promowana}" min="0" required step="0.01"> {$ustawienia.waluta}</h2>
+			<h2>Koszt dodatkowych zdjęć: <input type="number" name="koszt_zdjecia" placeholder="Koszt: zdjęcia" title="Tu wpisz koszt dodania dodatkowego zdjęcia" value="{$ustawienia.koszt_zdjecia}" min="0" required step="0.01"> {$ustawienia.waluta}</h2>
+			<h2>Ilość bezpłatnych zdjęć: <input type="number" name="zdjec_bezplatnie" placeholder="Zdjęć bezpłatnie" title="Tu wpisz ilość bezpłatnych zdjęć jakie można dodać do ogłoszenia" value="{$ustawienia.zdjec_bezplatnie}" min="0" required></h2>
+			<br>
+			<h2>PayU.pl</h2>
+			<label><h3><input type="checkbox" name="platnosc_payu" title="Zaznacz jeśli chcesz aktywować płatność przez PayU" {if $ustawienia.platnosc_payu}checked{/if} class="platnosc_checkbox" data-typ="platnosc_payu"> Aktywuj płatność przez serwis PayU</h3></label>
+			<h3>PayU ID: <input type="text" name="payu_id" title="Tu wpisz ID swojego konta na PayU" placeholder="PayU ID" value="{$ustawienia.payu_id}" {if $ustawienia.platnosc_payu}required{/if} class="platnosc_payu"></h3>
+			<h3>PayU MD5: <input type="text" name="payu_md5" title="Tu wpisz MD5 płatności z PayU" placeholder="PayU MD5" value="{$ustawienia.payu_md5}" {if $ustawienia.platnosc_payu}required{/if} class="platnosc_payu"></h3>
+			<br>
+			<h2>Dotpay.pl</h2>
+			<label><h3><input type="checkbox" name="platnosc_dotpay" title="Zaznacz jeśli chcesz aktywować płatność przez Dotpay" {if $ustawienia.platnosc_dotpay}checked{/if} class="platnosc_checkbox" data-typ="platnosc_dotpay"> Aktywuj płatność przez serwis Dotpay</h3></label>
+			<label><h3><input type="checkbox" name="dotpay_nowy_formularz" title="Zaznacz jeśli chcesz włączyć nowy formularz płatności DotPay (T2)" {if $ustawienia.dotpay_nowy_formularz}checked{/if}> Wersja DotPay T2</h3></label>
+			<h3>Dotpay ID: <input type="text" name="dotpay_id" title="Tu wpisz ID swojego konta na Dotpay" placeholder="Dotpay ID" value="{$ustawienia.dotpay_id}" {if $ustawienia.platnosc_dotpay}required{/if} class="platnosc_dotpay"></h3>
+			<h3>Dotpay PIN: <input type="text" name="dotpay_pin" title="Tu wpisz PIN płatności z Dotpay" placeholder="Dotpay PIN" value="{$ustawienia.dotpay_pin}" {if $ustawienia.platnosc_dotpay}required{/if} class="platnosc_dotpay"></h3>
+			<h3>Waluta: <input type="text" name="dotpay_waluta" title="Tu wpisz oznaczenie waluty używanej przez płatności Dotpay - domyślnie PLN" placeholder="Dotpay waluta" value="{$ustawienia.dotpay_waluta}" {if $ustawienia.platnosc_dotpay}required{/if} class="platnosc_dotpay"></h3>
+			<label><h3><input type="checkbox" name="dotpay_tryb_testowy" title="Zaznacz jeśli chcesz uwzględniać tryb testowy z Dotpay" {if $ustawienia.dotpay_tryb_testowy}checked{/if}> Uwzględniaj tryb testowy w Dotpay</h3></label>
+			<br>
+			<h2>TPay.com</h2>
+			<label><h3><input type="checkbox" name="platnosc_tpay" title="Zaznacz jeśli chcesz aktywować płatność przez tpay.com" {if $ustawienia.platnosc_tpay}checked{/if} class="platnosc_checkbox" data-typ="platnosc_tpay"> Aktywuj płatność przez serwis tpay.com</h3></label>
+			<h3>TPay ID: <input type="text" name="tpay_id" title="Tu wpisz ID swojego konta na tpay.com" placeholder="tpay.com ID" value="{$ustawienia.tpay_id}" {if $ustawienia.platnosc_tpay}required{/if} class="platnosc_tpay"></h3>
+			<h3>Tpay KOD: <input type="text" name="tpay_kod" title="Tu wpisz KOD płatności z tpay.com" placeholder="tpay.com KOD" value="{$ustawienia.tpay_kod}" {if $ustawienia.platnosc_tpay}required{/if} class="platnosc_tpay"></h3>
+			<br>
+			<h2>Przelewy24.pl</h2>
+			<label><h3><input type="checkbox" name="platnosc_przelewy24" title="Zaznacz jeśli chcesz aktywować płatność przez Przelewy24" {if $ustawienia.platnosc_przelewy24}checked{/if} class="platnosc_checkbox" data-typ="platnosc_przelewy24"> Aktywuj płatność przez serwis Przelewy24</h3></label>
+			<h3>Przelewy24 ID sprzedawcy: <input type="text" name="przelewy24_id_sprzedawcy" title="Tu wpisz ID sprzedawcy z serwisu Przelewy24" placeholder="Przelewy24 - ID sprzedawcy" value="{$ustawienia.przelewy24_id_sprzedawcy}" {if $ustawienia.platnosc_przelewy24}required{/if} class="platnosc_przelewy24"></h3>
+			<h3>Przelewy24 ID sklepu: <input type="text" name="przelewy24_id_sklepu" title="Tu wpisz ID sklepu z serwisu Przelewy24" placeholder="Przelewy24 - ID sklepu" value="{$ustawienia.przelewy24_id_sklepu}" {if $ustawienia.platnosc_przelewy24}required{/if} class="platnosc_przelewy24"></h3>
+			<h3>Przelewy24 CRC: <input type="text" name="przelewy24_crc" title="Tu wpisz CRC płatności z Przelewy24" placeholder="Przelewy24 CRC" value="{$ustawienia.przelewy24_crc}" {if $ustawienia.platnosc_przelewy24}required{/if} class="platnosc_przelewy24"></h3>
+			<label><h3><input type="checkbox" name="przelewy24_tryb_testowy" title="Zaznacz jeśli chcesz aktywować tryb testowy (sandbox) w Przelewy24" {if $ustawienia.przelewy24_tryb_testowy}checked{/if}>Aktywuj tryb testowy (sandbox) w Przelewy24</h3></label>
+			<br>
+			<h2>PayPal</h2>
+			<label><h3><input type="checkbox" name="platnosc_paypal" title="Zaznacz jeśli chcesz aktywować płatność przez Paypal" {if $ustawienia.platnosc_paypal}checked{/if} class="platnosc_checkbox" data-typ="platnosc_paypal"> Aktywuj płatność przez serwis PayPal</h3></label>
+			<h3>PayPal email: <input type="email" name="paypal_email" title="Tu wpisz swój email w systemie paypal" placeholder="Paypal - email" value="{$ustawienia.paypal_email}" {if $ustawienia.platnosc_paypal}required{/if} class="platnosc_paypal"></h3>
+			<h3>PayPal lokalizacja: <input type="text" name="paypal_lokalizacja" title="Skrót lokalizaci w systemie PayPal - domyślnie PL" placeholder="Paypal - lokalizacja" value="{$ustawienia.paypal_lokalizacja}" {if $ustawienia.platnosc_paypal}required{/if} class="platnosc_paypal"></h3>
+			<h3>PayPal waluta: <input type="text" name="paypal_waluta" title="Tu wpisz kod waluty - domyślnie PLN" placeholder="Paypal - waluta" value="{$ustawienia.paypal_waluta}" {if $ustawienia.platnosc_paypal}required{/if} class="platnosc_paypal"></h3>
+			<label><h3><input type="checkbox" name="paypal_tryb_testowy" title="Zaznacz jeśli chcesz aktywować tryb testowy (sandbox) w PayPal" {if $ustawienia.paypal_tryb_testowy}checked{/if}>Aktywuj tryb testowy (sandbox) w PayPal</h3></label>
+			<br>
+			<h2>CheckOut.fi</h2>
+			<label><h3><input type="checkbox" name="platnosc_checkout" title="Zaznacz jeśli chcesz aktywować płatność przez CheckOut.fi" {if $ustawienia.platnosc_checkout}checked{/if} class="platnosc_checkbox" data-typ="platnosc_checkout"> Aktywuj płatność przez serwis CheckOut.fi</h3></label>
+			<h3>CheckOut.fi ID: <input type="text" name="checkout_id" title="Tu wpisz ID z serwisu CheckOut" placeholder="CheckOut - ID" value="{$ustawienia.checkout_id}" {if $ustawienia.platnosc_checkout}required{/if} class="platnosc_checkout"></h3>
+			<h3>CheckOut.fi SECRET: <input type="text" name="checkout_secret" title="Tu wpisz Secret z serwisu CheckOut" placeholder="CheckOut - secret" value="{$ustawienia.checkout_secret}" {if $ustawienia.platnosc_checkout}required{/if} class="platnosc_checkout"></h3>
+			<br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>

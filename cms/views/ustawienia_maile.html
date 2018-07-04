@@ -1,0 +1,296 @@
+
+	<div class="center">
+		<h1>Ustawienia: maile</h1>
+		<p>Tutaj możesz edytować tytuły i treści automatycznych maili do użytkowników.</p>
+		<p>Możesz użyć znaczników wymienionych poniżej:</p>
+		<br>
+		{literal}
+			<p><b>{tytul}</b> - tytuł witryny</p>
+			<p><b>{base_url}</b> - adres bazowy serwisu</p>
+			<p><b>{link_logo}</b> - link do logo serwisu</p>
+			<p><b>{login}</b> - login użytkownika</p>
+			<p><b>{email}</b> - email użytkownika</p>
+			<p><b>{data}</b> - bieżąca data</p>
+		{/literal}
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_ustawienia_maile">
+			<h2>Mail wysyłany przy rejestracji:</h2>
+			{literal}
+				<p><b>{link_aktywacyjny}</b> - link aktywacyjny</p>
+				<p><b>{haslo}</b> - hasło użytkownika</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="rejestracja_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego przy rejestracji" value="{$ustawienia.rejestracja_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="rejestracja_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.rejestracja_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'rejestracja_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail wysyłany przy rejestracji przez facebook-a:</h2>
+			{literal}
+				<p><b>{haslo}</b> - hasło użytkownika</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="rejestracja_fb_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego przy rejestracji przez fb" value="{$ustawienia.rejestracja_fb_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="rejestracja_fb_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.rejestracja_fb_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'rejestracja_fb_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail wysyłany przy resecie hasła w serwisie:</h2>
+			{literal}
+				<p><b>{link_reset}</b> - link do resetu hasła</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="reset_hasla_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego przy rejestracji" value="{$ustawienia.reset_hasla_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="reset_hasla_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.reset_hasla_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'reset_hasla_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail wysyłany przy rozpoczęciu wyświetlania ogłoszenia:</h2>
+			{literal}
+				<p><b>{link_ogloszenie}</b> - link do ogłoszenia</p>
+				<p><b>{tytul_ogloszenie}</b> - tytuł ogłoszenia</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="email_start_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego przy starcie ogłoszenia" value="{$ustawienia.email_start_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="email_start_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.email_start_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'email_start_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail wysyłany przy zakończeniu wyświetlania ogłoszenia:</h2>
+			{literal}
+				<p><b>{link_ogloszenie}</b> - link do ogłoszenia</p>
+				<p><b>{tytul_ogloszenie}</b> - tytuł ogłoszenia</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="email_koniec_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego przy końcu ogłoszenia" value="{$ustawienia.email_koniec_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="email_koniec_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.email_koniec_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'email_koniec_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			
+			
+			
+			
+			<br>
+			<h2>Mail wysyłany z formularza kontaktowego:</h2>
+			{literal}
+				<p><b>{imie}</b> - imię i nazwisko nadawcy</p>
+				<p><b>{temat}</b> - temat wiadomości</p>
+				<p><b>{wiadomosc}</b> - treść wiadomości</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_kontakt_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego z formularza kontaktowego" value="{$ustawienia.mail_kontakt_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_kontakt_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_kontakt_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_kontakt_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail wysyłany z ogłoszenia:</h2>
+			{literal}
+				<p><b>{link_ogloszenie}</b> - link do ogłoszenia</p>
+				<p><b>{tytul_ogloszenie}</b> - tytuł ogłoszenia</p>
+				<p><b>{imie}</b> - imię i nazwisko nadawcy</p>
+				<p><b>{wiadomosc}</b> - treść wiadomości</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_ogloszenie_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego ze strony ogłoszenia" value="{$ustawienia.mail_ogloszenie_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_ogloszenie_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_ogloszenie_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_ogloszenie_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail wysyłany przy zgłaszaniu nadużycia w serwisie:</h2>
+			{literal}
+				<p><b>{link_ogloszenie}</b> - link do ogłoszenia</p>
+				<p><b>{tytul_ogloszenie}</b> - tytuł ogłoszenia</p>
+				<p><b>{wiadomosc}</b> - treść wiadomości</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_naduzycie_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego przy zgłaszaniu nadużycia w ogłoszeniu" value="{$ustawienia.mail_naduzycie_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_naduzycie_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_naduzycie_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_naduzycie_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail - powiadomienie z ogłoszenia:</h2>
+			{literal}
+				<p><b>{link_ogloszenie}</b> - link do ogłoszenia</p>
+				<p><b>{tytul_ogloszenie}</b> - tytuł ogłoszenia</p>
+				<p><b>{wiadomosc}</b> - treść wiadomości</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_powiadomienie_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego jako powiadomienia o ogłoszeniu" value="{$ustawienia.mail_powiadomienie_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_powiadomienie_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_powiadomienie_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_powiadomienie_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail - potwierdzenie chęci zapisu do newslettera:</h2>
+			{literal}
+				<p><b>{link_newsletter}</b> - link potwierdzający zapis do newslettera</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_newsletter_potw_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila potwierdzającego zapis do newslettera" value="{$ustawienia.mail_newsletter_potw_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_newsletter_potw_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_newsletter_potw_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_newsletter_potw_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail - powiadomienie o chęci wypłaty środków z programu partnerskiego (dla administratora):</h2>
+			{literal}
+				<p><b>{pp_imie}</b> - imię i nazwisko użytkownika / nazwa firmy</p>
+				<p><b>{pp_adres}</b> - adres użytkownika / firmy</p>
+				<p><b>{pp_numer_konta}</b> - Numer konta do przelewu</p>
+				<p><b>{kwota}</b> - kwota do przelewu</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_pp_wyplata_admin_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego gdy użytkownik programu partnerskiego zgłosi chęć wypłaty środków (dla administratora)" value="{$ustawienia.mail_pp_wyplata_admin_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_pp_wyplata_admin_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_pp_wyplata_admin_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_pp_wyplata_admin_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<h2>Mail - powiadomienie o chęci wypłaty środków z programu partnerskiego (dla użytkownika):</h2>
+			{literal}
+				<p><b>{pp_imie}</b> - imię i nazwisko użytkownika / nazwa firmy</p>
+				<p><b>{pp_adres}</b> - adres użytkownika / firmy</p>
+				<p><b>{pp_numer_konta}</b> - Numer konta do przelewu</p>
+				<p><b>{kwota}</b> - kwota do przelewu</p>
+			{/literal}
+			<h3>Tytuł:</h3>
+			<input type="text" name="mail_pp_wyplata_user_tytul" placeholder="Tytuł maila" title="Tu wpisz tytuł maila wysyłanego gdy użytkownik programu partnerskiego zgłosi chęć wypłaty środków (dla użytkownika)" value="{$ustawienia.mail_pp_wyplata_user_tytul}">
+			<h3>Treść:</h3>
+			<textarea name="mail_pp_wyplata_user_tresc" placeholder="Treść maila" title="Tu wpisz treść maila">{$ustawienia.mail_pp_wyplata_user_tresc}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'mail_pp_wyplata_user_tresc',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br><br>
+			<hr>
+			<br><br>
+			<label><h2><input type="checkbox" name="smtp" {if $ustawienia.smtp==1}checked{/if}>Wysyłaj emaile przez SMTP (wymagane poniższe pola)</h2></label>
+			<label><h2>Email: <input type="text" name="smtp_email" value="{$ustawienia.smtp_email}" placeholder="SMTP - email" title="Tutaj wpisz email konta smtp" style="max-width: 250px"></h2></label>
+			<label><h2>SMTP Host: <input type="text" name="smtp_host" value="{$ustawienia.smtp_host}" placeholder="SMTP - host" title="Tutaj wpisz host smtp" style="max-width: 250px"></h2></label>
+			<label><h2>SMTP Użytkownik: <input type="text" name="smtp_uzytkownik" value="{$ustawienia.smtp_uzytkownik}" placeholder="SMTP - uzytkownik" title="Tutaj wpisz nazwę użytkownika smtp" style="max-width: 250px"></h2></label>
+			<label><h2>SMTP Hasło: <input type="text" name="smtp_haslo" value="{$ustawienia.smtp_haslo}" placeholder="SMTP - hasło" title="Tutaj wpisz hasło konta smtp" style="max-width: 250px"></h2></label>
+			<br><br>
+			<hr>
+			<br><br>
+			<label><h2><input type="checkbox" name="pokaz_formularz_kontaktowy" title="Zaznacz jeśli chcesz pokazywać formularz kontaktowy pod ogłoszeniami" {if $ustawienia.pokaz_formularz_kontaktowy}checked{/if}> Pokaż formularz kontaktowy pod ogłoszeniami</h2></label>
+			<label><h2><input type="checkbox" name="pokaz_formularz_kontaktowy_profil" title="Zaznacz jeśli chcesz pokazywać formularz kontaktowy na stronie profilu użytkownika" {if $ustawienia.pokaz_formularz_kontaktowy_profil}checked{/if}> Pokaż formularz kontaktowy na stronie profilu</h2></label>
+			<label><h2><input type="checkbox" name="maile_zalaczniki" {if $ustawienia.maile_zalaczniki==1}checked{/if}>Zezwól na dołączanie załączników do maili</h2></label>
+			<br><br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>

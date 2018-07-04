@@ -1,0 +1,95 @@
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_konto.tpl"}
+	
+	<div id="strona">
+		<h2>Program partnerski</h2>
+		<br>
+		<div id="moj_program_partnerski">
+			<h4>Twój link partnerski:</h4>
+			<input type="text" readOnly value="{$ustawienia.base_url}?ref={$uzytkownik.login}" style="width: 90%;" onclick="this.select()">
+			<br><br>
+			<h4>Twoja prowizja: {$program_partnerski.prowizja}%</h4>
+			{if isset($program_partnerski.polecajacy)}<h4>Osoba polecająca: <a href="{$ustawienia.base_url}/profil,{$program_partnerski.polecajacy}" title="Profil użytkownika {$program_partnerski.polecajacy}" target="_blank">{$program_partnerski.polecajacy}</a></h4>{/if}
+			{if isset($program_partnerski.poleceni)}
+				<h4>Osoby polecone:</h4>
+				<ul>
+					{foreach from=$program_partnerski.poleceni item=item key=key}
+						<li><a href="{$ustawienia.base_url}/profil,{$item.login}" title="Profil użytkownika {$item.login}" target="_blank">{$item.login}</a><i> - {$item.data|date_format:"%d-%m-%Y"}</i></li>
+					{/foreach}
+				</ul>
+			{/if}
+			<br>
+			<h4>Statystyki ogłoszeń:</h4>
+			<form id="pp_statystyki">
+				<input type="date" name="data_od" title="Wybierz początkową datę" value="{($smarty.now-2592000)|date_format:'%Y-%m-%d'}" max="{$smarty.now|date_format:'%Y-%m-%d'}"> - 
+				<input type="date" name="data_do" title="Wybierz końcową datę" value="{$smarty.now|date_format:'%Y-%m-%d'}" max="{$smarty.now|date_format:'%Y-%m-%d'}">
+				<input type="submit" value="Generuj!">
+				<br>
+				<table>
+					<tr><td>Ogłoszenie</td><td>Użytkownik</td><td><b>Prowizja</b></td><td>Data</td></tr>
+					<tr><td class="right" colspan="2">Suma:</td><td class="right"><b><span id="pp_statystyki_suma"></span>&nbsp;{$ustawienia.waluta}</b></td><td></td></tr>
+				</table>
+			</form>
+			<br>
+			<h4>Suma prowizji:</h4>
+			<div id="pp_suma_prowizji">
+				<table>
+					<tr><td>Od początku:</td><td>{$program_partnerski.suma_prowizji.od_poczatku|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</td></tr>
+					<tr><td>Poprzedni rok ({($program_partnerski.suma_prowizji.rok)-1})</td><td>{$program_partnerski.suma_prowizji.zeszly_rok|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</td></tr>
+					<tr><td>Bieżący rok ({$program_partnerski.suma_prowizji.rok})</td><td>{$program_partnerski.suma_prowizji.ten_rok|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</td></tr>
+					<tr><td>Wypłacone:</td><td>{$program_partnerski.suma_prowizji.wyplacone|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</td></tr>
+					<tr><td><b>Do wypłaty:</b></td><td><b>{$program_partnerski.suma_prowizji.do_wyplaty|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</b></td></tr>
+				</table>
+			</div>
+			<br>
+			{if isset($program_partnerski.zlecone_wyplaty)}
+				<h4>Zlecone wypłaty:</h4>
+				<div id="pp_zlecone_wyplaty">
+					<table>
+						<tr><td>Status</td><td>Kwota</td><td>Data zlecenia</td><td>Data realizacji</td></tr>
+					{foreach from=$program_partnerski.zlecone_wyplaty item=item key=key}
+						<tr>
+							<td>{if $item.status=='oczekujacy'}Oczekujący{elseif $item.status=='zrealizowany'}Zrealizowany{elseif $item.status=='odmowa'}Odmowa{/if}</td>
+							<td class="right">{$item.kwota|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</td>
+							<td>{$item.data|date_format:"%d-%m-%Y"}</td>
+							<td>{$item.data_realizacji|date_format:"%d-%m-%Y"}</td>
+						</tr>
+					{/foreach}
+					</table>
+				</div>
+				<br>
+			{/if}
+			<h4>Wypłata środków:</h4>
+			<div id="pp_wyplata">
+			{if $program_partnerski.oczekujace}
+				<p class="infobox czerwona">Następujące środki: <b>{$program_partnerski.oczekujace|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</b> oczekują na wypłatę</p>
+			{elseif $program_partnerski.suma_prowizji.do_wyplaty==0}
+				<p class="infobox czerwona">Nie masz żadnych środków do wypłaty</p>
+			{elseif $program_partnerski.formularz_wyplaty}
+				<form action="" method="post">
+					<input type="hidden" name="akcja" value="pp_wyplata_srodkow">
+					<label for="pp_imie">Imię i nazwisko / nazwa firmy</label><br>
+					<input type="text" name="pp_imie" placeholder="Jan Kowalski" title="Twoje imię i nazwisko lub nazwa firmy" required maxlength="128" value="{$uzytkownik.pp_imie}"><br>
+					<label for="pp_adres">Adres:</label><br>
+					<textarea name="pp_adres" placeholder="Twój adres" title="Tu wpisz swój adres" maxlength="256">{$uzytkownik.pp_adres}</textarea><br>
+					<label for="pp_numer_konta">Numer rachunku bankowego</label><br>
+					<input type="text" name="pp_numer_konta" placeholder="XX-XXXX-XXXX-XXXX-XXXX-XXXX-XXXX" title="Tu wpisz swój numer rachunku bankowego" required maxlength="64" value="{$uzytkownik.pp_numer_konta}"><br>
+					<label for="kwota">Kwota:
+					<input type="number" name="kwota" placeholder="{$program_partnerski.suma_prowizji.do_wyplaty|number_format:2:",":" "}" title="Tu wpisz kwotę którą chcesz wypłacić" value="{$program_partnerski.suma_prowizji.do_wyplaty}" max="{$program_partnerski.suma_prowizji.do_wyplaty}" min="{$ustawienia.pp_minimalna_kwota}" step="0.01" class="right" required>&nbsp;{$ustawienia.waluta}</label>
+					<p class="infobox">Przed zleceniem wypłaty sprawdź poprawność powyższych danych!</p><br>
+					<input type="submit" value="Zleć wypłatę!">
+				</form>
+			{else}
+				<p class="infobox czerwona">Nie osiągnięto minimalnej kwoty wypłaty ({$ustawienia.pp_minimalna_kwota}&nbsp;{$ustawienia.waluta})</p>
+			{/if}
+			</div>
+			<br><br>
+		</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}

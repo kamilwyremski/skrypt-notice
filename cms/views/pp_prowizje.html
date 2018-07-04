@@ -1,0 +1,79 @@
+
+
+	<div class="center">
+		<h1>Prowizje z programu partnerskiego</h1>
+		{if !$ustawienia.program_partnerski}<p style="color: red">Uwaga! Program partnerski jest wyłączony!</p>{/if}
+		<p>Tutaj znajduje się podgląd prowizji z programu partnerskiego</p>
+		<br>
+		
+		<form action="" method="get" class="form_szukaj">
+			<input type="hidden" name="akcja" value="pp_prowizje">
+			<input type="hidden" name="wyszukaj">
+			<label>Id ogłoszenia: <input type="number" name="id_ogloszenia" {if isset($smarty.get.id_ogloszenia)}value="{$smarty.get.id_ogloszenia}"{/if} min="0" placeholder="13" title="Tu wpisz id ogłoszenia do wyszukania"></label>
+			{if isset($uzytkownicy)}
+				<label>Użytkownik:
+					<select name="id_uzytkownika">
+						<option value="">-- wszyscy --</option>
+						{foreach from=$uzytkownicy item=item key=key}
+							<option value="{$item.id}" {if isset($smarty.get.id_uzytkownika) and $smarty.get.id_uzytkownika==$item.id}selected{/if}>{$item.login}</option>
+						{/foreach}
+					</select>
+				</label>
+				<label>Polecający:
+					<select name="id_polecajacego">
+						<option value="">-- wszyscy --</option>
+						{foreach from=$uzytkownicy item=item key=key}
+							<option value="{$item.id}" {if isset($smarty.get.id_polecajacego) and $smarty.get.id_polecajacego==$item.id}selected{/if}>{$item.login}</option>
+						{/foreach}
+					</select>
+				</label>
+			{/if}
+			<label>Data od: <input type="date" name="data_od" {if isset($smarty.get.data_od)}value="{$smarty.get.data_od}"{/if} placeholder="01-01-2015" title="Tu wpisz datę początkową aby zawęzić obszar wyszukiwania"></label>
+			<label>Data do: <input type="date" name="data_do" {if isset($smarty.get.data_do)}value="{$smarty.get.data_do}"{/if} placeholder="31-12-2018" title="Tu wpisz datę końcową aby zawęzić obszar wyszukiwania"></label>
+			<input type="submit" value="Szukaj!">
+			<br><br>
+		</form>
+		<br>
+		<h3>Suma prowizji: {$suma_prowizji|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</h3>
+		<br>
+
+		{if isset($pp_prowizje)}
+		<table class="table">
+			<tr>
+				<td colspan="9">Prowizje z programu partnerskiego</td>
+			</tr>
+			<tr>
+				<td>Ogłoszenie <a href="?{$url_strony.sortuj}&sortuj=id_ogloszenia" title="Sortuj po ID ogłoszenia" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=id_ogloszenia&desc" title="Sortuj malejąco po ID ogłoszenia" class="ikona sortuj_dol"></a></td>
+				<td>Użytkownik</td>
+				<td>Polecający</td>
+				<td>Kwota <a href="?{$url_strony.sortuj}&sortuj=kwota" title="Sortuj po kwocie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=kwota&desc" title="Sortuj malejąco po kwocie transakcji" class="ikona sortuj_dol"></a></td>
+				<td class="center">Procent <a href="?{$url_strony.sortuj}&sortuj=procent" title="Sortuj po procencie prowizji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=procent&desc" title="Sortuj malejąco po procencie prowizji" class="ikona sortuj_dol"></a></td>
+				<td>Prowizja <a href="?{$url_strony.sortuj}&sortuj=prowizja" title="Sortuj po prowizji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=prowizja&desc" title="Sortuj malejąco po prowizji" class="ikona sortuj_dol"></a></td>
+				<td>Data <a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie dodatnia" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie dodania" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$pp_prowizje name=pp_prowizje}
+				<tr>
+					<td>{$item.id_ogloszenia} {if $item.tytul!=''}- <a href="../{$item.id_ogloszenia},{$item.prosty_tytul}" title="Ogłoszenie {$item.tytul}" target="_blank">{$item.tytul}</a>{/if}</td>
+					<td>{if $item.uzytkownik!=''}<a href="../profil,{$item.uzytkownik}" title="Profil użytkownika {$item.uzytkownik}" target="_blank">{$item.uzytkownik}</a>{else}{$item.id_uzytkownika}{/if}</td>
+					<td>{if $item.polecajacy!=''}<a href="../profil,{$item.polecajacy}" title="Profil użytkownika {$item.polecajacy}" target="_blank">{$item.polecajacy}</a>{else}{$item.id_polecajacego}{/if}</td>
+					<td class="right">{$item.kwota|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</td>
+					<td class="center">{$item.procent}%</td>
+					<td class="right"><b>{$item.prowizja|number_format:2:",":" "}&nbsp;{$ustawienia.waluta}</b></td>
+					<td class="center">{$item.data|date_format:"%d-%m-%Y"}<br>{$item.data|date_format:"%H:%M"}</td>
+				</tr>
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

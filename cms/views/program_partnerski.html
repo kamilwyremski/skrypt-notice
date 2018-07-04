@@ -1,0 +1,18 @@
+	<div class="center">
+		<h1>Program partnerski</h1>
+		<p>Tutaj możesz edytować ustawienia programu partnerskiego w serwisie</p>
+		<br><br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_program_partnerski">
+			<label><h2><input type="checkbox" name="program_partnerski" title="Zaznacz jeśli chcesz włączyć program partnerski w serwisie" {if $ustawienia.program_partnerski}checked{/if} class="platnosc_checkbox" data-typ="program_partnerski"> Włącz program partnerski</h2></label>
+			<h2>Domyślna prowizja: <input type="number" name="pp_prowizja" placeholder="10%" title="Tu wpisz domyślną prowizję (możesz ją zmienić dla każdego użytkwonika indywidualnie)" value="{$ustawienia.pp_prowizja}" min="0" max="100" {if $ustawienia.program_partnerski}required{/if} class="program_partnerski"> %</h2>
+			<h2>Email do powiadomień: <input type="email" name="pp_email" placeholder="john@example.pl" title="Tu wpisz adres email na który zostanie wysłana prośba użytkownika o wypłatę wynagrodzenia" value="{$ustawienia.pp_email}" {if $ustawienia.program_partnerski}required{/if} class="program_partnerski"></h2>
+			<label><h2><input type="checkbox" name="pp_deaktywacja_po_rejestracji" title="Zaznacz jeśli chcesz aby po pierwszej rejestracji użytkownika na danym adresie IP link affilacyjny został dezaktywowany" {if $ustawienia.pp_deaktywacja_po_rejestracji}checked{/if}> Dezaktywuj link affilacyjny po pierwszej rejestracji na danym adresie IP</h2></label>
+			<h2>Ilość godzin do dezaktywacji linka affilacyjnego dla danego IP: <input type="number" name="pp_godzin_dezaktywacja" placeholder="24" title="Wybierz po ilu godzinach kliknięty link affilacyjny ma być dezaktywowany dla danego adresu IP" value="{$ustawienia.pp_godzin_dezaktywacja}" min="0" {if $ustawienia.program_partnerski}required{/if} class="program_partnerski"> godziny</h2>
+			<h2>Minimalna kwota wypłaty: <input type="number" name="pp_minimalna_kwota" placeholder="50 zł" title="Minimalna kwota od której użytkownik może poprosić o wypłacenie prowizji" value="{$ustawienia.pp_minimalna_kwota}" min="0" step="0.01" {if $ustawienia.program_partnerski}required{/if} class="program_partnerski"> {$ustawienia.waluta}</h2>
+			<br><br>
+			<input type="submit" value="Zapisz">
+		</form>
+	</div>
+	
+	

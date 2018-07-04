@@ -1,0 +1,52 @@
+.form_szukaj label{
+	display: inline-block;
+}
+.form_szukaj input, .form_szukaj select{
+	min-width:0px;   width:200px; 
+}
+.form_szukaj input[type=number]{
+	min-width:0px;   width:100px;
+}
+.form_szukaj input[type=submit]{
+	padding: 6px 20px; width: auto; 
+}
+.ukryty, .ukryta_opcja{
+	display: none;
+}
+.facebook_icon_mini{
+	position: relative; bottom:-3px; margin-right: 5px;
+}
+.textarea_duza{
+	max-width: 100%; height: 150px;
+}
+.miniaturka_kategorii{
+	max-height: 70px; max-width: 200px; margin: auto; display: block;
+}
+.opcje_box_kategorii{
+	text-align: left; max-width: 400px; margin: auto;
+}
+/*statystyki*/
+#table_statystyki tr td:nth-child(2), #table_statystyki tr td:nth-child(4){
+	text-align: right;
+}
+#statystyki{
+	background-color: white; margin: 30px auto; box-shadow: 0px 14px 22px -20px rgba(50, 50, 50, 0.75); padding: 10px; width: 90%;
+}
+#statystyki input{
+	width: 150px; min-width: 150px;
+}
+#statystyki_select_1{
+	border-color: #4bb2c5; padding: 5px 2px;
+}
+#statystyki_select_2{
+	border-color: #eaa228; padding: 5px 2px;
+}
+#jqplot{
+	width:90%; height: 250px; margin: auto; 
+}
+#jqplot.before{
+	background: url('../../images/wykres_tlo.jpg'); background-repeat: no-repeat;  background-size: cover;
+}
+#jqplot_info{
+	padding-top: 70px; max-width: 300px; margin: auto;  color: #525252;   font-size: 20px; font-weight: bold;
+}

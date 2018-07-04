@@ -1,0 +1,58 @@
+	<div class="dialog" id="dodaj" data-title="Dodaj typ ogłoszeń">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="dodaj">
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required maxlength="32"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+	<div class="center">
+		<h1>Typy ogłoszeń</h1>
+		<p>Tutaj możesz edytować typy ogłoszeń dostępnych w serwisie.</p>
+		<br>
+		<a href="#dodaj" class="submit open_dialog" title="Dodaj typ ogłoszeń">Dodaj typ ogłoszeń</a><br><br>
+		<br>
+		{if isset($typy_ogloszen)}
+		<table class="table">
+			<tr>
+				<td colspan="4">Typy ogłoszeń</td>
+			</tr>
+			<tr>
+				<td></td><td>Nazwa</td><td class="center">Edytuj</td><td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$typy_ogloszen name=typy_ogloszen}
+				<tr>
+					<td>{$smarty.foreach.typy_ogloszen.iteration}</td>
+					<td>{$item.nazwa}</td>				 
+					<td class="center"><a href="#edytuj_{$item.id}" title="Edytuj" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a></td>			 	
+				</tr>
+
+	<div class="dialog" id="edytuj_{$item.id}" data-title="Edytuj region {$item.nazwa}">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="edytuj">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required value="{$item.nazwa}" maxlength="32"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń region {$item.nazwa}">
+		<p>Czy na pewno chcesz usunąć typ ogłoszeń {$item.nazwa}?</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	

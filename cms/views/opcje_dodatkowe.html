@@ -1,0 +1,51 @@
+
+	<div class="center">
+		<h1>Opcje dodatkowe</h1>
+		<p>Tutaj możesz dodać opcje dodatkowe dla ogłoszeń.</p>
+		<br>
+		<a href="?akcja=opcja_dodatkowa" class="submit" title="Dodaj opcje dodatkową">Dodaj opcje</a><br><br>
+		
+		{if isset($opcje_dodatkowe)}
+		<table class="table">
+			<tr>
+				<td colspan="7">Opcje dodatkowe</td>
+			</tr>
+			<tr>
+				<td>Nazwa</td><td>Rodzaj</td><td>Opcje wyboru (select)</td><td class="center">Wymagane</td><td class="center" style="width:65px">Pozycja</td><td class="center">Edytuj</td><td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$opcje_dodatkowe name=opcje_dodatkowe}
+				<tr>
+					<td>{$item.nazwa}</td>	
+					<td>{if $item.rodzaj=='tekst'}Pole tekstowe{elseif $item.rodzaj=='liczba'}Pole liczbowe{elseif $item.rodzaj=='data'}Pole z datą{elseif $item.rodzaj=='select'} Pole wyboru (select){/if}</td>						
+					<td>{if $item.rodzaj=='select'}{$item.opcje_wyboru}{/if}</td>
+					<td class="center">{if $item.wymagane}Tak{/if}</td>
+					<td class="center">
+					{if $item.id!=0}
+						<a href="#" title="Pozycja w górę" class="ikona ikona_pozycja_gora ajax {if $smarty.foreach.opcje_dodatkowe.iteration==2}nieaktywna{/if}" data-akcja="opcje_dodatkowe_pozycja" data-id="{$item.id}" data-pozycja="{$item.pozycja}" data-dzialanie="0"></a>
+						<a href="#" title="Pozycja w dół" class="ikona ikona_pozycja_dol ajax {if $smarty.foreach.opcje_dodatkowe.last}nieaktywna{/if}" data-akcja="opcje_dodatkowe_pozycja" data-id="{$item.id}" data-pozycja="{$item.pozycja}" data-dzialanie="1"></a>
+					{/if}
+					</td>
+					<td class="center"><a href="?akcja=opcja_dodatkowa&id={$item.id}" title="Edytuj opcje dodatkową" class="ikona ikona_edytuj"></a></td>
+					<td class="center">
+{if $item.id!=0}
+					<a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń pole dodatkowe {$item.nazwa}">
+		<p>Czy na pewno chcesz usunąć pole dodatkowe {$item.nazwa}? Opcja ta zostanie usunięta także ze wszystkich ogłoszeń w których ją dodano / zaznaczono.</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+{/if}
+					</td>			 	
+				</tr>
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	

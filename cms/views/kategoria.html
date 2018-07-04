@@ -1,0 +1,54 @@
+	<div id="roxyCustomPanel" style="display: none;">
+		<iframe src="js/ckeditor/fileman/index.html?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
+	</div>
+
+	<div class="center">
+		<h1>{if isset($kategoria)}Edytuj kategorie: {$kategoria.nazwa}{elseif isset($kategoria_nadrzedna)}Nowa podkategoria w: {$kategoria_nadrzedna.nazwa}{else}Nowa kategoria{/if}</h1>
+		{if isset($nawigacja)}
+			<h4>
+			{foreach from=$nawigacja item=item key=key name=nawigacja}
+				<a href="{$item.url}" title="Kategoria:{$item.nazwa}">{$item.nazwa}</a>
+				{if !$smarty.foreach.nawigacja.last} > {/if}
+			{/foreach}
+			</h4><br>
+		{/if}
+		<p>Tutaj możesz edytować i dodawać nowe kategorie.</p>
+		<br>
+		{if isset($kategoria)}
+			<a href="?akcja=kategorie&kategoria={$kategoria.id}">Edytuj podkategorie</a><br><br>
+		{/if}
+		<form method="post" action="" class="form_edytuj_kategorie">
+			<input type="hidden" name="akcja" value="zapisz_kategorie">
+			<h2>Nazwa:</h2>
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required maxlength="32" value="{if isset($kategoria)}{$kategoria.nazwa}{/if}" autofocus><br>
+			<h2><label>Opłata: <input type="number" name="oplata" placeholder="Opłata" title="Wpisz opłatę za wystawienie ogłoszenia w tej kategorii" required min="0" step="0.01" value="{if isset($kategoria)}{$kategoria.oplata}{else}0.00{/if}">{$ustawienia.waluta}</label></h2>
+			<h2>Słowa kluczowe (keywords) SEO:</h2>
+			<textarea name="keywords" title="Ustaw słowa kluczowe (keywords) dla danej kategorii" placeholder="Słowa kluczowe" maxlength="1024">{if isset($kategoria)}{$kategoria.keywords}{/if}</textarea>
+			<h2>Opis (description) SEO:</h2>
+			<textarea name="description" title="Ustaw opis (description) dla danej kategorii" placeholder="Opis kategorii" maxlength="1024">{if isset($kategoria)}{$kategoria.description}{/if}</textarea>
+			<h2>Strona główna - opis:</h2>
+			<textarea name="glowna_opis" placeholder="Opis na stronie głównej" title="Tu wpisz opis wyświetlany na stronie głównej (na pierwszej stronie paginacji)">{if isset($kategoria)}{$kategoria.glowna_opis}{/if}</textarea>
+			<script type="text/javascript">
+				{literal}
+					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					$(function(){
+						CKEDITOR.replace( 'glowna_opis',{height: '200px',
+							filebrowserBrowseUrl:roxyFileman,
+							filebrowserImageBrowseUrl:roxyFileman+'?type=image',
+							removeDialogTabs: 'link:upload;image:upload'}); 
+					});
+				{/literal}
+			</script>
+			<br>
+			<a href="#" class="otworz_roxy">
+				<img data-roxy_name="miniaturka" src="{if isset($kategoria) and $kategoria.miniaturka!=''}{$kategoria.miniaturka}{else}images/brak_zdjecia.png{/if}" onerror="this.src='images/brak_zdjecia.png'" alt="Miniaturka" class="miniaturka_kategorii">
+			</a>
+			<br>
+			<input type="text" name="miniaturka" value="{if isset($kategoria)}{$kategoria.miniaturka}{/if}" placeholder="Adres URL miniaturki" title="Wklej adres URL miniaturki">
+			<br><br>
+			<input type="submit" value="ZAPISZ!">
+			<br><br><br>
+			<a href="?akcja=kategorie{if isset($kategoria_nadrzedna)}&kategoria={$kategoria_nadrzedna.id}{/if}" title="Spis kategorii">Wróć do spisu kategorii</a>
+		</form>
+	</div>
+	

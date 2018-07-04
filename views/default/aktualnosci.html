@@ -1,0 +1,44 @@
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_info.tpl"}
+	
+	<div id="strona">
+		<h2>Aktualności w serwisie</h2>
+		{if isset($aktualnosci)}
+			<nav id="spis_aktualnosci">
+				<ul>
+					{foreach from=$aktualnosci item=item key=key}
+						<li>
+							<div class="aktualnosc_lewo">
+								<a href="aktualnosc,{$item.id},{$item.prosty_tytul}" title="Aktualność: {$item.tytul}"><img src="{if $item.miniaturka!=''}{$item.miniaturka}{else}{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png{/if}" onerror="this.src='{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png'" alt="{$item.tytul}"></a>
+							</div>
+							<div class="aktualnosc_prawo">
+								<h3><a href="aktualnosc,{$item.id},{$item.prosty_tytul}" title="Aktualność: {$item.tytul}">{$item.tytul}</a></h3>
+								<p class="data"><i>{$item.data|date_format:"%d-%m-%Y"}</i></p>
+								<p>{$item.krotki_opis}</p>
+							</div>
+						</li>
+					{/foreach}
+				</ul>
+			</nav>
+			
+			{if $ile_stron>1}
+				<div id="wybor_stron">
+					<p>Strona {$ktora_strona} z {$ile_stron}</p>
+					<a href="{$ustawienia.base_url}/aktualnosci" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+					<a href="{$ustawienia.base_url}/aktualnosci?strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}" rel="prev"></a>	
+					<a href="{$ustawienia.base_url}/aktualnosci?strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}" rel="next"></a>
+					<a href="{$ustawienia.base_url}/aktualnosci?strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+				 </div>
+			{/if}
+		{else}
+			<h4>Nie dodano jeszcze żadnych aktualności...</h4>
+			<br><br>
+		{/if}
+	</div>
+</div>
+
+{include file="footer.tpl"}

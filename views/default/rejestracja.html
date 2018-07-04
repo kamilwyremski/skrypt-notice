@@ -1,0 +1,44 @@
+{literal}
+<style>
+	body{
+		background-color: #a0ce4e;
+	}
+</style>
+{/literal}
+<div id="div_logowanie">
+	<div id="okno_logowania" class="center">
+		<h1>{$ustawienia.tytul}</h1>
+		{if isset($facebook_login)}
+			<h2>Uzupełnij dane</h2>
+			<form method="post" action="">
+				<input type="hidden" name="akcja" value="facebook_ustaw_login">
+				{if isset($blad.login)}<p class="blad">{$blad.login}</p>{/if}
+				<input type="text" placeholder="Login / nick" name="login" title="Wpisz tutaj login/nick pod jakim chcesz się logować do serwisu" required {if isset($smarty.post.login)}value="{$smarty.post.login}"{/if} maxlength="32">
+				<input type="email" value="{$facebook_login}" disabled>
+				{if isset($blad.regulamin)}<p class="blad">{$blad.regulamin}</p>{/if}
+				<label><input type="checkbox" required name="regulamin" {if isset($smarty.post.regulamin)}checked{/if}>Akceptuje <a href="regulamin" title="Regulamin serwisu" target="_blank">Regulamin</a> oraz <a href="polityka_prywatnosci" title="Polityka prywatności serwisu" target="_blank">Politykę prywatności</a> serwisu.</label>
+				<input type="submit" value="ZAREJESTRUJ SIĘ">
+			</form>
+		{else}
+			<h2>Zarejestruj się</h2>
+			<form method="post" action="">
+				<input type="hidden" name="akcja" value="rejestracja">
+				{if isset($blad.login)}<p class="blad">{$blad.login}</p>{/if}
+				<input type="text" placeholder="Login / nick" name="login" title="Wpisz tutaj login/nick pod jakim chcesz się logować do serwisu" required {if isset($smarty.post.login)}value="{$smarty.post.login}"{/if} maxlength="32">
+				{if isset($blad.email)}<p class="blad">{$blad.email}</p>{/if}
+				<input type="email" placeholder="john@example.com" name="email" title="Wpisz tutaj swój adres e-mail" required {if isset($smarty.post.email)}value="{$smarty.post.email}"{/if} maxlength="64">
+				{if isset($blad.haslo)}<p class="blad">{$blad.haslo}</p>{/if}
+				<input type="password" placeholder="****" {literal}pattern=".{4,}"{/literal} name="haslo" title="Wpisz tutaj hasło jakim chcesz się logować do systemu - minimum 4 znaki" required {if isset($smarty.post.haslo)}value="{$smarty.post.haslo}"{/if} maxlength="32">
+				<input type="password" placeholder="****" {literal}pattern=".{4,}"{/literal} name="powtorz_haslo" title="Powtórz hasło" required maxlength="32">
+				{if isset($blad.captcha)}<p class="blad">{$blad.captcha}</p>{/if}
+				<img src="php/captcha.php" alt="captcha" id="image_captcha"><input type="text" placeholder="Captcha" title="Tu przepisz kod captcha" name="captcha" required maxlength="32">	
+				{if isset($blad.regulamin)}<p class="blad">{$blad.regulamin}</p>{/if}
+				<label><input type="checkbox" required name="regulamin" {if isset($smarty.post.regulamin)}checked{/if}>Akceptuje <a href="regulamin" title="Regulamin serwisu" target="_blank">Regulamin</a> oraz <a href="polityka_prywatnosci" title="Polityka prywatności serwisu" target="_blank">Politykę prywatności</a> serwisu.</label>
+				<input type="submit" value="ZAREJESTRUJ SIĘ">
+				{if $ustawienia.logowanie_facebook==1 && isset($url_facebook)}<a href="{$url_facebook}" title="Zaloguj przez Facebooka!" id="logowanie_facebook" class="submit"><img src="{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/ikona_facebook.png" alt="Facebook">ZALOGUJ SIĘ PRZEZ FB!</a>{/if}
+			</form>
+		{/if}
+		<a href="logowanie" title="Zaloguj się">Zaloguj się</a><br>
+		<a href="{$ustawienia.base_url}" title="{$ustawienia.tytul}">Wróć do serwisu</a>
+	</div>
+</div>

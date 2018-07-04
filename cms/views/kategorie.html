@@ -1,0 +1,65 @@
+	<div class="center">
+		<h1>{if isset($kategoria)}Podkategorie w: {$kategoria.nazwa}{else}Kategorie{/if}</h1>
+		{if isset($nawigacja)}
+			<h4>
+			{foreach from=$nawigacja item=item key=key name=nawigacja}
+				<a href="{$item.url}" title="Kategoria:{$item.nazwa}">{$item.nazwa}</a>
+				{if !$smarty.foreach.nawigacja.last} > {/if}
+			{/foreach}
+			</h4><br>
+		{/if}
+		<p>Tutaj możesz edytować podkategorie w danej kategorii - dodawać, zmieniać nazwę oraz usuwać.</p>
+		<br>
+		{if isset($kategoria)}
+			<a href="?akcja=kategoria&id={$kategoria.id}">Edytuj kategorie</a><br><br>
+		{/if}
+		<a href="?akcja=kategoria&kategoria={if isset($kategoria)}{$kategoria.id}{/if}" class="submit open_dialog" title="Dodaj kategorie">Dodaj kategorie</a><br><br>
+		{if isset($kategorie)}
+		<table class="table">
+			<tr>
+				<td colspan="8">Kategorie{if isset($kategoria)} w {$kategoria.nazwa}{/if}</td>
+			</tr>
+			<tr>
+				<td class="center">Miniaturka</td><td>Nazwa</td><td class="center">Ile</td><td class="center">Opłata</td><td class="center">Pozycja</td><td class="center">Edytuj</td><td class="center">Edytuj podkategorie</td><td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$kategorie name=kategorie}
+				<tr>
+					<td class="center">
+						{if $item.miniaturka!=''}<img  src="{$item.miniaturka}" onerror="this.src='images/brak_zdjecia.png'" alt="Miniaturka" class="miniaturka_kategorii">{/if}
+					</td>
+					<td><a href="../kategoria,{$item.id},{$item.prosta_nazwa}" title="Kategoria: {$item.nazwa}" target="_blank">{$item.nazwa}</a></td>				 
+					<td class="center">{$item.ile}</td>
+					<td class="center">{$item.oplata|number_format:2:",":" "} {$ustawienia.waluta}</td>
+					<td class="center">
+						<a href="#" title="Pozycja w górę" class="ikona ikona_pozycja_gora ajax {if $smarty.foreach.kategorie.first}nieaktywna{/if}" data-akcja="kategoria_pozycja" data-id="{$item.id}" data-pozycja="{$item.pozycja}" data-dzialanie="0" data-kategoria="{$item.kategoria}"></a>
+						<a href="#" title="Pozycja w dół" class="ikona ikona_pozycja_dol ajax {if $smarty.foreach.kategorie.last}nieaktywna{/if}" data-akcja="kategoria_pozycja" data-id="{$item.id}" data-pozycja="{$item.pozycja}" data-dzialanie="1" data-kategoria="{$item.kategoria}"></a>
+					</td>
+					<td class="center"><a href="?akcja=kategoria&id={$item.id}" title="Edytuj" class="ikona ikona_edytuj"></a></td>
+					<td class="center"><a href="?akcja=kategorie&kategoria={$item.id}" title="Edytuj podkategorie" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń kategorie {$item.nazwa}">
+		<p>Czy na pewno chcesz usunąć kategorie {$item.nazwa}?</p>
+		<p>Zostaną usunięte wszystkie jej podkategorie.</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+					</td>			 	
+				</tr>
+			{/foreach}		
+		</table>
+		<br><br>
+		<a href="#" title="Ułóż alfabetycznie" class="ajax_confirm" data-akcja="kategorie_uloz" data-kategoria="{if isset($kategoria)}{$kategoria.id}{else}0{/if}" data-title="Czy na pewno chcesz ułożyć kategorie na tej stronie alfabetycznie?">Ułóż alfabetycznie</a>
+		{else}
+			<h2>Nic nie znaleziono!</h2>
+		{/if}
+		<br><br>
+		{if isset($kategoria)}
+			<br><br><a href="?akcja=kategorie&kategoria={$kategoria.kategoria}">Wróć do wcześniejszej kategorii</a>
+		{/if}
+	</div>
+	

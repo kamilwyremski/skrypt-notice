@@ -1,0 +1,44 @@
+
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_info.tpl"}
+	
+	<div id="strona">
+		<h2>Kontakt z nami</h2>
+		<div id="kontakt_box">
+			{$kontakt.tresc}
+			<br>
+			<h5><a href="mailto:{$ustawienia.email}" title="Napisz do nas!">{$ustawienia.email}</a></h5>
+			<br>
+			<div id="formularz_kontaktowy">
+				<p class="red blad" id="info_imie"></p>
+				<input type="text" id="imie" maxlength="32" placeholder="Jan Kowalski" title="Tu wpisz swoje imię i nazwisko">
+				<p class="red blad" id="info_email"></p>
+				<input type="text" id="email" maxlength="32" placeholder="john@example.com" title="Tu wpisz swój adres email" {if isset($uzytkownik)}value="{$uzytkownik.email}"{/if}>
+				<select id="temat" title="Wybierz temat wiadomości">
+					<option value="Pomoc techniczna">Pomoc techniczna</option>
+					<option value="Prośba o kontakt">Prośba o kontakt</option>
+					<option value="Oferta współpracy">Oferta współpracy</option>
+					<option value="Reklama">Reklama</option>
+					<option value="Propozycja / uwaga">Propozycja / uwaga</option>
+					<option value="Inna wiadomość">Inna wiadomość</option>
+				</select>
+				<p class="red blad" id="info_wiadomosc"></p>
+				<textarea id="wiadomosc" placeholder="Moja wiadomość..." title="Tu wpisz wiadomość do nas"></textarea>
+				{if $ustawienia.maile_zalaczniki}
+					<input type="file" name="zalacznik" title="Tutaj możesz dodać załacznik do wiadomości" id="zalacznik">
+				{/if}
+				<div class="right">
+					<input type="submit" value="Wyślij!" id="wyslij_mail">
+				</div>
+				<p id="info_ok"></p>
+			</div>
+		</div>
+	</div>
+</div>
+
+{include file="footer.tpl"}
+

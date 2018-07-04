@@ -1,0 +1,7 @@
+User-agent: *
+Disallow: /cache
+Disallow: /config
+Disallow: /install
+Disallow: /libs
+Disallow: /model
+Disallow: /tmp

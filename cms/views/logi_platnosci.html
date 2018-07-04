@@ -1,0 +1,177 @@
+
+
+<div class="center">		
+	{if isset($platnosci_payu)}
+		<h1>Logi płatności - PayU</h1>
+		<p>Tutaj możesz przeglądać logi płatności z serwisu PayU</p>
+		<br>
+		<table class="table">
+			<tr>
+				<td colspan="9">Logi płatności - PayU</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>ID transakcji</td>
+				<td>Ogłoszenie</td>
+				<td class="center">Kwota<br><a href="?{$url_strony.sortuj}&sortuj=kwota" title="Sortuj po kwocie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=kwota&desc" title="Sortuj malejąco po kwocie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Email<a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po emailu" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po emailu" class="ikona sortuj_dol"></a></td>
+				<td>Opis</td>
+				<td class="center">Data<a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$platnosci_payu name=platnosci_payu}
+				<tr>
+					<td>{$smarty.foreach.platnosci_payu.iteration+$iteration}</td>
+					<td>{$item.id_transakcji}</td>
+					<td>{if isset($item.tytul)}<a href="../{$item.id_ogloszenia},{$item.prosty_tytul}?podglad" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a>{else}{$item.id_ogloszenia}{/if}</td>
+					<td class="center">{$item.kwota}</td>
+					<td><a href="mailto:{$item.email}" title="Napisz email do {$item.email}">{$item.email}</a></td>
+					<td>{$item.opis}</td>
+					<td class="center" style="width:70px"><b>{$item.data|date_format:"%d-%m-%Y"}</b><br>{$item.data|date_format:"%H:%M"}</td>
+				</tr>
+			{/foreach}		
+		</table>
+	{elseif isset($platnosci_dotpay)}
+		<h1>Logi płatności - Dotpay</h1>
+		<p>Tutaj możesz przeglądać logi płatności z serwisu Dotpay</p>
+		<br>
+		<table class="table">
+			<tr>
+				<td colspan="9">Logi płatności - Dotpay</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Status transakcji<br><a href="?{$url_strony.sortuj}&sortuj=status_transakcji" title="Sortuj po statusie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=status_transakcji&desc" title="Sortuj malejąco po statusie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Numer transakcji<br><a href="?{$url_strony.sortuj}&sortuj=numer_transakcji" title="Sortuj po numerze transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=numer_transakcji&desc" title="Sortuj malejąco po numerze transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Ogłoszenie</td>
+				<td class="center">Kwota<br><a href="?{$url_strony.sortuj}&sortuj=kwota" title="Sortuj po kwocie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=kwota&desc" title="Sortuj malejąco po kwocie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Email<a href="?{$url_strony.sortuj}&sortuj=email_kupujacego" title="Sortuj po emailu kupującego" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email_kupujacego&desc" title="Sortuj malejąco po emailu kupującego" class="ikona sortuj_dol"></a></td>
+				<td>Opis</td>
+				<td class="center">Data<a href="?{$url_strony.sortuj}&sortuj=data_transakcji" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data_transakcji&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$platnosci_dotpay name=platnosci_dotpay}
+				<tr>
+					<td>{$smarty.foreach.platnosci_dotpay.iteration+$iteration}</td>
+					<td>{$item.status_transakcji}</td>
+					<td>{$item.numer_transakcji}</td>
+					<td><a href="../{$item.id_ogloszenia},{$item.prosty_tytul}?podglad" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a></td>
+					<td class="center">{$item.kwota}</td>
+					<td><a href="mailto:{$item.email_kupujacego}" title="Napisz email do {$item.email_kupujacego}">{$item.email_kupujacego}</a></td>
+					<td>{$item.opis}</td>
+					<td class="center" style="width:70px"><b>{$item.data_transakcji|date_format:"%d-%m-%Y"}</b><br>{$item.data_transakcji|date_format:"%H:%M"}</td>
+				</tr>
+			{/foreach}		
+		</table>
+	{elseif isset($platnosci_tpay)}
+		<h1>Logi płatności - TPay</h1>
+		<p>Tutaj możesz przeglądać logi płatności z serwisu TPay.com</p>
+		<br>
+		<table class="table">
+			<tr>
+				<td colspan="10">Logi płatności - TPay.com</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Status transakcji<br><a href="?{$url_strony.sortuj}&sortuj=status_transakcji" title="Sortuj po statusie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=status_transakcji&desc" title="Sortuj malejąco po statusie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>ID transakcji<br><a href="?{$url_strony.sortuj}&sortuj=tpay_id" title="Sortuj po ID transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=tpay_id&desc" title="Sortuj malejąco po ID transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Ogłoszenie</td>
+				<td class="center">Kwota<br><a href="?{$url_strony.sortuj}&sortuj=kwota" title="Sortuj po kwocie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=kwota&desc" title="Sortuj malejąco po kwocie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Email<a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po emailu kupującego" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po emailu kupującego" class="ikona sortuj_dol"></a></td>
+				<td>Opis</td>
+				<td class="center">Znacznik błędu<br><a href="?{$url_strony.sortuj}&sortuj=znacznik_bledu" title="Sortuj po znaczniku błędu" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=znacznik_bledu&desc" title="Sortuj malejąco po znaczniku błędu" class="ikona sortuj_dol"></a></td>
+				<td class="center">Tryb testowy<br><a href="?{$url_strony.sortuj}&sortuj=test_mode" title="Sortuj po trybie testowym" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=test_mode&desc" title="Sortuj malejąco po trybie testowym" class="ikona sortuj_dol"></a></td>
+				<td class="center">Data<a href="?{$url_strony.sortuj}&sortuj=data_transakcji" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data_transakcji&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$platnosci_tpay name=platnosci_tpay}
+				<tr>
+					<td>{$smarty.foreach.platnosci_tpay.iteration+$iteration}</td>
+					<td>{$item.status_transakcji}</td>
+					<td>{$item.tpay_id}</td>
+					<td><a href="../{$item.id_ogloszenia},{$item.prosty_tytul}?podglad" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a></td>
+					<td class="center">{$item.kwota}</td>
+					<td><a href="mailto:{$item.email}" title="Napisz email do {$item.email}">{$item.email}</a></td>
+					<td>{$item.opis}</td>
+					<td class="center">{$item.znacznik_bledu}</td>
+					<td class="center">{if $item.test_mode}<b>Tak</b>{else}Nie{/if}</td>
+					<td class="center" style="width:70px"><b>{$item.data_transakcji|date_format:"%d-%m-%Y"}</b><br>{$item.data_transakcji|date_format:"%H:%M"}</td>
+				</tr>
+			{/foreach}		
+		</table>
+	{elseif isset($platnosci_przelewy24)}
+		<h1>Logi płatności - Przelewy24</h1>
+		<p>Tutaj możesz przeglądać logi płatności z serwisu Przelewy24</p>
+		<br>
+		<table class="table">
+			<tr>
+				<td colspan="10">Logi płatności - Przelewy24</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Numer transakcji (Przelewy24)<a href="?{$url_strony.sortuj}&sortuj=numer_transakcji_przelewy24" title="Sortuj po numerze transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=numer_transakcji_przelewy24&desc" title="Sortuj malejąco po numerze transakcji" class="ikona sortuj_dol"></a></td>
+				<td class="center">Status<a href="?{$url_strony.sortuj}&sortuj=status_transakcji" title="Sortuj po statusie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=status_transakcji&desc" title="Sortuj malejąco po statusie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Ogłoszenie</td>
+				<td class="center">Kwota<br><a href="?{$url_strony.sortuj}&sortuj=kwota" title="Sortuj po kwocie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=kwota&desc" title="Sortuj malejąco po kwocie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Email<a href="?{$url_strony.sortuj}&sortuj=email" title="Sortuj po emailu kupującego" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email&desc" title="Sortuj malejąco po emailu kupującego" class="ikona sortuj_dol"></a></td>
+				<td>Opis</td>
+				<td class="center">Błędy<br><a href="?{$url_strony.sortuj}&sortuj=bledy" title="Sortuj po błędach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=bledy&desc" title="Sortuj malejąco po błędach" class="ikona sortuj_dol"></a></td>
+				<td class="center">Tryb testowy<br><a href="?{$url_strony.sortuj}&sortuj=tryb_testowy" title="Sortuj po trybie testowym" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=tryb_testowy&desc" title="Sortuj malejąco po trybie testowym" class="ikona sortuj_dol"></a></td>
+				<td class="center" style="width:70px">Data<a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$platnosci_przelewy24 name=platnosci_przelewy24}
+				<tr>
+					<td>{$smarty.foreach.platnosci_przelewy24.iteration+$iteration}</td>
+					<td>{if $item.numer_transakcji_przelewy24!=0}{$item.numer_transakcji_przelewy24}{/if}</td>
+					<td class="center">{if $item.status_transakcji}<b>Dokonana</b>{else}Niedokonana{/if}</td>
+					<td><a href="../{$item.id_ogloszenia},{$item.prosty_tytul}?podglad" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a></td>
+					<td class="center">{$item.kwota}</td>
+					<td><a href="mailto:{$item.email}" title="Napisz email do {$item.email}">{$item.email}</a></td>
+					<td>{$item.opis}</td>
+					<td class="center">{$item.bledy}</td>
+					<td class="center">{if $item.tryb_testowy}<b>Tak</b>{else}Nie{/if}</td>
+					<td class="center" style="width:70px"><b>{$item.data|date_format:"%d-%m-%Y"}</b><br>{$item.data|date_format:"%H:%M"}</td>
+				</tr>
+			{/foreach}		
+		</table>
+	{elseif isset($platnosci_paypal)}
+		<h1>Logi płatności - PayPal</h1>
+		<p>Tutaj możesz przeglądać logi płatności z serwisu Paypal</p>
+		<br>
+		<table class="table">
+			<tr>
+				<td colspan="10">Logi płatności - PayPal</td>
+			</tr>
+			<tr>
+				<td></td>
+				<td>Numer transakcji (PayPal)<a href="?{$url_strony.sortuj}&sortuj=txnid" title="Sortuj po numerze transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=txnid&desc" title="Sortuj malejąco po numerze transakcji" class="ikona sortuj_dol"></a></td>
+				<td class="center">Status<a href="?{$url_strony.sortuj}&sortuj=status" title="Sortuj po statusie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=status&desc" title="Sortuj malejąco po statusie transakcji" class="ikona sortuj_dol"></a></td>
+				<td>Ogłoszenie</td>
+				<td class="center">Email kupującego<br><a href="?{$url_strony.sortuj}&sortuj=email_kupujacego" title="Sortuj po adresie email kupującego" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=email_kupujacego&desc" title="Sortuj malejąco po adresie email kupującego" class="ikona sortuj_dol"></a></td>
+				<td class="center">Kwota<br><a href="?{$url_strony.sortuj}&sortuj=kwota" title="Sortuj po kwocie transakcji" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=kwota&desc" title="Sortuj malejąco po kwocie transakcji" class="ikona sortuj_dol"></a></td>
+				<td class="center" style="width:70px">Data<a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$platnosci_paypal name=platnosci_paypal}
+				<tr>
+					<td>{$smarty.foreach.platnosci_paypal.iteration+$iteration}</td>
+					<td>{$item.txnid}</td>
+					<td class="center">{$item.status}</td>
+					<td><a href="../{$item.id_ogloszenia},{$item.prosty_tytul}?podglad" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a></td>
+					<td><a href="mailto:{$item.email_kupujacego}" title="Napisz do: {$item.email_kupujacego}">{$item.email_kupujacego}</a></td>
+					<td class="center">{$item.kwota}</td>
+					<td class="center" style="width:70px"><b>{$item.data|date_format:"%d-%m-%Y"}</b><br>{$item.data|date_format:"%H:%M"}</td>
+				</tr>
+			{/foreach}		
+		</table>
+	{else}
+		<h1>Logi płatności</h1>
+		<h2>Nic nie znaleziono!</h2>
+	{/if}
+</div>
+<br><br>
+{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+{/if}

@@ -1,0 +1,52 @@
+	
+	<div class="center">
+		<h1>Logi wyświetlania ogłoszeń</h1>
+		<p>Tutaj możesz zobaczyć listę logów wyświetlania ogłoszeń</p><br>
+		
+		<form action="" method="get" class="form_szukaj">
+			<input type="hidden" name="akcja" value="logi_ogloszenia">
+			<input type="hidden" name="wyszukaj">
+			<input type="number" name="id" placeholder="ID" title="Szukaj po id ogłoszenia" {if isset($smarty.get.id)}value="{$smarty.get.id}"{/if}>
+			<input type="text" name="tytul" placeholder="Tytuł" title="Szukaj po tytule ogłoszenia" {if isset($smarty.get.tytul)}value="{$smarty.get.tytul}"{/if}>
+			<input type="submit" value="Szukaj!">
+			<br><br>
+		</form>
+		
+		{if isset($logi_ogloszenia)}
+		<table class="table">
+			<tr>
+				<td colspan="6">Logi ogłoszeń</td>
+			</tr>
+			<tr>
+				<td>ID</td>
+				<td>Tytuł <a href="?{$url_strony.sortuj}&sortuj=tytul" title="Sortuj po tytule" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=tytul&desc" title="Sortuj malejąco po tytule" class="ikona sortuj_dol"></a></td>
+				<td>Login</td>
+				<td>Email</td>
+				<td class="center">Adres IP <a href="?{$url_strony.sortuj}&sortuj=ip" title="Sortuj po adresach IP" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=ip&desc" title="Sortuj malejąco po adresach ip" class="ikona sortuj_dol"></a></td>
+				<td class="center">Data <a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie" class="ikona sortuj_dol"></a></td>
+			</tr>
+			{foreach key=key item=item from=$logi_ogloszenia}
+				<tr>
+					<td>{$item.id}</td>
+					<td><a href="../{$item.id},{$item.prosty_tytul}" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a></td>
+					<td>{if isset($item.login)}<a href="../profil,{$item.login}" title="Profil użytkownika {$item.login}" target="_blank">{$item.login}</a>{/if}</td>
+					<td>{if isset($item.email)}<a href="mailto:{$item.email}" title="Napisz do użytkownika {$item.email}">{$item.email}</a>{/if}</td>
+					<td class="center">{$item.ip}</td>
+					<td class="center">{$item.data|date_format:"%H:%M"} / <b>{$item.data|date_format:"%d-%m-%Y"}</b></td>
+				</tr>
+			{/foreach}	
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

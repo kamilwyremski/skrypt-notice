@@ -1,0 +1,66 @@
+{if isset($region)}
+
+	<div class="dialog" id="dodaj" data-title="Dodaj podregion">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="dodaj">
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required maxlength="32"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+	<div class="center">
+		<h1>{$region.nazwa}</h1>
+		<p>Tutaj możesz edytować podregiony w {$region.nazwa}</p>
+
+		<br>
+		<a href="#dodaj" class="submit open_dialog" title="Dodaj podregion">Dodaj podregion</a><br><br>
+		
+		{if isset($regiony2)}
+		<table class="table">
+			<tr>
+				<td colspan="4">Podregiony w {$region.nazwa}</td>
+			</tr>
+			<tr>
+				<td></td><td>Nazwa</td><td class="center">Edytuj</td><td class="center">Usuń</td>
+			</tr>
+				
+			{foreach key=key item=item from=$regiony2 name=regiony2}
+				<tr>
+					<td>{$smarty.foreach.regiony2.iteration}</td>
+					<td>{$item.nazwa}</td>				 
+					<td class="center"><a href="#edytuj_{$item.id}" title="Edytuj" class="ikona ikona_edytuj open_dialog"></a></td>
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a></td>			 	
+				</tr>
+
+	<div class="dialog" id="edytuj_{$item.id}" data-title="Edytuj podregion {$item.nazwa}">
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="edytuj">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="text" name="nazwa" placeholder="Wpisz nazwę" title="Wpisz nazwę" required value="{$item.nazwa}" maxlength="32"><br>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń podregion {$item.nazwa}">
+		<p>Czy na pewno chcesz usunąć podregion {$item.nazwa}?</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+
+			{/foreach}		
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+		<br><br><br>
+		<p><a href="?akcja=regiony" title="Regiony">Wróć do spisu regionów</a><p>
+	</div>
+	
+{else}
+	<h3>Nieprawidłowy link</h3>
+{/if}

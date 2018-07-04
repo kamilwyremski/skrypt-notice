@@ -1,0 +1,139 @@
+
+
+	<div class="center">
+		<h1>Ogłoszenia - {$ogloszenia_nazwa}</h1>
+		<p>Tutaj możesz przeglądać {$ogloszenia_rodzaj}</p>
+		<p>Aby edytować ogłoszenia lub podejrzeć w serwisie nieaktywne lub te będące w archiwum musisz być zalogowany w serwisie jako admin</p>
+		<br>
+		
+		<form action="" method="get" class="form_szukaj">
+			<input type="hidden" name="akcja" value="ogloszenia">
+			{if isset($smarty.get.rodzaj)}<input type="hidden" name="rodzaj" value="{$smarty.get.rodzaj}">{/if}
+			{if isset($smarty.get.tabela)}<input type="hidden" name="tabela" value="{$smarty.get.tabela}">{/if}
+			<input type="hidden" name="wyszukaj">
+			<input type="text" name="tytul" placeholder="Tytuł" title="Szukaj po tytule ogłoszenia" {if isset($smarty.get.tytul)}value="{$smarty.get.tytul}"{/if}>
+			<input type="submit" value="Szukaj!">
+			<br><br>
+		</form>
+		
+		{if isset($ogloszenia)}
+		<table class="table parent_zaznacz_checkboxy">
+			<tr>
+				<td colspan="11">Ogłoszenia - {$ogloszenia_nazwa}</td>
+			</tr>
+			<tr>
+				{if $ogloszenia_nazwa!="archiwum"}<td class="center"><input type="checkbox" class="zaznacz_checkboxy"></td>{/if}
+				<td class="center" style="width:30px">ID<br><a href="?{$url_strony.sortuj}&sortuj=id" title="Sortuj po ID ogłoszenia" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=id&desc" title="Sortuj malejąco po ID ogłoszenia" class="ikona sortuj_dol"></a></td>
+				<td>Tytuł ogłoszenia <a href="?{$url_strony.sortuj}&sortuj=tytul" title="Sortuj po tytule ogłoszenia" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=tytul&desc" title="Sortuj malejąco po tytule ogłoszenia" class="ikona sortuj_dol"></a></td>
+				{if $ogloszenia_nazwa!="archiwum"}
+					<td class="center">Aktywne{if $ogloszenia_nazwa!="aktywne" && $ogloszenia_nazwa!="nieaktywne"}<br><a href="?{$url_strony.sortuj}&sortuj=aktywna" title="Sortuj po aktywnych ogłoszeniach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=aktywna&desc" title="Sortuj malejąco po aktywnych ogłoszeniach" class="ikona sortuj_dol"></a>{/if}</td>
+				{/if}
+				<td class="center">{if $ogloszenia_nazwa!="opłacone" && $ogloszenia_nazwa!="nieopłacone"}Opłacona <a href="?{$url_strony.sortuj}&sortuj=oplacona" title="Sortuj po opłaconych ogłoszeniach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=oplacona&desc" title="Sortuj malejąco po opłaconych ogłoszeniach" class="ikona sortuj_dol"></a><br>{/if}Kwota</td>
+				{if $ogloszenia_nazwa!="archiwum"}
+					<td class="center">Promowana<a href="?{$url_strony.sortuj}&sortuj=promowana" title="Sortuj po promowanych ogłoszeniach" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=promowana&desc" title="Sortuj malejąco po promowanych ogłoszeniach" class="ikona sortuj_dol"></a><br>Slider<a href="?{$url_strony.sortuj}&sortuj=slider" title="Sortuj po ogłoszeniach w sliderze" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=slider&desc" title="Sortuj malejąco po ogłoszeniach w sliderze" class="ikona sortuj_dol"></a></td>
+				{/if}
+				<td class="center">Start<br>Koniec</td>
+				<td>Login<br>Email</td>
+				<td class="center">Data <a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie dodatnia" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie dodania" class="ikona sortuj_dol"></a><br>Adres IP</td>
+				{if $ogloszenia_nazwa!="archiwum"}
+					<td class="center">Edytuj</td>
+					<td class="center">Usuń</td>
+				{/if}
+			</tr>
+			{foreach key=key item=item from=$ogloszenia name=ogloszenia}
+				<tr>
+					{if $ogloszenia_nazwa!="archiwum"}<td class="center"><input type="checkbox" name="ogloszenia[]" value="{$item.id}" form="usun_ogloszenia"></td>{/if}
+					<td class="center">{$item.id}</td>
+					<td><a href="../{$item.id},{$item.prosty_tytul}?podglad{if $ogloszenia_nazwa=='archiwum'}&tabela=archiwum{/if}" title="Ogłoszenie: {$item.tytul}" target="_blank">{$item.tytul}</a></td>
+				{if $ogloszenia_nazwa!="archiwum"}
+					<td class="center">
+						{if $item.aktywna==0}<a href="#aktywuj_{$item.id}" title="Aktywuj ogłoszenie" style="color: grey" class="open_dialog">Nie</a>{else}
+						<a href="#dezaktywuj_{$item.id}" title="Dezaktywuj ogłoszenie" class="open_dialog">Tak</a>{/if}
+					</td>	
+				{/if}
+					<td class="center">{if $ogloszenia_nazwa!="opłacone" && $ogloszenia_nazwa!="nieopłacone"}{if $item.oplacona}<b>Tak</b>{else}<span style="color: grey">Nie</span>{/if}<br>{/if}{if $item.oplacona_koszt!=''}{$item.oplacona_koszt} {$ustawienia.waluta}{/if}</td>	
+					{if $ogloszenia_nazwa!="archiwum"}					
+						<td class="center">						
+							{if $item.promowana==0}<a href="#" title="Promuj ogłoszenie" class="ajax" data-akcja="promuj_ogloszenie" data-id="{$item.id}" style="color: grey">Nie</a>
+							{else}<a href="#dezaktywuj_{$item.id}" title="Nie promuj ogłoszenia" class="ajax" data-akcja="nie_promuj_ogloszenie" data-id="{$item.id}">Tak</a>{/if}												
+							{if $item.slider==0}<a href="#" title="Ogłoszenie w sliderze" class="ajax" data-akcja="slider_ogloszenie" data-id="{$item.id}" style="color: grey">Nie</a>						
+							{else}<a href="#dezaktywuj_{$item.id}" title="Ogłoszenie nie w sliderze" class="ajax" data-akcja="nie_slider_ogloszenie" data-id="{$item.id}">Tak</a>{/if}					
+						</td>					
+					{/if}	
+					<td class="center" style="width:65px">{$item.start|date_format:"%d-%m-%Y"}<br>{$item.koniec|date_format:"%d-%m-%Y"}</td>	
+					<td>
+						{if isset($item.login)}<a href="../profil,{$item.login}" title="Profil użytkownika: {$item.login}" target="_blank">{$item.login}</a><br>{/if}
+						<a href="mailto:{$item.email}" title="Napisz do użytkownika: {$item.email}">{$item.email}</a>
+					</td>
+					<td class="center" style="width:65px">{$item.data|date_format:"%d-%m-%Y"}<br>{$item.ip}</td>
+					{if $ogloszenia_nazwa!="archiwum"}
+						<td class="center"><a href="../edytuj,{$item.id},{$item.prosty_tytul}" title="Edytuj ogłoszenie" class="ikona ikona_edytuj" target="_blank"></a></td>	
+						<td class="center"><a href="#usun_{$item.id}" title="Usuń ogłoszenie" class="ikona ikona_usun open_dialog"></a></td>	
+					{/if}
+				</tr>
+{if $ogloszenia_nazwa!="archiwum"}	
+	<div class="dialog" id="aktywuj_{$item.id}" data-title="Aktywuj ogłoszenie">
+		<p>Aktywuj ogłoszenie: {$item.tytul}</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="aktywuj_ogloszenie">
+			<input type="hidden" name="id" value="{$item.id}">
+			<label>Koniec: <input type="date" name="koniec" min="{$smarty.now|date_format:'%Y-%m-%d'}" value="{$item.koniec}"></label>
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	<div class="dialog" id="dezaktywuj_{$item.id}" data-title="Dezaktywuj ogłoszenie">
+		<p>Dezaktywuj ogłoszenie: {$item.tytul}</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="dezaktywuj_ogloszenie">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń ogłoszenie">
+		<p>Czy na pewno chcesz usunąć ogłoszenie {$item.tytul}?</p>
+		<p>Ogłoszenie zostanie przeniesione do archiwum a zdjęcia z ogłoszenia zostaną usunięte z serwera</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun_ogloszenie">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+{/if}
+
+			{/foreach}	
+			{if $ogloszenia_nazwa!="archiwum"}
+				<tr>
+					<td colspan="11">
+						<a href="#usun_ogloszenia_div" title="Usuń ogłoszenia" class="submit open_dialog">Usuń ogłoszenia</a>
+					</td>
+				</tr>
+			{/if}
+		</table>
+		{else}
+		<h2>Nic nie znaleziono!</h2>
+		{/if}
+	</div>
+	{if $ogloszenia_nazwa!="archiwum"}
+		<div class="dialog" id="usun_ogloszenia_div" data-title="Usuń ogłoszenia">
+			<p>Czy na pewno chcesz usunąć zaznaczone ogłoszenia?</p>
+			<p>Ogłoszenia zostaną przeniesione do archiwum a zdjęcia z ogłoszenia zostaną usunięte z serwera</p>
+			<form action="" method="post" id="usun_ogloszenia">
+				<input type="hidden" name="akcja" value="usun_ogloszenia">
+				<input type="reset"/>
+				<input type="submit"/>
+			</form>
+		</div>
+	{/if}
+	<br><br>
+	{if $ile_stron>1}
+	<div id="wybor_stron">
+		<p>Strona {$ktora_strona} z {$ile_stron}</p>
+		<a href="?{$url_strony.strona}" title="Pierwsza strona" class="link_strony link_strony_pierwsza {if $ktora_strona==1}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ktora_strona-1}" title="Poprzednia strona" class="link_strony link_strony_lewo {if $ktora_strona==1}nieaktywny{/if}"></a>	
+		<a href="?{$url_strony.strona}&strona={$ktora_strona+1}" title="Następna strona" class="link_strony link_strony_prawo {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+		<a href="?{$url_strony.strona}&strona={$ile_stron}" title="Ostatnia strona" class="link_strony link_strony_ostatnia {if $ktora_strona==$ile_stron}nieaktywny{/if}"></a>
+	 </div>
+	{/if}

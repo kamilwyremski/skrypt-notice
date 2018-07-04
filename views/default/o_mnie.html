@@ -1,0 +1,31 @@
+<script type="text/javascript" src="js/ckeditor/ckeditor.js"></script>
+<script type="text/javascript">
+	{literal}
+		$(function(){
+			CKEDITOR.replace( 'o_mnie',{height: '300px'}); 
+		});
+	{/literal}
+</script>
+
+{include file="top.tpl"}
+
+<div class="strona padding30">
+
+	{include file="panel_konto.tpl"}
+	
+	<div id="strona">
+		<h2>O mnie</h2>
+		<p>Edytuj opis który wyświetla się na <a href="{$ustawienia.base_url}/profil,{$uzytkownik.login}" target="_blank" title="Profil użytkownika {$uzytkownik.login}">stronie Twojego profilu</a></p>
+		<br>
+		<form action="" method="post">
+			<input type="hidden" name="akcja" value="zapisz_o_mnie">
+			<textarea name="o_mnie"> {$uzytkownik.o_mnie}</textarea>
+			<div class="center">
+				<input type="submit" value="Zapisz">
+			</div>
+		</form>
+		<br><br>
+	</div>
+</div>
+
+{include file="footer.tpl"}

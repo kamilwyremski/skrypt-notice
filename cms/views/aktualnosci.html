@@ -1,0 +1,39 @@
+	<div class="center">
+		<h1>Aktualności</h1>
+		<p>Tutaj możesz edytować aktualności znajdujące się na stronie.</p>
+		<br>
+		<a href="?akcja=aktualnosc" class="submit" title="Dodaj aktualność">Dodaj aktualność</a><br><br>
+		<br>
+		
+		{if isset($aktualnosci)}
+		<table class="table">
+			<tr>
+				<td colspan="5">Aktualności</td>
+			</tr>
+			<tr>
+				<td></td><td>Tytuł</td><td class="center">Data</td><td class="center">Edytuj</td><td class="center">Usuń</td>
+			</tr>
+			{foreach key=key item=item from=$aktualnosci name=aktualnosci}
+				<tr>
+					<td class="center">{$smarty.foreach.aktualnosci.iteration}</td>
+					<td><a href="../aktualnosc,{$item.id},{$item.prosty_tytul}" title="Artykuł: {$item.tytul}" target="_blank">{$item.tytul}</a></td>	
+					<td class="center">{$item.data|date_format:"%d-%m-%Y"}</td>
+					<td class="center"><a href="?akcja=aktualnosc&id={$item.id}" title="Edytuj aktualność" class="ikona ikona_edytuj"></a></td>	
+					<td class="center"><a href="#usun_{$item.id}" title="Usuń" class="ikona ikona_usun open_dialog"></a></td>
+				</tr>
+				
+	<div class="dialog" id="usun_{$item.id}" data-title="Usuń aktualność {$item.tytul}">
+		<p>Czy na pewno chcesz usunąć aktualność {$item.tytul}?</p>
+		<form method="post" action="">
+			<input type="hidden" name="akcja" value="usun">
+			<input type="hidden" name="id" value="{$item.id}">
+			<input type="reset"/>
+			<input type="submit"/>
+		</form>
+	</div>
+	
+			{/foreach}		
+		</table>
+		{/if}
+	</div>
+	
