@@ -51,7 +51,6 @@
 		</div>
 		<br><br>
 		{$ustawienia.stopka_dol}
-		{$ustawienia.footer_text}
 	</div>
 </footer>
 {if $ustawienia.baner_bottom_2!=''}
