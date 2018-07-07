@@ -90,7 +90,7 @@
 	}
 }
 @media(max-width: 550px) {
-	#slider_box, .oferta_opis, .link_banner, .oferta_opis3 hr, #link_przewin, #facebook2_2, #newsletter_panel{
+	#slider_box, .link_banner, .oferta_opis3 hr, #link_przewin, #facebook2_2, #newsletter_panel{
 		display: none;
 	}
 	.padding30, .padding20, #nawigacja {
@@ -101,9 +101,6 @@
 	}
 	#top_logo.padding30{
 		padding-bottom: 25px;
-	}
-	.oferta_opis2{
-		width: auto; display: block; 
 	}
 	#moje_ogloszenia_box .oferta_opis3, #profil_box .oferta_opis3{
 		width: auto; display: block; padding-top: 10px; text-align: left;
