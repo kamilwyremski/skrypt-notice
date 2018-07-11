@@ -8,7 +8,7 @@ include('maile.php');
 
 if($_SERVER['REMOTE_ADDR']=='195.150.9.37' && !empty($_POST)){ 
 
-	if($ustawienia['dotpay_nowy_formularz']){
+	if(!empty($_POST['operation_type'])){
 		$dotpay_id = mysql_real_escape_string(trim($_POST['id']));
 		$id_ogloszenia = mysql_real_escape_string(trim($_POST['control']));
 		$email_kupujacego = mysql_real_escape_string(trim($_POST['email']));
