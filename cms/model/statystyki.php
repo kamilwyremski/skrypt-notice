@@ -19,7 +19,7 @@ if(isset($cms_login)){
 		$arr = explode(',',trim($plik));
 		foreach($arr as $email){
 			if($email!=''){
-				mysql_query('INSERT INTO `newsletter`(`email`, `aktywny`, `kod`, `ip`, `data`) VALUES ("'.$email.'",1,"'.md5(randomPassword()).'","'.get_client_ip().'", "'.date("Y-m-d H:i:s").'")');
+				mysql_query('INSERT INTO `'.$prefiks_tabel.'newsletter`(`email`, `aktywny`, `kod`, `ip`, `data`) VALUES ("'.$email.'",1,"'.md5(randomPassword()).'","'.get_client_ip().'", "'.date("Y-m-d H:i:s").'")');
 			}
 		}
 		$smarty->assign("import_komunikat", true);
