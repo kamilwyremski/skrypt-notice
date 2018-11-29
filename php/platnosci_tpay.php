@@ -34,5 +34,7 @@ if(in_array($_SERVER['REMOTE_ADDR'], $ip_table) && !empty($_POST)){
 	}
 	
 	echo('TRUE');
+}else{
+	echo('FALSE');
 }
 
