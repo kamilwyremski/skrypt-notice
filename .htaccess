@@ -1,3 +1,6 @@
+#SecFilterEngine On
+#SecFilterScanPOST On
+
 RewriteEngine on
 
 RewriteRule ^logowanie/?$ index.php?akcja=logowanie [NC,QSA,L]
