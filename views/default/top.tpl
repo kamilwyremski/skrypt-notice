@@ -9,7 +9,7 @@
 			{if $ustawienia.instagram!=''}<a href="{$ustawienia.instagram}" title="Nasza strona na Instagram" class="social_instagram" target="_blank"></a>{/if}
 			{if $ustawienia.twitter!=''}<a href="{$ustawienia.twitter}" title="Nasza strona na Twitterze" class="social_twitter" target="_blank"></a>{/if}
 		</nav>
-		<p class="inline_block floatright"><a href="https://wyremski.pl/skrypt/notice" title="Skrypt NOTICE" target="_blank">Skrypt ogłoszeniowy NOTICE 1.9</a></p>
+		<p class="inline_block floatright"><a href="https://blog.wyremski.pl/skrypt-ogloszeniowy-notice/" title="Skrypt NOTICE" target="_blank">Skrypt ogłoszeniowy NOTICE 1.9</a></p>
 		<div class="clear"></div>
 	</div>
 </div>
