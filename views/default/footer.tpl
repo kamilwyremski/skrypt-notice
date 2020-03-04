@@ -51,6 +51,7 @@
 		</div>
 		<br><br>
 		{$ustawienia.stopka_dol}
+		<p><small>Project 2015 by <a href="https://wyremski.pl" target="_blank" title="Creating websites">Kamil Wyremski</a></small></p>
 	</div>
 </footer>
 {if $ustawienia.baner_bottom_2!=''}
