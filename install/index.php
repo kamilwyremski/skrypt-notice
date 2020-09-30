@@ -332,9 +332,9 @@ pobierz_ustawienia();
     <meta charset="utf-8">
 	<meta name="author" content="Kamil Wyremski - wyremski.pl">
 	<title>Instalator skryptu</title>
-	<link href='http://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+	<link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
 	<link rel="stylesheet" href="style.css" type="text/css" media="screen"/>
-	<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+	<script type="text/javascript" src="https://code.jquery.com/jquery-latest.min.js"></script>
 	<script type="text/javascript" src="engine.js"></script>
 </head>
 <body>
