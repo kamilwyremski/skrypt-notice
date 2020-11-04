@@ -52,6 +52,7 @@ $mysql_db = "'.$_POST['nazwa'].'";
 mysql_query("SET NAMES utf8");
 @mysql_select_db($mysql_db);
 mysql_query("SET GLOBAL time_zone = \"Europe/Warsaw\"");
+mysql_query("SET session sql_mode = \"NO_ENGINE_SUBSTITUTION\";");
 
 $prefiks_tabel = "'.$prefiks_tabel.'";
 $password_salt = "'.$_POST['password_salt'].'";
