@@ -57,6 +57,9 @@ if(isset($cms_login)){
 	
 	$wyszukaj = '';
 	if(isset($_GET['wyszukaj'])){
+		if(isset($_GET['id']) and $_GET['id']!=''){
+			$wyszukaj .= ' and id="'.filtruj($_GET['id']).'" ';
+		}
 		if(isset($_GET['tytul']) and $_GET['tytul']!=''){
 			$wyszukaj .= ' and prosty_tytul like "%'.filtruj(prosta_nazwa($_GET['tytul'])).'%" ';
 		}
