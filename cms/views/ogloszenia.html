@@ -11,6 +11,7 @@
 			{if isset($smarty.get.rodzaj)}<input type="hidden" name="rodzaj" value="{$smarty.get.rodzaj}">{/if}
 			{if isset($smarty.get.tabela)}<input type="hidden" name="tabela" value="{$smarty.get.tabela}">{/if}
 			<input type="hidden" name="wyszukaj">
+			<input type="number" name="id" placeholder="ID" title="Szukaj po ID ogłoszenia" {if isset($smarty.get.id)}value="{$smarty.get.id}"{/if}>
 			<input type="text" name="tytul" placeholder="Tytuł" title="Szukaj po tytule ogłoszenia" {if isset($smarty.get.tytul)}value="{$smarty.get.tytul}"{/if}>
 			<input type="submit" value="Szukaj!">
 			<br><br>
@@ -34,6 +35,7 @@
 				{/if}
 				<td class="center">Start<br>Koniec</td>
 				<td>Login<br>Email</td>
+				<td>Adres IP</td>
 				<td class="center">Data <a href="?{$url_strony.sortuj}&sortuj=data" title="Sortuj po dacie dodatnia" class="ikona sortuj_gora"></a><a href="?{$url_strony.sortuj}&sortuj=data&desc" title="Sortuj malejąco po dacie dodania" class="ikona sortuj_dol"></a><br>Adres IP</td>
 				{if $ogloszenia_nazwa!="archiwum"}
 					<td class="center">Edytuj</td>
@@ -65,6 +67,7 @@
 						{if isset($item.login)}<a href="../profil,{$item.login}" title="Profil użytkownika: {$item.login}" target="_blank">{$item.login}</a><br>{/if}
 						<a href="mailto:{$item.email}" title="Napisz do użytkownika: {$item.email}">{$item.email}</a>
 					</td>
+					<td>{$item.ip}</td>
 					<td class="center" style="width:65px">{$item.data|date_format:"%d-%m-%Y"}<br>{$item.ip}</td>
 					{if $ogloszenia_nazwa!="archiwum"}
 						<td class="center"><a href="../edytuj,{$item.id},{$item.prosty_tytul}" title="Edytuj ogłoszenie" class="ikona ikona_edytuj" target="_blank"></a></td>	
