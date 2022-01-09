@@ -71,7 +71,7 @@ if(isset($session)){
 				}
 				$_SESSION['uzytkownik']['id'] = $dane_uzytkownika['id'];
 				$_SESSION['uzytkownik']['kod_sesji'] = $kod_sesji;
-				header("Location: index.php?zalogowano");
+				header("Location: ".$ustawienia['base_url']."?zalogowano");
 			}else{
 				header("Location: ".$ustawienia['base_url']."/rejestracja?facebook_login&kod=".$dane_uzytkownika['kod_aktywacyjny']);
 			}
