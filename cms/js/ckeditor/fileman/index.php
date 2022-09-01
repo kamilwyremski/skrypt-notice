@@ -6,10 +6,10 @@ require_once('../../../../libs/Smarty.class.php');
 $smarty = new Smarty();
 
 include('../../../../config/db.php');
-include('../../globalne.php');
-include('../../logowanie.php');
+include('../../../php/globalne.php');
+include('../../../php/logowanie.php');
 
-if(isset($cms_login)){
+if(!isset($cms_login)){
 	die('Access denied');
 }
 
