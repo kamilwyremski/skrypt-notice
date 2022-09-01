@@ -3,7 +3,7 @@
 /**
  * OpenPayU Standard Library
  *
- * @copyright  Copyright (c) 2011-2015 PayU
+ * @copyright  Copyright (c) 2011-2018 PayU
  * @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
  * http://www.payu.com
  * http://developers.payu.com
@@ -15,13 +15,14 @@
 class OpenPayU_Order extends OpenPayU
 {
     const ORDER_SERVICE = 'orders/';
+    const ORDER_TRANSACTION_SERVICE = 'transactions';
     const SUCCESS = 'SUCCESS';
 
     /**
      * @var array Default form parameters
      */
     protected static $defaultFormParams = array(
-        'formClass' => 'floatright',
+        'formClass' => '',
         'formId' => 'payu-payment-form',
         'submitClass' => '',
         'submitId' => '',
@@ -33,21 +34,27 @@ class OpenPayU_Order extends OpenPayU
      * Creates new Order
      * - Sends to PayU OrderCreateRequest
      *
-     * @access public
      * @param array $order A array containing full Order
      * @return object $result Response array with OrderCreateResponse
      * @throws OpenPayU_Exception
      */
     public static function create($order)
     {
-        $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE;
         $data = OpenPayU_Util::buildJsonFromArray($order);
 
         if (empty($data)) {
             throw new OpenPayU_Exception('Empty message OrderCreateRequest');
         }
 
-        $result = self::verifyResponse(OpenPayU_Http::post($pathUrl, $data), 'OrderCreateResponse');
+        try {
+            $authType = self::getAuth();
+        } catch (OpenPayU_Exception $e) {
+            throw new OpenPayU_Exception($e->getMessage(), $e->getCode());
+        }
+
+        $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE;
+
+        $result = self::verifyResponse(OpenPayU_Http::doPost($pathUrl, $data, $authType), 'OrderCreateResponse');
 
         return $result;
     }
@@ -56,7 +63,6 @@ class OpenPayU_Order extends OpenPayU
      * Retrieves information about the order
      *  - Sends to PayU OrderRetrieveRequest
      *
-     * @access public
      * @param string $orderId PayU OrderId sent back in OrderCreateResponse
      * @return OpenPayU_Result $result Response array with OrderRetrieveResponse
      * @throws OpenPayU_Exception
@@ -67,9 +73,42 @@ class OpenPayU_Order extends OpenPayU
             throw new OpenPayU_Exception('Empty value of orderId');
         }
 
+        try {
+            $authType = self::getAuth();
+        } catch (OpenPayU_Exception $e) {
+            throw new OpenPayU_Exception($e->getMessage(), $e->getCode());
+        }
+
         $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE . $orderId;
 
-        $result = self::verifyResponse(OpenPayU_Http::get($pathUrl, $pathUrl), 'OrderRetrieveResponse');
+        $result = self::verifyResponse(OpenPayU_Http::doGet($pathUrl, $authType), 'OrderRetrieveResponse');
+
+        return $result;
+    }
+
+    /**
+     * Retrieves information about the order transaction
+     *  - Sends to PayU TransactionRetrieveRequest
+     *
+     * @param string $orderId PayU OrderId sent back in OrderCreateResponse
+     * @return OpenPayU_Result $result Response array with TransactionRetrieveResponse
+     * @throws OpenPayU_Exception
+     */
+    public static function retrieveTransaction($orderId)
+    {
+        if (empty($orderId)) {
+            throw new OpenPayU_Exception('Empty value of orderId');
+        }
+
+        try {
+            $authType = self::getAuth();
+        } catch (OpenPayU_Exception $e) {
+            throw new OpenPayU_Exception($e->getMessage(), $e->getCode());
+        }
+
+        $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE . $orderId . '/' . self::ORDER_TRANSACTION_SERVICE;
+
+        $result = self::verifyResponse(OpenPayU_Http::doGet($pathUrl, $authType), 'TransactionRetrieveResponse');
 
         return $result;
     }
@@ -78,7 +117,6 @@ class OpenPayU_Order extends OpenPayU
      * Cancels Order
      * - Sends to PayU OrderCancelRequest
      *
-     * @access public
      * @param string $orderId PayU OrderId sent back in OrderCreateResponse
      * @return OpenPayU_Result $result Response array with OrderCancelResponse
      * @throws OpenPayU_Exception
@@ -89,9 +127,15 @@ class OpenPayU_Order extends OpenPayU
             throw new OpenPayU_Exception('Empty value of orderId');
         }
 
+        try {
+            $authType = self::getAuth();
+        } catch (OpenPayU_Exception $e) {
+            throw new OpenPayU_Exception($e->getMessage(), $e->getCode());
+        }
+
         $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE . $orderId;
 
-        $result = self::verifyResponse(OpenPayU_Http::delete($pathUrl, $pathUrl), 'OrderCancelResponse');
+        $result = self::verifyResponse(OpenPayU_Http::doDelete($pathUrl, $authType), 'OrderCancelResponse');
         return $result;
     }
 
@@ -99,24 +143,27 @@ class OpenPayU_Order extends OpenPayU
      * Updates Order status
      * - Sends to PayU OrderStatusUpdateRequest
      *
-     * @access public
-     * @param string $orderStatus A array containing full OrderStatus
+     * @param array $orderStatusUpdate A array containing full OrderStatus
      * @return OpenPayU_Result $result Response array with OrderStatusUpdateResponse
      * @throws OpenPayU_Exception
      */
     public static function statusUpdate($orderStatusUpdate)
     {
-        $data = array();
         if (empty($orderStatusUpdate)) {
             throw new OpenPayU_Exception('Empty order status data');
         }
 
+        try {
+            $authType = self::getAuth();
+        } catch (OpenPayU_Exception $e) {
+            throw new OpenPayU_Exception($e->getMessage(), $e->getCode());
+        }
+
         $data = OpenPayU_Util::buildJsonFromArray($orderStatusUpdate);
-        $orderId = $orderStatusUpdate['orderId'];
+        $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE . $orderStatusUpdate['orderId'] . '/status';
 
-        $pathUrl = OpenPayU_Configuration::getServiceUrl() . self::ORDER_SERVICE . $orderId . '/status';
+        $result = self::verifyResponse(OpenPayU_Http::doPut($pathUrl, $data, $authType), 'OrderStatusUpdateResponse');
 
-        $result = self::verifyResponse(OpenPayU_Http::put($pathUrl, $data), 'OrderStatusUpdateResponse');
         return $result;
     }
 
@@ -124,7 +171,7 @@ class OpenPayU_Order extends OpenPayU
      * Consume notification message
      *
      * @access public
-     * @param $data Request array received from with PayU OrderNotifyRequest
+     * @param $data string Request array received from with PayU OrderNotifyRequest
      * @return null|OpenPayU_Result Response array with OrderNotifyRequest
      * @throws OpenPayU_Exception
      */
@@ -145,9 +192,14 @@ class OpenPayU_Order extends OpenPayU
     /**
      * Verify response from PayU
      *
-     * @param string $response
+     * @param array $response
      * @param string $messageName
      * @return null|OpenPayU_Result
+     * @throws OpenPayU_Exception
+     * @throws OpenPayU_Exception_Authorization
+     * @throws OpenPayU_Exception_Network
+     * @throws OpenPayU_Exception_ServerError
+     * @throws OpenPayU_Exception_ServerMaintenance
      */
     public static function verifyResponse($response, $messageName)
     {
@@ -170,15 +222,11 @@ class OpenPayU_Order extends OpenPayU
 
         $result = self::build($data);
 
-            if ($httpStatus == 200 || $httpStatus == 201 || $httpStatus == 422 || $httpStatus == 301 || $httpStatus == 302 || $httpStatus
-                == 400 || $httpStatus == 404)
-        {
+        if ($httpStatus == 200 || $httpStatus == 201 || $httpStatus == 422 || $httpStatus == 301 || $httpStatus == 302) {
             return $result;
-        } else {
-            OpenPayU_Http::throwHttpStatusException($httpStatus, $result);
         }
 
-        return null;
+        OpenPayU_Http::throwHttpStatusException($httpStatus, $result);
     }
 
     /**
@@ -188,6 +236,7 @@ class OpenPayU_Order extends OpenPayU
      * @param array $order an array containing full Order
      * @param array $params an optional array with form elements' params
      * @return string Response html form
+     * @throws OpenPayU_Exception_Configuration
      */
     public static function hostedOrderForm($order, $params = array())
     {
@@ -204,13 +253,14 @@ class OpenPayU_Order extends OpenPayU
         );
 
         $formParams = array_merge(self::$defaultFormParams, $params);
-		
-		$htmlOutput = sprintf("<form method=\"POST\" action=\"%s\" id=\"%s\" class=\"%s\">\n", $orderFormUrl, $formParams['formId'], $formParams['formClass']);
+
+        $htmlOutput = sprintf("<form method=\"POST\" action=\"%s\" id=\"%s\" class=\"%s\">\n", $orderFormUrl, $formParams['formId'], $formParams['formClass']);
         $htmlOutput .= $htmlFormFields;
         $htmlOutput .= sprintf("<input type=\"hidden\" name=\"OpenPayu-Signature\" value=\"%s\" />", $signature);
-        $htmlOutput .= sprintf("<input type=\"submit\" value=\"Zapłać przez PayU\">", $formParams['submitTarget'], $formParams['submitId'], $formParams['submitClass'], $formParams['submitContent']);
+        $htmlOutput .= sprintf("<button type=\"submit\" formtarget=\"%s\" id=\"%s\" class=\"%s\">%s</button>", $formParams['submitTarget'], $formParams['submitId'], $formParams['submitClass'], $formParams['submitContent']);
         $htmlOutput .= "</form>\n";
 
         return $htmlOutput;
     }
+
 }

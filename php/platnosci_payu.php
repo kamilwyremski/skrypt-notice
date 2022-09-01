@@ -8,8 +8,11 @@ include('funkcje.php');
 include('maile.php');
 include('logowanie.php');
 
-require_once realpath(dirname(__FILE__)) . '/../libs/openpayu.php';
-require_once realpath(dirname(__FILE__)) . '/../libs/payuconfig.php';
+require_once realpath(dirname(__FILE__)) . '/../libs/OpenPayU/openpayu.php';
+
+OpenPayU_Configuration::setEnvironment('sandbox');
+OpenPayU_Configuration::setMerchantPosId($ustawienia['payu_id']); // POS ID (Checkout)
+OpenPayU_Configuration::setSignatureKey($ustawienia['payu_md5']); //Second MD5 key. You will find it in admin panel.
 
 if(isset($_GET['akcja']) and $_GET['akcja']=='zlec_zaplate' and isset($_GET['id_ogloszenia']) and $_GET['id_ogloszenia']>0){
 	
@@ -28,9 +31,6 @@ if(isset($_GET['akcja']) and $_GET['akcja']=='zlec_zaplate' and isset($_GET['id_
 		$payu_id_transakcji = md5(randomPassword());
 		
 		mysql_query('INSERT INTO `'.$prefiks_tabel.'platnosci_payu`(`id_transakcji`, `payu_id`, `payu_md5`, `email`, `id_ogloszenia`, `opis`, `kwota`,  `data`) VALUES ("'.$payu_id_transakcji.'", "'.$ustawienia['payu_id'].'","'.$ustawienia['payu_md5'].'", "'.$payu_email.'", "'.$ogloszenie['id'].'", "Aktywacja ogloszenia: '.$ogloszenie['id'].'", "'.$zostalo_do_zaplacenia.'", NOW())');
-		
-		require_once realpath(dirname(__FILE__)) . '/../libs/openpayu.php';
-		require_once realpath(dirname(__FILE__)) . '/../libs/payuconfig.php';
 
 		$order = array();
 		$order['notifyUrl'] = $ustawienia['base_url'].'/php/platnosci_payu.php';
@@ -54,18 +54,18 @@ if(isset($_GET['akcja']) and $_GET['akcja']=='zlec_zaplate' and isset($_GET['id_
 	}
 	
 }elseif ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $body = file_get_contents('php://input');
-    $data = trim($body);
+	$body = file_get_contents('php://input');
+	$data = trim($body);
 
-    try {
-        if (!empty($data)) {
-            $result = OpenPayU_Order::consumeNotification($data);
-        }
+	try {
+		if (!empty($data)) {
+				$result = OpenPayU_Order::consumeNotification($data);
+		}
 
-        if ($result->getResponse()->order->orderId) {
+		if ($result->getResponse()->order->orderId) {
 
-            $order = OpenPayU_Order::retrieve($result->getResponse()->order->orderId);
-            if($order->getStatus() == 'SUCCESS'){
+			$order = OpenPayU_Order::retrieve($result->getResponse()->order->orderId);
+			if($order->getStatus() == 'SUCCESS'){
 
 				$id_transakcji = $result->getResponse()->order->extOrderId;
 				
@@ -78,14 +78,12 @@ if(isset($_GET['akcja']) and $_GET['akcja']=='zlec_zaplate' and isset($_GET['id_
 					ogloszenie_zostalo_oplacone($dane_transakcji['id_ogloszenia'],(float)$dane_transakcji['kwota']);
 
 				}
-				
-                header("HTTP/1.1 200 OK");
-		
-            }
-        }
-    } catch (OpenPayU_Exception $e) {
-        echo $e->getMessage();
-    }
+				header("HTTP/1.1 200 OK");
+			}
+		}
+	} catch (OpenPayU_Exception $e) {
+			echo $e->getMessage();
+	}
 }
 
 

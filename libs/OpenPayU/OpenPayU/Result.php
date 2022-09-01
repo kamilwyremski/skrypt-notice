@@ -1,9 +1,8 @@
 <?php
-
 /**
  * OpenPayU Standard Library
  *
- * @copyright  Copyright (c) 2011-2015 PayU
+ * @copyright  Copyright (c) 2011-2016 PayU
  * @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
  * http://www.payu.com
  * http://developers.payu.com
@@ -15,7 +14,8 @@ class OpenPayU_Result
     private $error = '';
     private $success = 0;
     private $request = '';
-    private $response = '';
+    /** @var object */
+    private $response;
     private $sessionId = '';
     private $message = '';
     private $countryCode = '';
@@ -95,7 +95,7 @@ class OpenPayU_Result
 
     /**
      * @access public
-     * @return string
+     * @return object
      */
     public function getResponse()
     {

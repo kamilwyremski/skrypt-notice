@@ -3,12 +3,11 @@
 /**
  * OpenPayU Standard Library
  *
- * @copyright  Copyright (c) 2011-2015 PayU
+ * @copyright  Copyright (c) 2011-2016 PayU
  * @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
  * http://www.payu.com
  * http://developers.payu.com
  */
-
 class OpenPayU_Util
 {
     /**
@@ -34,7 +33,7 @@ class OpenPayU_Util
         $contentForSign = '';
         ksort($data);
 
-        foreach ($data as $key=>$value) {
+        foreach ($data as $key => $value) {
             $contentForSign .= $key . '=' . urlencode($value) . '&';
         }
 
@@ -49,7 +48,7 @@ class OpenPayU_Util
             $algorithm = 'SHA-512';
         }
 
-        $signature = hash($hashAlgorithm, $contentForSign.$signatureKey);
+        $signature = hash($hashAlgorithm, $contentForSign . $signatureKey);
 
         $signData = 'sender=' . $merchantPosId . ';algorithm=' . $algorithm . ';signature=' . $signature;
 
@@ -61,7 +60,7 @@ class OpenPayU_Util
      *
      * @param string $data
      *
-     * @return null|object
+     * @return null|array
      */
     public static function parseSignature($data)
     {
@@ -78,10 +77,13 @@ class OpenPayU_Util
 
         foreach ($list as $value) {
             $explode = explode('=', $value);
+            if (count($explode) != 2) {
+                return null;
+            }
             $signatureData[$explode[0]] = $explode[1];
         }
 
-        return (object)$signatureData;
+        return $signatureData;
     }
 
     /**
@@ -96,14 +98,12 @@ class OpenPayU_Util
      */
     public static function verifySignature($message, $signature, $signatureKey, $algorithm = 'MD5')
     {
-        $hash = '';
-
         if (isset($signature)) {
-            if ($algorithm == 'MD5') {
+            if ($algorithm === 'MD5') {
                 $hash = md5($message . $signatureKey);
             } else if (in_array($algorithm, array('SHA', 'SHA1', 'SHA-1'))) {
                 $hash = sha1($message . $signatureKey);
-            } else if (in_array($algorithm, array('SHA-256', 'SHA256', 'SHA_256'))) {
+            } else {
                 $hash = hash('sha256', $message . $signatureKey);
             }
 
@@ -118,7 +118,7 @@ class OpenPayU_Util
     /**
      * Function builds OpenPayU Json Document
      *
-     * @param string $data
+     * @param array $data
      * @param string $rootElement
      *
      * @return null|string
@@ -135,7 +135,7 @@ class OpenPayU_Util
 
         $data = self::setSenderProperty($data);
 
-        return json_encode($data);
+        return json_encode($data, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     }
 
     /**
@@ -162,21 +162,19 @@ class OpenPayU_Util
             return $array;
         }
 
-        if (self::isAssocArray($array)){
+        if (self::isAssocArray($array)) {
             $object = new stdClass();
-        }
-        else{
+        } else {
             $object = array();
         }
 
         if (is_array($array) && count($array) > 0) {
             foreach ($array as $name => $value) {
                 $name = trim($name);
-                if (isset($name)){
-                    if (is_numeric($name)){
+                if (isset($name)) {
+                    if (is_numeric($name)) {
                         $object[] = self::parseArrayToObject($value);
-                    }
-                    else{
+                    } else {
                         $object->$name = self::parseArrayToObject($value);
                     }
                 }
@@ -192,15 +190,15 @@ class OpenPayU_Util
      */
     public static function getRequestHeaders()
     {
-        if(!function_exists('apache_request_headers')) {
-                $headers = array();
-                foreach($_SERVER as $key => $value) {
-                    if(substr($key, 0, 5) == 'HTTP_') {
-                        $headers[str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))))] = $value;
-                    }
+        if (!function_exists('apache_request_headers')) {
+            $headers = array();
+            foreach ($_SERVER as $key => $value) {
+                if (substr($key, 0, 5) == 'HTTP_') {
+                    $headers[str_replace(' ', '-', ucwords(str_replace('_', ' ', strtolower(substr($key, 5)))))] = $value;
                 }
-                return $headers;
-        }else{
+            }
+            return $headers;
+        } else {
             return apache_request_headers();
         }
 
@@ -212,7 +210,7 @@ class OpenPayU_Util
      * @param array $outputFields
      * @return string
      */
-    public static function convertArrayToHtmlForm($array, $namespace = "", &$outputFields)
+    public static function convertArrayToHtmlForm($array, $namespace = '', &$outputFields = [])
     {
         $i = 0;
         $htmlOutput = "";
@@ -229,7 +227,8 @@ class OpenPayU_Util
             if (is_array($value)) {
                 $htmlOutput .= self::convertArrayToHtmlForm($value, $key, $outputFields);
             } else {
-                $htmlOutput .= sprintf("<input type=\"hidden\" name=\"%s\" value=\"%s\" />\n", $key, $value);
+                $htmlOutput .= sprintf("<input type=\"hidden\" name=\"%s\" value=\"%s\" />\n", htmlspecialchars($key)
+                , htmlspecialchars($value));
                 $outputFields[$key] = $value;
             }
         }
@@ -248,20 +247,6 @@ class OpenPayU_Util
     }
 
     /**
-     * @param $namespace
-     * @param $key
-     * @return string
-     */
-    public static function changeFormFieldFormat($namespace, $key)
-    {
-
-        if ($key === $namespace && $key[strlen($key) - 1] == 's') {
-            return substr($key, 0, -1);
-        }
-        return $key;
-    }
-
-    /**
      * @param array $data
      * @return array
      */
@@ -274,41 +259,40 @@ class OpenPayU_Util
         return $data;
     }
 
-    public static function statusDesc($response){
+    public static function statusDesc($response)
+    {
 
         $msg = '';
 
-        switch ($response){
+        switch ($response) {
             case 'SUCCESS':
                 $msg = 'Request has been processed correctly.';
-            break;
+                break;
             case 'DATA_NOT_FOUND':
                 $msg = 'Data indicated in the request is not available in the PayU system.';
-            break;
-            case 'WARNING_CONTINUE_3_DS':
-                $msg = '3DS authorization required.Redirect the Buyer to PayU to continue the 3DS process by calling OpenPayU.authorize3DS().';
-            break;
+                break;
+            case 'WARNING_CONTINUE_3DS':
+                $msg = '3DS authorization required. Redirect the Buyer to PayU to continue the 3DS process.';
+                break;
             case 'WARNING_CONTINUE_CVV':
-                $msg = 'CVV/CVC authorization required. Call OpenPayU.authorizeCVV() method.';
-            break;
+                $msg = 'CVV/CVC authorization required.';
+                break;
             case 'ERROR_SYNTAX':
                 $msg = 'BIncorrect request syntax. Supported formats are JSON or XML.';
-            break;
+                break;
             case 'ERROR_VALUE_INVALID':
                 $msg = 'One or more required values are incorrect.';
-            break;
+                break;
             case 'ERROR_VALUE_MISSING':
                 $msg = 'One or more required values are missing.';
-            break;
+                break;
             case 'BUSINESS_ERROR':
-                $msg = 'PayU system is unavailable. Try again later.';
-            break;
             case 'ERROR_INTERNAL':
                 $msg = 'PayU system is unavailable. Try again later.';
-            break;
+                break;
             case 'GENERAL_ERROR':
                 $msg = 'Unexpected error. Try again later.';
-            break;
+                break;
         }
 
         return $msg;

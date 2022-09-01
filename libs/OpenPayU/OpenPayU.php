@@ -2,41 +2,44 @@
 
 /**
  * OpenPayU Standard Library
+ * ver. 2.1.3
  *
- * @copyright  Copyright (c) 2011-2015 PayU
+ * @copyright  Copyright (c) 2011-2016 PayU
  * @license    http://opensource.org/licenses/LGPL-3.0  Open Software License (LGPL 3.0)
  * http://www.payu.com
  * http://developers.payu.com
  */
 
-class OpenPayU
-{
-    protected static function build($data)
-    {
-        $instance = new OpenPayU_Result();
-        $instance->init($data);
+include_once('OpenPayU/Configuration.php');
+include_once('OpenPayU/OpenPayUException.php');
+include_once('OpenPayU/Util.php');
+include_once('OpenPayU/OpenPayU.php');
+include_once('OpenPayU/OpenPayuOrderStatus.php');
 
-        return $instance;
-    }
+include_once('OpenPayU/Result.php');
 
-    /**
-     * @param $data
-     * @param $incomingSignature
-     * @throws OpenPayU_Exception_Authorization
-     */
-    public static function verifyDocumentSignature($data, $incomingSignature)
-    {
-        $sign = OpenPayU_Util::parseSignature($incomingSignature);
+require_once('OpenPayU/Http.php');
+require_once('OpenPayU/HttpCurl.php');
 
-        if (false === OpenPayU_Util::verifySignature(
-                $data,
-                $sign->signature,
-                OpenPayU_Configuration::getSignatureKey(),
-                $sign->algorithm
-            )
-        ) {
-            throw new OpenPayU_Exception_Authorization('Invalid signature - ' . $sign->signature);
-        }
-    }
+require_once('OpenPayU/Oauth/Oauth.php');
+require_once('OpenPayU/Oauth/OauthGrantType.php');
+require_once('OpenPayU/Oauth/OauthResultClientCredentials.php');
+require_once('OpenPayU/Oauth/Cache/OauthCacheInterface.php');
+require_once('OpenPayU/Oauth/Cache/OauthCacheFile.php');
+require_once('OpenPayU/Oauth/Cache/OauthCacheMemcached.php');
 
-}
+require_once('OpenPayU/ResultError.php');
+
+require_once('OpenPayU/AuthType/AuthType.php');
+require_once('OpenPayU/AuthType/Basic.php');
+require_once('OpenPayU/AuthType/TokenRequest.php');
+require_once('OpenPayU/AuthType/Oauth.php');
+
+include_once('OpenPayU/v2/Refund.php');
+include_once('OpenPayU/v2/Order.php');
+include_once('OpenPayU/v2/Retrieve.php');
+include_once('OpenPayU/v2/Token.php');
+include_once('OpenPayU/v2/Shop.php');
+
+include_once('OpenPayU/Model/PayuShop.php');
+include_once('OpenPayU/Model/PayuShop/PayuShopBalance.php');

@@ -12,7 +12,7 @@
 					<textarea name="tresc[{$item.id}]" placeholder="Treść maila" title="Tu wpisz treść maila">{$item.tresc}</textarea>
 					<script type="text/javascript">
 						{literal}
-							var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+							var roxyFileman = 'js/ckeditor/fileman'; 
 							$(function(){
 								CKEDITOR.replace( '{/literal}tresc[{$item.id}]{literal}',{height: '200px',
 									filebrowserBrowseUrl:roxyFileman,

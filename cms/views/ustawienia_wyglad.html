@@ -1,5 +1,5 @@
 <div id="roxyCustomPanel" style="display: none;">
-	<iframe src="js/ckeditor/fileman/index.html?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
+	<iframe src="js/ckeditor/fileman?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
 </div>
 
 	<div class="center">
@@ -59,7 +59,7 @@
 			<textarea name="glowna_opis" placeholder="Opis na stronie głównej" title="Tu wpisz opis wyświetlany na stronie głównej (na pierwszej stronie paginacji)">{$ustawienia.glowna_opis}</textarea>
 			<script type="text/javascript">
 				{literal}
-					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					var roxyFileman = 'js/ckeditor/fileman'; 
 					$(function(){
 						CKEDITOR.replace( 'glowna_opis',{height: '100px',
 							filebrowserBrowseUrl:roxyFileman,
@@ -72,7 +72,7 @@
 			<textarea name="stopka_opis" placeholder="Opis w stopce" title="Tu wpisz opis wyświetlany w stopce serwisu">{$ustawienia.stopka_opis}</textarea>
 			<script type="text/javascript">
 				{literal}
-					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					var roxyFileman = 'js/ckeditor/fileman'; 
 					$(function(){
 						CKEDITOR.replace( 'stopka_opis',{height: '100px',
 							filebrowserBrowseUrl:roxyFileman,
@@ -85,7 +85,7 @@
 			<textarea name="stopka_dol" placeholder="Stopka serwisu" title="Tu wpisz tekst wyświetlany w stopce serwisu">{$ustawienia.stopka_dol}</textarea>
 			<script type="text/javascript">
 				{literal}
-					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					var roxyFileman = 'js/ckeditor/fileman'; 
 					$(function(){
 						CKEDITOR.replace( 'stopka_dol',{height: '100px',
 							filebrowserBrowseUrl:roxyFileman,

@@ -1,5 +1,5 @@
 	<div id="roxyCustomPanel" style="display: none;">
-		<iframe src="js/ckeditor/fileman/index.html?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
+		<iframe src="js/ckeditor/fileman?integration=custom" style="width:100%;height:100%" frameborder="0"></iframe>
 	</div>
 
 	<div class="center">
@@ -30,7 +30,7 @@
 			<textarea name="glowna_opis" placeholder="Opis na stronie głównej" title="Tu wpisz opis wyświetlany na stronie głównej (na pierwszej stronie paginacji)">{if isset($kategoria)}{$kategoria.glowna_opis}{/if}</textarea>
 			<script type="text/javascript">
 				{literal}
-					var roxyFileman = 'js/ckeditor/fileman/index.html'; 
+					var roxyFileman = 'js/ckeditor/fileman'; 
 					$(function(){
 						CKEDITOR.replace( 'glowna_opis',{height: '200px',
 							filebrowserBrowseUrl:roxyFileman,
