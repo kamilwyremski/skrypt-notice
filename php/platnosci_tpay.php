@@ -33,15 +33,15 @@ if (in_array($_SERVER['REMOTE_ADDR'], $ipTable) && !empty($_POST)) {
 				ogloszenie_zostalo_oplacone($id_ogloszenia,$kwota);
 				echo 'TRUE';
 			}else{
-				echo 'FALSE - invalid MD5 sum';
+				echo 'FALSE';
 			}		
 		}else {
 			echo 'FALSE';
 		}
 	}else {
-		echo 'FALSE - transacion already exist';
+		echo 'FALSE';
 	}
 	
 } else {
-	echo 'FALSE - Invalid request';
+	echo 'FALSE';
 }
