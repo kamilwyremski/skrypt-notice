@@ -1,7 +1,13 @@
-#SecFilterEngine On
-#SecFilterScanPOST On
-
 RewriteEngine on
+
+RewriteCond %{THE_REQUEST} ^GET.*index\.php [NC]
+RewriteRule (.*?)index\.php/*(.*) /$1$2 [R=301,NE,L]
+
+RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
+RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,NC,L]
+
+#RewriteCond %{HTTPS} !=on
+#RewriteRule ^ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
 RewriteRule ^logowanie/?$ index.php?akcja=logowanie [NC,QSA,L]
 RewriteRule ^rejestracja/?$ index.php?akcja=rejestracja [NC,QSA,L]
@@ -27,12 +33,6 @@ RewriteRule ^aktualnosci/?$ index.php?akcja=aktualnosci [NC,QSA,L]
 RewriteRule ^aktualnosc,([0-9]+),(.*)/?$ index.php?akcja=aktualnosc&id=$1&prosty_tytul=$2 [NC,QSA,L]
 RewriteRule ^moj_program_partnerski/?$ index.php?akcja=moj_program_partnerski [NC,QSA,L]
 RewriteRule ^404/?$ index.php?akcja=404 [NC,QSA,L]
-
-RewriteCond %{THE_REQUEST} ^GET.*index\.php [NC]
-RewriteRule (.*?)index\.php/*(.*) /$1$2 [R=301,NE,L]
-
-RewriteCond %{HTTP_HOST} ^www\.(.*)$ [NC]
-RewriteRule ^(.*)$ http://%1%{REQUEST_URI} [R=301,QSA,NC,L]
 
 ErrorDocument 404 /index.php?akcja=404
 
