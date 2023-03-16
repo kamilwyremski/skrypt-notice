@@ -93,14 +93,9 @@ if($prawidlowa_sesja and (isset($uzytkownik) or $ustawienia['ogloszenia_bez_reje
 		if(isset($_POST['region'])){$region=filtruj($_POST['region']);}else{$region=0;}
 		if(isset($_POST['region2'])){$region2=filtruj($_POST['region2']);}else{$region2=0;}
 		$email = strip_tags(filtruj($_POST['email']));
-		if(mysql_num_rows(mysql_query('select 1 from '.$prefiks_tabel.'czarna_lista where email="'.$email.'" limit 1'))){
-			if(isset($uzytkownik)){
-				$email = $uzytkownik['email'];
-			}else{
-				header("Location: index.php?ogloszenie_nie_dodano");
-				die('Ogłoszenie nie mogło zostać dodane');
-			}
-			$zmieniono_email = true;
+		if(mysql_num_rows(mysql_query('select 1 from '.$prefiks_tabel.'czarna_lista where email="'.$email.'" limit 1')) or (isset($uzytkownik) and mysql_num_rows(mysql_query('select 1 from '.$prefiks_tabel.'czarna_lista where email="'.$uzytkownik['email'].'" limit 1')))){
+			header("Location: index.php?ogloszenie_nie_dodano");
+			die('Ogłoszenie nie mogło zostać dodane');
 		}
 		if(isset($_POST['formularz_kontaktowy'])){$formularz_kontaktowy=1;}else{$formularz_kontaktowy=0;}
 		$czas_ogloszenia = filtruj($_POST['czas_ogloszenia']);
@@ -200,13 +195,8 @@ if($prawidlowa_sesja and (isset($uzytkownik) or $ustawienia['ogloszenia_bez_reje
 			}
 		}
 
-		if(isset($zmieniono_email)){
-			header("Location: ".$id_ogloszenia.','.$prosty_tytul.'?podglad&zmieniono_email');
-			die('Przekierowanie...');
-		}else{
-			header("Location: ".$id_ogloszenia.','.$prosty_tytul.'?podglad');
-			die('Przekierowanie...');
-		}
+		header("Location: ".$id_ogloszenia.','.$prosty_tytul.'?podglad');
+		die('Przekierowanie...');
 	}
 
 	if(isset($_GET['akcja']) and isset($_GET['id'])){
