@@ -40,9 +40,6 @@ if($ogloszenie!=''){
 			$podglad_admin = true;
 			$infobox[] = array('klasa'=>'czerwona','tresc'=>'Ogłoszenie nie jest aktywne. Będąć zalogowanym na konto admin możesz je podejrzeć');
 		}
-		if(isset($_GET['zmieniono_email'])){
-			$infobox[] = array('klasa'=>'czerwona','tresc'=>'Adres email podany w ogłoszeniu był nieprawidłowy - został zmieniony na '.$ogloszenie['email']);
-		}
 	}
 	
 	if($ogloszenie['aktywna'] or $podglad or $podglad_admin){
