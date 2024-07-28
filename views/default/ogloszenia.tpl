@@ -1,6 +1,19 @@
 
 {foreach from=$ogloszenia item=item key=key}
 	<div class="oferta{if $item.promowana} promowana{/if}" itemscope itemtype="http://schema.org/Product">
+          	<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+	          <meta itemprop="priceCurrency" content="PLN"></meta>
+	          <meta itemprop="price" content="{$item.cena}"></meta>
+	          <meta itemprop="availability" content="http://schema.org/InStock"></meta>
+	          <meta itemprop="description" content="{$item.opis|truncate:250}"></meta>
+	          <meta itemprop="url" content="{$ustawienia.base_url}/{$item.id},{$item.prosty_tytul}" title="{$item.tytul}"></meta>               
+		</div>
+	        <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+	          <meta itemprop="ratingValue" content="5"></meta>
+	          <meta itemprop="bestRating" content="5"></meta>
+	          <meta itemprop="ratingCount" content="1"></meta>
+	        </div>
+
 		<div class="oferta_opis inline_block">
 			<a href="{$item.id},{$item.prosty_tytul}" title="Ogłoszenie: {$item.tytul}"><img src="{if $item.miniaturka!=''}{$ustawienia.upload}/{$item.miniaturka}{else}{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png{/if}" onerror="this.src='{$ustawienia.base_url}/views/{$ustawienia.szablon}/images/brak_obrazka.png'" alt="{$item.tytul}" itemprop="image"></a>
 		</div>
