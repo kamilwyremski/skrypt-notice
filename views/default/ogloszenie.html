@@ -8,6 +8,18 @@
 {include file="top.tpl"}
 
 <div class="strona padding30" itemscope itemtype="http://schema.org/Product">
+	<div itemprop="offers" itemscope itemtype="http://schema.org/Offer">
+          <meta itemprop="priceCurrency" content="PLN"></meta>
+          <meta itemprop="price" content="{$ogloszenie.cena}"></meta>
+          <meta itemprop="availability" content="http://schema.org/InStock"></meta>
+          <meta itemprop="priceValidUntil" content="{$ogloszenie.koniec}"></meta>
+          <meta itemprop="url" content="{$ustawienia.base_url}/{$ogloszenie.id},{$ogloszenie.prosty_tytul}" title="{$ogloszenie.tytul}"></meta>               
+	</div>
+        <div itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+          <meta itemprop="ratingValue" content="5"></meta>
+          <meta itemprop="bestRating" content="5"></meta>
+          <meta itemprop="ratingCount" content="1"></meta>
+        </div>
 	{if isset($podglad)}
 	<div id="podglad_ogloszenia" class="padding20">
 		<h3>Opłaty za ogłoszenie</h3>
