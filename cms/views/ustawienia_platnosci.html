@@ -29,7 +29,7 @@
 			<h2>TPay.com</h2>
 			<label><h3><input type="checkbox" name="platnosc_tpay" title="Zaznacz jeśli chcesz aktywować płatność przez tpay.com" {if $ustawienia.platnosc_tpay}checked{/if} class="platnosc_checkbox" data-typ="platnosc_tpay"> Aktywuj płatność przez serwis tpay.com</h3></label>
 			<h3>TPay ID: <input type="text" name="tpay_id" title="Tu wpisz ID swojego konta na tpay.com" placeholder="tpay.com ID" value="{$ustawienia.tpay_id}" {if $ustawienia.platnosc_tpay}required{/if} class="platnosc_tpay"></h3>
-			<h3>Tpay KOD: <input type="text" name="tpay_kod" title="Tu wpisz KOD płatności z tpay.com" placeholder="tpay.com KOD" value="{$ustawienia.tpay_kod}" {if $ustawienia.platnosc_tpay}required{/if} class="platnosc_tpay"></h3>
+			<h3>Tpay Kod bezpieczeństwa: <input type="text" name="tpay_kod" title="Tu wpisz Kod bezpieczeństwa płatności z tpay.com" placeholder="tpay.com KOD" value="{$ustawienia.tpay_kod}" {if $ustawienia.platnosc_tpay}required{/if} class="platnosc_tpay"></h3>
 			<br>
 			<h2>Przelewy24.pl</h2>
 			<label><h3><input type="checkbox" name="platnosc_przelewy24" title="Zaznacz jeśli chcesz aktywować płatność przez Przelewy24" {if $ustawienia.platnosc_przelewy24}checked{/if} class="platnosc_checkbox" data-typ="platnosc_przelewy24"> Aktywuj płatność przez serwis Przelewy24</h3></label>
