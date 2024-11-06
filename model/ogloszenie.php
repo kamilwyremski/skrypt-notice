@@ -74,7 +74,8 @@ if($ogloszenie!=''){
 						$infobox[] = array('klasa'=>'czerwona','tresc'=>'Ogłoszenie nie jest jeszcze aktywne w systemie');
 					}
 					if($ustawienia['platnosc_tpay']){
-						$smarty->assign("tpay_md5sum",md5($ustawienia['tpay_id'] . $zostalo_do_zaplacenia . $ogloszenie['id'] . $ustawienia['tpay_kod']));
+						$smarty->assign("tpay_md5sum",md5(implode('&', [$ustawienia['tpay_id'], $zostalo_do_zaplacenia, $ogloszenie['id'], $ustawienia['tpay_kod']])));
+
 					}
 					$smarty->assign("podglad", array('oplata'=>$oplata, 'do_oplacenia'=>$do_oplacenia, 'zostalo_do_zaplacenia'=>$zostalo_do_zaplacenia,'oplacona'=>$oplacona));
 				}elseif($_GET['status']=='przelewy24'){
@@ -91,7 +92,8 @@ if($ogloszenie!=''){
 					$ogloszenie['aktywna'] = $ogloszenie['oplacona'] = 0;
 				}
 				if($ustawienia['platnosc_tpay']){
-					$smarty->assign("tpay_md5sum",md5($ustawienia['tpay_id'] . $zostalo_do_zaplacenia . $ogloszenie['id'] . $ustawienia['tpay_kod']));
+					$smarty->assign("tpay_md5sum",md5(implode('&', [$ustawienia['tpay_id'], $zostalo_do_zaplacenia, $ogloszenie['id'], $ustawienia['tpay_kod']])));
+
 				}
 				if(!$ogloszenie['aktywna']){
 					$infobox[] = array('klasa'=>'czerwona','tresc'=>'Ogłoszenie nie jest jeszcze aktywne w systemie');
