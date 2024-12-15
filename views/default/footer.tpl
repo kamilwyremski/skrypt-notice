@@ -61,13 +61,14 @@
 {if $ustawienia.facebook!='' or $ustawienia.facebook_like or $ustawienia.komentowanie_profilu}
 	{literal}
 	<div id="fb-root"></div>
-	<script>(function(d, s, id) {
-	  var js, fjs = d.getElementsByTagName(s)[0];
-	  if (d.getElementById(id)) return;
-	  js = d.createElement(s); js.id = id;
-	  js.src = "//connect.facebook.net/pl_PL/all.js#xfbml=1";
-	  fjs.parentNode.insertBefore(js, fjs);
-	}(document, 'script', 'facebook-jssdk'));
+	<script>
+	  (function(d, s, id) {
+		var js, fjs = d.getElementsByTagName(s)[0];
+		if (d.getElementById(id)) return;
+		js = d.createElement(s); js.id = id;
+		js.src = "https://connect.facebook.net/pl_PL/sdk.js#xfbml=1&version=v17.0"; 
+		fjs.parentNode.insertBefore(js, fjs);
+	  }(document, 'script', 'facebook-jssdk'));
 	</script>
 	{/literal}
 	{if $ustawienia.facebook!='' && $ustawienia.facebook_panel}
