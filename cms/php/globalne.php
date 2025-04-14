@@ -58,9 +58,12 @@ function filtruj($zmienna){
     return mysql_real_escape_string(htmlspecialchars(trim($zmienna))); 
 }
 
-function prosta_nazwa($argument){
-	$wynik = strtolower(str_replace(array(' ','%','$',':','–',',','/','=','?','Ę','Ó','Ą','Ś','Ł','Ż','Ź','Ć','Ń','ę','ó','ą','ś','ł','ż','ź','ć','ń'), array('-','-','','','','','','','','E','O','A','S','L','Z','Z','C','N','e','o','a','s','l','z','z','c','n'), $argument));
-	return $wynik;
+function prosta_nazwa($text){
+	$text = strtolower(str_replace(array(' ','%','$',':','–',',','/','=','?','Ę','Ó','Ą','Ś','Ł','Ż','Ź','Ć','Ń','ę','ó','ą','ś','ł','ż','ź','ć','ń'), array('-','-','','','','','','','','E','O','A','S','L','Z','Z','C','N','e','o','a','s','l','z','z','c','n'), $text));
+	$text = iconv('UTF-8', 'ASCII//IGNORE//TRANSLIT', $text);
+	$text = strtolower(str_replace(array(' ','$',':',',','/','=','?'), array('-','','','','','',''), $text));
+	$text = preg_replace("/[^a-zA-Z0-9-_]+/", "", $text);
+	return $text;
 }
 
 function adres_www($adres){
