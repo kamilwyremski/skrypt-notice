@@ -8,7 +8,7 @@ $warunek = '';
 $warunek_kategorii = $nadkategoria = 0;
 
 $gets_array = $_GET;
-unset($gets_array['akcja'],$gets_array['id'],$gets_array['strona'],$gets_array['zalogowano'],$gets_array['wylogowano']);
+unset($gets_array['akcja'],$gets_array['id'],$gets_array['strona'],$gets_array['zalogowano'],$gets_array['wylogowano'],$gets_array['prosta_nazwa']);
 $gets = http_build_query($gets_array);
 unset($gets_array['sortuj']);
 $smarty->assign("gets_array", $gets_array);
@@ -16,8 +16,13 @@ $smarty->assign("gets", $gets);
 
 if(isset($_GET['akcja']) and $_GET['akcja']=='kategoria' and isset($_GET['id'])){
 	$id_kategorii = intval($_GET['id']);
-	$wynik = mysql_fetch_assoc(mysql_query('select nazwa, prosta_nazwa, kategoria, podkategorie, keywords, description, glowna_opis from '.$prefiks_tabel.'kategorie where id="'.$id_kategorii.'" limit 1'));
+	$wynik = mysql_fetch_assoc(mysql_query('select id, nazwa, prosta_nazwa, kategoria, podkategorie, keywords, description, glowna_opis from '.$prefiks_tabel.'kategorie where id="'.$id_kategorii.'" limit 1'));
 	if($wynik!=''){
+		if($wynik['prosta_nazwa'] !== $_GET['prosta_nazwa']){
+			header("HTTP/1.1 301 Moved Permanently");
+			header("Location: /kategoria," . $wynik['id'] . "," . $wynik['prosta_nazwa']);
+			exit();
+		}
 		$podkategorie = $wynik['podkategorie'];
 		$nadkategoria = $wynik['kategoria'];
 		if($podkategorie==''){
